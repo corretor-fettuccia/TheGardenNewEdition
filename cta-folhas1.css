@@ -1,0 +1,122 @@
+/*código proprietário*/
+/*roberto de paula fettuccia */
+/*51-998111078 - corretor.fettuccia@gmail.com*/
+
+
+/* Estilos específicos para o botão cta-folhas1 */
+.cta-folhas1-container {
+    position: relative;
+    display: inline-block;
+    margin: 20px;
+}
+
+.cta-folhas1-button {
+    position: relative;
+    padding: 22px 50px;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(45deg, #0a3824 0%, #2a7d5e 100%);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    overflow: visible; /* Alterado para visible para permitir que folhas transbordem */
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    z-index: 1; /* Reduzido para ficar atrás das folhas */
+    font-family: 'Georgia', serif;
+}
+
+.cta-folhas1-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(45deg, #0d4d32 0%, #339471 100%);
+}
+
+.cta-folhas1-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.cta-folhas1-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2; /* Aumentado para ficar na frente do botão */
+    border-radius: 50px;
+    overflow: visible; /* Alterado para visible */
+}
+
+.cta-folhas1-leaf {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background-image: url("https://raw.githubusercontent.com/corretor-fettuccia/media/refs/heads/main/leave.webp");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0;
+    z-index: 3; /* Folhas na frente de tudo */
+    transition: opacity 5s;
+    pointer-events: none;
+}
+
+/* Animações para as folhas */
+@keyframes cta-folhas1-wind-normal {
+    0% {
+        opacity: 0.8;
+        transform: translate(0, 0) rotate(0deg) scale(0.8);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--end-x), var(--end-y)) rotate(var(--rotation)) scale(1);
+    }
+}
+
+@keyframes cta-folhas1-wind-hover {
+    0% {
+        opacity: 0.8;
+        transform: translate(0, 0) rotate(0deg) scale(0.8);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--end-x), var(--end-y)) rotate(var(--rotation)) scale(1);
+    }
+}
+
+@keyframes cta-folhas1-explode {
+    0% {
+        opacity: 0.9;
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--end-x), var(--end-y)) rotate(var(--rotation)) scale(1.2);
+    }
+}
+
+/* Efeito de brilho no botão */
+.cta-folhas1-button::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: radial-gradient(circle at center, rgba(123, 191, 123, 0.4) 0%, transparent 70%);
+    opacity: 0;
+    z-index: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.cta-folhas1-button:hover::after {
+    opacity: 0.6;
+}
