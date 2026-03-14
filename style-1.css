@@ -41,7 +41,7 @@
             --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             
             /* Imagem de fundo do hero */
-            --bgimg: url("./img/bg1.webp?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80");
+            --bgimg: url("./img/bg1.webp");
         }
 
         * {
