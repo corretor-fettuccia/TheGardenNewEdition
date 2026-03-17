@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Garante acesso aos arquivos importantes
+Allow: /img/
+Allow: /css/
+Allow: /js/
+
+# Evita rastreamento de áreas técnicas (opcional)
+Disallow: /cgi-bin/
+Disallow: /tmp/
+Disallow: /private/
+
+# Sitemap do site
+Sitemap: https://newedition.com.br/sitemap.xml 
