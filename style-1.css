@@ -21,6 +21,12 @@
     filter: blur(0);
 }
 
+.credibility {
+    font-size: 0.95rem;
+    opacity: 0.8;
+    margin-top: 8px;
+}
+
 :root {
             /* Cores do tema */
             --primary-hue: 145; /* Verde - ajuste conforme sua identidade visual */
