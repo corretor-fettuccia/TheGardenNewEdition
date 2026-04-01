@@ -110,6 +110,6 @@
         }
         
         // Demo automático de notificação de sucesso (como no seu exemplo)
-        setTimeout(() => {
-            showfeedview_notification('success');
-        }, 1000);
+        //setTimeout(() => {
+        //    showfeedview_notification('success');
+        //}, 1000);
