@@ -3,7 +3,7 @@
 
 <head>
     <!-- DIREITOS RESERVADOS - ROBERTO DE PAULA FETTUCCIA - 51-998111078 -->
-    
+    <!-- updete 02.04.26 - 15hs -->
     <!-- Meta Tags Básicas -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -159,14 +159,26 @@ overflow-x: hidden;
 h1, h2, h3, h4, h5, h6 {
 font-family: 'Montserrat', sans-serif;
 }
+h1 {
+    font-size: clamp(24px, 4.5vw, 46px);
+}
+
+@media (max-width: 768px) {
+    h1 {
+    font-size: clamp(24px, 4.5vw, 46px);
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+}
+}
+
 
 /* =========================
 ANIMAÇÕES (FOLHAS)
 ========================= */
 .leaf {
 position: fixed;
-width: 40px;
-height: 40px;
+width: 10px;
+height: 20px;
 z-index: 1;
 pointer-events: none;
 animation: fall linear infinite;
@@ -189,6 +201,19 @@ opacity: 0.6;
 /* =========================
 UI GERAL
 ========================= */
+@media (max-width: 768px) {
+    #home {
+        min-height: calc(100vh - 90px);
+        padding-top: 120px;
+        background-attachment: scroll;
+    }
+}
+
+#home {
+    min-height: calc(100vh - 80px);
+    padding-top: 120px;
+}
+
 .hero-gradient {
 background: linear-gradient(135deg, rgba(44,85,48,0.9), rgba(74,124,89,0.8));
 }
@@ -375,6 +400,19 @@ left: 10px;
 max-width: calc(100% - 20px);
 }
 }
+
+.pay-hidden { display: none; }
+
+#pay-modal { backdrop-filter: blur(4px); }
+
+.animate-fadeIn {
+    animation: payFade .3s ease;
+}
+
+@keyframes payFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
     </style>
 </head>
 
@@ -404,7 +442,7 @@ max-width: calc(100% - 20px);
 	Quem antecipa, escolhe com mais liberdade.
 Depois, as opções se tornam limitadas.
 	</p>
-	<p style="margin-top:15px; font-weight:600;">Veja agora o que ainda está disponível.</p>
+	<p style="margin-top:15px; font-weight:600;">Veja o que ainda está disponível</p>
 <small style="display:block; margin-top:8px; color:#888;">
 Pré-lançamento • unidades limitadas
 </small>
@@ -471,24 +509,24 @@ Pré-lançamento • unidades limitadas
     </header>
 
     <!-- Hero Section -->
-    <section id="home" class="relative min-h-screen flex items-center justify-center bg-cover bg-center bg-fixed" style="background-image: url('https://newedition.com.br/img/share.webp');">
+    <section id="home" class="relative flex items-center justify-center bg-cover bg-center bg-fixed" style="background-image: url('https://newedition.com.br/img/share.webp');">
         <div class="absolute inset-0 bg-gradient-to-br from-green-950/95 via-green-900/90 to-emerald-900/85"></div>
         
         <div class="relative z-10 container mx-auto px-4 text-center text-white">
             <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight animate-on-scroll">
-                Novo padrão de condomínio com praia artificial em Canoas — Acesso a grupo seleto, projeto limitado a 150 unidades.
-            </h1>
+		Novo padrão de condomínio com praia artificial em Canoas
+	    </h1>
             <p class="text-xl md:text-2xl mb-4 font-light animate-on-scroll" style="transition-delay: 0.1s;">
-                The Garden New Edition — terrenos de 250m² no pré-lançamento com condições exclusivas
+                The Garden New Edition • 150 unidades • terrenos a partir de 250m²
             </p>
             <p class="text-lg mb-8 text-green-100 animate-on-scroll" style="transition-delay: 0.2s;">
-                Empreendimento com padrão Melnick - referência em alto padrão e valorização
+                Condições exclusivas • Empreendimento com padrão Melnick • referência em alto padrão e valorização
             </p>
             
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-on-scroll" style="transition-delay: 0.3s;">
                 <ul class="text-left space-y-2 mb-6 sm:mb-0 text-sm md:text-base">
                     <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Possibilidade de parcelamento direto</li>
-                    <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Lotes com 250m² (10x25)</li>
+                    <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Lotes a partir de 250m² (10x25)</li>
                     <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Área de lazer maior que a primeira edição</li>
                 </ul>
             </div>
@@ -725,7 +763,91 @@ Pré-lançamento • unidades limitadas
         </div>
     </section>
 
+    <!-- Payment Section --> 
     <!-- Payment Section -->
+<section id="payment" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 animate-on-scroll">
+                Condições de Pagamento
+            </h2>
+
+            <p class="text-lg text-gray-600 animate-on-scroll">
+                Confira as condições disponíveis e escolha a ideal para você
+            </p>
+
+            <!-- ajuste premium -->
+            <p class="text-sm text-gray-500 mt-2 animate-on-scroll">
+                Condições especiais de pré-lançamento • consulte disponibilidade atual
+            </p>
+        </div>
+        
+        <div class="max-w-4xl mx-auto overflow-x-auto animate-on-scroll">
+            <table class="w-full border-collapse bg-white shadow-lg rounded-2xl overflow-hidden">
+                
+                <thead>
+                    <tr class="bg-green-600 text-white">
+                        <th class="p-4 text-left font-semibold">Tipo</th>
+                        <th class="p-4 text-left font-semibold">Fluxo</th>
+                        <th class="p-4 text-left font-semibold">Prazo</th>
+                        <th class="p-4 text-left font-semibold">Condições</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-gray-200">
+
+<tr class="hover:bg-gray-50 transition">
+    <td class="p-4 font-medium text-green-700">À vista</td>
+    <td class="p-4 text-gray-600">Pagamento único</td>
+    <td class="p-4 text-gray-600">1x</td>
+    <td class="p-4 text-gray-600 flex items-center justify-between gap-3">
+        10% de desconto
+        <button class="pay-btn-details text-green-600 font-semibold" data-plan="avista">Ver detalhes</button>
+    </td>
+</tr>
+
+<tr class="hover:bg-green-50 transition border-l-4 border-green-600">
+    <td class="p-4 font-medium text-green-700">Entrada parcelada</td>
+    <td class="p-4 text-gray-600">Entrada 3x + mensais</td>
+    <td class="p-4 text-gray-600">27x</td>
+    <td class="p-4 text-gray-600 flex items-center justify-between gap-3">
+        Parcelamento durante obra
+        <button class="pay-btn-details text-green-600 font-semibold" data-plan="parcelado">Ver detalhes</button>
+    </td>
+</tr>
+
+<tr class="hover:bg-gray-50 transition">
+    <td class="p-4 font-medium text-green-700">Entrada 15%</td>
+    <td class="p-4 text-gray-600">Entrada 3x + mensais</td>
+    <td class="p-4 text-gray-600">48x</td>
+    <td class="p-4 text-gray-600 flex items-center justify-between gap-3">
+        Parcelamento estendido
+        <button class="pay-btn-details text-green-600 font-semibold" data-plan="15">Ver detalhes</button>
+    </td>
+</tr>
+
+<tr class="hover:bg-gray-50 transition">
+    <td class="p-4 font-medium text-green-700">Entrada 20%</td>
+    <td class="p-4 text-gray-600">Entrada + mensais</td>
+    <td class="p-4 text-gray-600">60x</td>
+    <td class="p-4 text-gray-600 flex items-center justify-between gap-3">
+        Maior prazo
+        <button class="pay-btn-details text-green-600 font-semibold" data-plan="20">Ver detalhes</button>
+    </td>
+</tr>
+
+</tbody>
+            </table>
+        </div>
+        
+        <div class="text-center mt-12 animate-on-scroll">
+            <a href="#contact" class="inline-flex items-center justify-center px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                Ver o que ainda está disponível
+            </a>
+        </div>
+    </div>
+</section>
+    <!--
     <section id="payment" class="py-20 bg-white">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
@@ -778,7 +900,7 @@ Pré-lançamento • unidades limitadas
                 </a>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- Location Section -->
     <section id="location" class="py-20 bg-gray-50">
@@ -1032,6 +1154,25 @@ Pré-lançamento • unidades limitadas
     <div id="feedview_toast" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg hidden z-50">
         Obrigado pelo seu interesse! Entraremos em contato em breve.
     </div>
+
+<div id="pay-modal" class="pay-hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 relative animate-fadeIn">
+
+        <button id="pay-close" class="absolute top-3 right-3 text-gray-500 text-xl">&times;</button>
+
+        <h3 id="pay-title" class="text-xl font-bold text-gray-800 mb-3"></h3>
+
+        <p id="pay-desc" class="text-gray-600 mb-4"></p>
+
+        <ul id="pay-list" class="text-sm text-gray-700 space-y-2 mb-6"></ul>
+
+        <a id="pay-whatsapp" target="_blank"
+           class="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition">
+            Quero essa condição
+        </a>
+
+    </div>
+</div>
 
     <!-- Scripts -->
     <script src="https://newedition.com.br/feedview.js"></script>
@@ -1415,5 +1556,116 @@ Pré-lançamento • unidades limitadas
         
 
     </script>
+    
+    
+    <script>
+    //table payment dinamico
+(function(){
+
+const plans = {
+    avista: {
+        title: "Pagamento à vista",
+        desc: "Ideal para quem busca o melhor valor com desconto imediato.",
+        list: [
+            "Pagamento em parcela única",
+            "10% de desconto sobre o valor total",
+            "Maior vantagem financeira"
+        ],
+        msg: "Sobre o The Garden New Edition - Tenho interesse na condição à vista com 10% de desconto."
+    },
+
+    parcelado: {
+        title: "Entrada parcelada",
+        desc: "Você começa com entrada facilitada e paga ao longo da obra.",
+        list: [
+            "Entrada em até 3x",
+            "Parcelamento durante a obra",
+            "Saldo corrigido pelo IPCA"
+        ],
+        msg: "Sobre o The Garden New Edition - Tenho interesse na condição de entrada parcelada durante a obra."
+    },
+
+    15: {
+        title: "Entrada 15%",
+        desc: "Equilíbrio entre entrada e prazo maior de pagamento.",
+        list: [
+            "Entrada de 15%",
+            "Parcelamento em até 45x",
+            "Correção IPCA + 0,98% ao mês",
+            "Ótimo para quem busca construção financiada, quita o saldo do terrenonstrução financiada, quita o saldo do terreno e faz a construçãoo e faz a construção"
+        ],
+        msg: "Sobre o The Garden New Edition - Tenho interesse na condição com entrada de 15%."
+    },
+
+    20: {
+        title: "Entrada 20%",
+        desc: "Maior entrada com o maior prazo disponível.",
+        list: [
+            "Entrada de 20%",
+            "Parcelamento em até 59x",
+            "Correção IPCA + 0,98% ao mês",
+            "Excelente para quem busca construção financiada, quita o saldo do terreno e faz a construção"
+        ],
+        msg: "Sobre o The Garden New Edition - Tenho interesse na condição com entrada de 20%."
+    }
+};
+
+const modal = document.getElementById('pay-modal');
+const title = document.getElementById('pay-title');
+const desc = document.getElementById('pay-desc');
+const list = document.getElementById('pay-list');
+const whatsapp = document.getElementById('pay-whatsapp');
+
+document.querySelectorAll('.pay-btn-details').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const plan = plans[btn.dataset.plan];
+
+        title.innerText = plan.title;
+        desc.innerText = plan.desc;
+
+        list.innerHTML = "";
+        plan.list.forEach(item => {
+            list.innerHTML += `<li>✔ ${item}</li>`;
+        });
+
+        const number = "5551998111078"; // seu whatsapp
+        whatsapp.href = `https://wa.me/${number}?text=${encodeURIComponent(plan.msg)}`;
+
+        modal.classList.remove('pay-hidden');
+    });
+});
+
+document.getElementById('pay-close').onclick = () => {
+    modal.classList.add('pay-hidden');
+};
+
+modal.addEventListener('click', (e) => {
+    if(e.target === modal){
+        modal.classList.add('pay-hidden');
+    }
+});
+
+})();
+</script>
+<script>
+//trackings
+document.querySelectorAll('.pay-btn-details').forEach(btn => {
+    btn.addEventListener('click', () => {
+
+        gtag('event', 'click_detalhe_condicao', {
+            plano: btn.dataset.plan
+        });
+
+    });
+});
+
+document.getElementById('pay-whatsapp').addEventListener('click', () => {
+    gtag('event', 'click_whatsapp_condicao', {
+        plano: currentPlan
+    });
+});
+</script>
+    
+    
 </body>
 </html>
