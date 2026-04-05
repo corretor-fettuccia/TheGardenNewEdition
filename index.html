@@ -2,14 +2,14 @@
 <html lang="pt-BR">
 
 <head>
-    <!-- DIREITOS RESERVADOS - ROBERTO DE PAULA FETTUCCIA - 51-998111078 -->
-    <!-- updete 02.04.26 - 15hs -->
+    <!-- DIREITOS RESERVADOS - ROBERTO DE PAULA FETTUCCIA - 51-998111078 | corretor.fettuccia@gmail.com -->
+    
     <!-- Meta Tags Básicas -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#ffffff">
     <meta name="robots" content="index, follow">
-    <meta name="author" content="Roberto Fettuccia - Corretor dce Imóveis">
+    <meta name="author" content="Roberto Fettuccia - Corretor de Imóveis">
     <meta name="description" content="The Garden New Edition em Canoas. Condomínio fechado de 150 lotes com padrão Melnick, mais de 9.000m² de lazer, praia artificial, quadras esportivas e infraestrutura premium.">
     <meta name="keywords" content="terrenos em Canoas, condomínio de lotes Canoas, loteamento Canoas, terrenos para construir Canoas, The Garden Canoas, Melnick Canoas, terrenos condomínio fechado Canoas">
     
@@ -240,7 +240,7 @@ WHATSAPP
 .whatsapp-float {
 position: fixed;
 bottom: 30px;
-left: 30px;
+right: 30px;
 z-index: 9998;
 animation: pulse 2s infinite;
 }
@@ -413,14 +413,60 @@ max-width: calc(100% - 20px);
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* =========================
+Mini popup dialog
+========================= */
+.mini-dialog {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    padding: 14px 18px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    max-width: 260px;
+    font-size: 14px;
+    color: #333;
+    
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.4s ease;
+    z-index: 999;
+}
+
+.mini-dialog.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =========================
+CTA BUTTON
+========================= */
+.btn-cta {
+    background: linear-gradient(135deg, #d4af37, #b8962e);
+    color: #1a1a1a;
+    font-weight: 600;
+    padding: 14px 22px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+}
     </style>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MVPHCWVQ" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
+
 
 
 
@@ -431,27 +477,31 @@ max-width: calc(100% - 20px);
     <img src="https://raw.githubusercontent.com/corretor-fettuccia/media/refs/heads/main/leave.webp" alt="" class="leaf leaf4" aria-hidden="true">
     <img src="https://raw.githubusercontent.com/corretor-fettuccia/media/refs/heads/main/leave.webp" alt="" class="leaf leaf5" aria-hidden="true">
 
+<!-- INICIO HTML mini-dialog -->
+<div id="miniDialog" class="mini-dialog">
+    <span id="miniText"></span>
+</div>
+<!-- FIM HTML mini-dialog -->
 
 <!-- INICIO HTML LEAD POPUP -->
 <!-- Popup de Captura de Lead -->
 <div class="lead-popup" id="leadPopup">
     <button class="close-popup" id="closePopup">&times;</button>
     <div class="popup-content">
-	<h3>Você ainda pode escolher...</h3>
-	<p>Mas isso muda rápido.<br><br>
-	Quem antecipa, escolhe com mais liberdade.
-Depois, as opções se tornam limitadas.
+	<h3>Ainda acessivel a sua escolha.</h3>
+	<p>Mas não para todos.<br>
+	<small style="display:block; margin-top:8px; color:#888;">
+	As melhores posições não chegam a ser expostas.
+        São definidas antes, com controle e condições reservadas, fora do mercado.
+	</small>
 	</p>
-	<p style="margin-top:15px; font-weight:600;">Veja o que ainda está disponível</p>
-<small style="display:block; margin-top:8px; color:#888;">
-Pré-lançamento • unidades limitadas
-</small>
+	<p style="margin-top:15px; font-weight:600;">Obter acesso vip as melhores condições.</p>
+
 <ul class="popup-benefits">
-    <li><i class="fas fa-check-circle"></i> Acesso antecipado às melhores unidades</li>
-    <li><i class="fas fa-check-circle"></i> Condições especiais de pré-lançamento</li>
-    <li><i class="fas fa-check-circle"></i> Prioridade na escolha dos lotes mais valorizados</li>
-    <li><i class="fas fa-check-circle"></i> Possibilidade de negociação mais vantajosa</li>
-    <li><i class="fas fa-check-circle"></i> Atendimento direto com especialista</li>
+    <li><i class="fas fa-check-circle"></i> Acesso antecipado às melhores posições do condomínio</li>
+    <li><i class="fas fa-check-circle"></i> Prioridade real na definição do lote</li>
+    <li><i class="fas fa-check-circle"></i> Condições reservadas ao pré-lançamento</li>
+    <li><i class="fas fa-check-circle"></i> Atendimento direto, sem intermediação massificada</li>
 </ul>
         <form id="popupForm" class="popup-form">
             <input type="text" id="popupProduto" name="produto" value="The Garden New Edition" hidden>
@@ -465,10 +515,10 @@ Pré-lançamento • unidades limitadas
             </div><div class="form-group">
                 <input type="email" id="popupEmail" name="email" placeholder="Seu melhor e-mail">
             </div>
-            <button type="submit" id="submitButton2" class="cta-button">
-      <label id="resposta2"></label>
-        <i class="fas fa-paper-plane"></i> Enviar
-      </button>
+            <label id="resposta2"></label>
+            <button type="submit" id="submitButton2" class="btn-cta">
+      
+        <i class="fas fa-key"></i> Quero ser contatado</button>
         </form>
     </div>
 </div>
@@ -481,10 +531,11 @@ Pré-lançamento • unidades limitadas
                 <div class="flex items-center">
                     <img src="https://newedition.com.br/img/Logo.white.webp" alt="The Garden New Edition" class="h-12 w-auto">
                 </div>
-                
-                <nav class="hidden md:flex space-x-8">
+                <!-- Menu para Desktop -->
+                <nav class="hidden md:flex space-x-8"> 
                     <a href="#home" class="nav-link text-white hover:text-green-200 transition font-medium">Início</a>
                     <a href="#about" class="nav-link text-white hover:text-green-200 transition font-medium">Sobre</a>
+                    <a href="#galeria" class="nav-link text-white hover:text-green-200 transition font-medium">Galeria</a>
                     <a href="#payment" class="nav-link text-white hover:text-green-200 transition font-medium">Condições</a>
                     <a href="#location" class="nav-link text-white hover:text-green-200 transition font-medium">Localização</a>
                     <a href="#contact" class="nav-link text-white hover:text-green-200 transition font-medium">Contato</a>
@@ -496,11 +547,12 @@ Pré-lançamento • unidades limitadas
             </div>
         </div>
         
-        <!-- Mobile Menu -->
+        <!-- Menu para Mobile -->
         <div id="mobileMenu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
             <div class="px-4 pt-2 pb-6 space-y-2">
                 <a href="#home" class="block px-3 py-2 text-gray-800 hover:bg-green-50 rounded-md font-medium">Início</a>
                 <a href="#about" class="block px-3 py-2 text-gray-800 hover:bg-green-50 rounded-md font-medium">Sobre</a>
+                <a href="#galeria" class="block px-3 py-2 text-gray-800 hover:bg-green-50 rounded-md font-medium">Galeria</a>
                 <a href="#payment" class="block px-3 py-2 text-gray-800 hover:bg-green-50 rounded-md font-medium">Condições</a>
                 <a href="#location" class="block px-3 py-2 text-gray-800 hover:bg-green-50 rounded-md font-medium">Localização</a>
                 <a href="#contact" class="block px-3 py-2 text-gray-800 hover:bg-green-50 rounded-md font-medium">Contato</a>
@@ -514,15 +566,14 @@ Pré-lançamento • unidades limitadas
         
         <div class="relative z-10 container mx-auto px-4 text-center text-white">
             <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight animate-on-scroll">
-		Novo padrão de condomínio com praia artificial em Canoas
+		Um endereço para quem não aceita vizinhança aleatória.
 	    </h1>
-            <p class="text-xl md:text-2xl mb-4 font-light animate-on-scroll" style="transition-delay: 0.1s;">
-                The Garden New Edition • 150 unidades • terrenos a partir de 250m²
-            </p>
             <p class="text-lg mb-8 text-green-100 animate-on-scroll" style="transition-delay: 0.2s;">
                 Condições exclusivas • Empreendimento com padrão Melnick • referência em alto padrão e valorização
             </p>
-            
+             <p class="text-xl md:text-2xl mb-4 font-light animate-on-scroll" style="transition-delay: 0.1s;">
+                The Garden New Edition • lotes amplos e bem distribuídos • a partir de 250m² • Marechal Rondon, Canoas
+            </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-on-scroll" style="transition-delay: 0.3s;">
                 <ul class="text-left space-y-2 mb-6 sm:mb-0 text-sm md:text-base">
                     <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Possibilidade de parcelamento direto</li>
@@ -533,7 +584,7 @@ Pré-lançamento • unidades limitadas
             
             <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center animate-on-scroll" style="transition-delay: 0.4s;">
                 <a href="#contact" class="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-full transition duration-300 transform hover:scale-105 shadow-lg">
-                    Ver o que ainda está disponível
+                    Selecionar melhores oportunidades
                 </a>
                 <a href="https://wa.me/5551998111078?text=Gostaria%20de%20saber%20mais%20sobre%20o%20The%20Garden%20-%20New%20Edition" target="_blank" class="inline-flex items-center justify-center px-8 py-4 bg-green-500 hover:bg-green-600 text-white font-bold rounded-full transition duration-300 transform hover:scale-105 shadow-lg">
                     <i class="fab fa-whatsapp mr-2 text-xl"></i>
@@ -553,8 +604,8 @@ Pré-lançamento • unidades limitadas
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 animate-on-scroll">The Garden - New Edition</h2>
                 <p class="text-lg text-gray-600 max-w-3xl mx-auto animate-on-scroll">
-                    Pré-Lançamento | Empreendimento Melnick e Arcadia - Av. Açucena Marechal Rondon, Canoas-RS<br>
-                    PADRÃO NÍVEL PREMIUM - Exclusivo, composto por 150 lotes distribuídos em dois condomínios.
+                    Ativo escasso para elite | Melnick & Arcadia • Marechal Rondon, Canoas-RS<br>
+		    Infraestrutura qualquer entrega. Curadoria, poucos.
                 </p>
             </div>
             
@@ -567,16 +618,28 @@ Pré-lançamento • unidades limitadas
                     </div>
                 </div>
                 
+		<div class="feature-card bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 animate-on-scroll">
+		    <img src="https://newedition.com.br/img/Carrosel/RuasInternas.webp" alt="Vizinhança Selecionada" class="w-full h-48 object-cover">
+		    <div class="p-6">
+			<h3 class="text-xl font-bold text-gray-800 mb-2">
+			    Vizinhança Selecionada
+			</h3>
+			<p class="text-gray-600">
+			    Não está ao alcance de todos. Um ambiente onde cada detalhe foi pensado para reunir pessoas com o mesmo nível de exigência, preservando privacidade, segurança e um padrão que vai além da estrutura • está no perfil de quem adquire aqui.
+			</p>
+		    </div>
+		</div>
+                
                 <div class="feature-card bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 animate-on-scroll" style="transition-delay: 0.1s;">
                     <img src="https://newedition.com.br/img/lotes.webp" alt="Lotes" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Lotes Individuais - 250m²</h3>
-                        <p class="text-gray-600">Lotes individuais com dimensões 10x25 para construir com mais espaço e liberdade.</p>
+                        <p class="text-gray-600">Terrenos que permitem projetos à altura de quem vive acima da média</p>
                     </div>
                 </div>
                 
                 <div class="feature-card bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 animate-on-scroll" style="transition-delay: 0.2s;">
-                    <img src="https://newedition.com.br/img/praia.webp" alt="Praia Artificial" class="w-full h-48 object-cover">
+                    <img src="https://newedition.com.br/img/Carrosel/BeachGarden.webp" alt="Praia Artificial" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Praia Artificial</h3>
                         <p class="text-gray-600">Infraestrutura de lazer premium com praia artificial, redefinindo o conceito de conforto e sofisticação.</p>
@@ -603,7 +666,7 @@ Pré-lançamento • unidades limitadas
                     <img src="https://newedition.com.br/img/fitness.webp" alt="Fitness Center" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Fitness Center</h3>
-                        <p class="text-gray-600">Academia equipada com os melhores aparelhos para sua saúde e bem-estar.</p>
+                        <p class="text-gray-600">Ambiente projetado para rotina de alta performance</p>
                     </div>
                 </div>
             </div>
@@ -706,7 +769,7 @@ Pré-lançamento • unidades limitadas
                         </div>
                         <div>
                             <h4 class="font-bold text-gray-800">Financiamento Caixa</h4>
-                            <p class="text-sm text-gray-600">Até 100% com 25% de antecipação para obra</p>
+                            <p class="text-sm text-gray-600">Até 100% com 25% de antecipação para obra em | Terreno e construção</p>
                         </div>
                     </div>
                 </div>
@@ -798,37 +861,37 @@ Pré-lançamento • unidades limitadas
 
 <tr class="hover:bg-gray-50 transition">
     <td class="p-4 font-medium text-green-700">À vista</td>
-    <td class="p-4 text-gray-600">Pagamento único</td>
+    <td class="p-4 text-gray-600">-</td>
     <td class="p-4 text-gray-600">1x</td>
     <td class="p-4 text-gray-600 flex items-center justify-between gap-3">
-        10% de desconto
+        10% Off
         <button class="pay-btn-details text-green-600 font-semibold" data-plan="avista">Ver detalhes</button>
     </td>
 </tr>
 
 <tr class="hover:bg-green-50 transition border-l-4 border-green-600">
-    <td class="p-4 font-medium text-green-700">Entrada parcelada</td>
-    <td class="p-4 text-gray-600">Entrada 3x + mensais</td>
+    <td class="p-4 font-medium text-green-700">-</td>
+    <td class="p-4 text-gray-600">Ato 3x + mensal</td>
     <td class="p-4 text-gray-600">27x</td>
     <td class="p-4 text-gray-600 flex items-center justify-between gap-3">
-        Parcelamento durante obra
+        fluxo durante obra
         <button class="pay-btn-details text-green-600 font-semibold" data-plan="parcelado">Ver detalhes</button>
     </td>
 </tr>
 
 <tr class="hover:bg-gray-50 transition">
-    <td class="p-4 font-medium text-green-700">Entrada 15%</td>
-    <td class="p-4 text-gray-600">Entrada 3x + mensais</td>
+    <td class="p-4 font-medium text-green-700">Ato 15%</td>
+    <td class="p-4 text-gray-600">Ato 3x + mensal</td>
     <td class="p-4 text-gray-600">48x</td>
     <td class="p-4 text-gray-600 flex items-center justify-between gap-3">
-        Parcelamento estendido
+        Fluxo estendido
         <button class="pay-btn-details text-green-600 font-semibold" data-plan="15">Ver detalhes</button>
     </td>
 </tr>
 
 <tr class="hover:bg-gray-50 transition">
-    <td class="p-4 font-medium text-green-700">Entrada 20%</td>
-    <td class="p-4 text-gray-600">Entrada + mensais</td>
+    <td class="p-4 font-medium text-green-700">Ato 20%</td>
+    <td class="p-4 text-gray-600">Ato + mensal</td>
     <td class="p-4 text-gray-600">60x</td>
     <td class="p-4 text-gray-600 flex items-center justify-between gap-3">
         Maior prazo
@@ -842,65 +905,11 @@ Pré-lançamento • unidades limitadas
         
         <div class="text-center mt-12 animate-on-scroll">
             <a href="#contact" class="inline-flex items-center justify-center px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                Ver o que ainda está disponível
+                Entrar na pré-seleção
             </a>
         </div>
     </div>
 </section>
-    <!--
-    <section id="payment" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 animate-on-scroll">Condições de Pagamento</h2>
-                <p class="text-lg text-gray-600 animate-on-scroll">Confira as condições disponíveis e escolha a ideal para você</p>
-            </div>
-            
-            <div class="max-w-4xl mx-auto overflow-x-auto animate-on-scroll">
-                <table class="w-full border-collapse bg-white shadow-lg rounded-2xl overflow-hidden">
-                    <thead>
-                        <tr class="bg-green-600 text-white">
-                            <th class="p-4 text-left font-semibold">Tipo</th>
-                            <th class="p-4 text-left font-semibold">Fluxo</th>
-                            <th class="p-4 text-left font-semibold">Prazo</th>
-                            <th class="p-4 text-left font-semibold">Condições</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="p-4 font-medium text-green-700">-10% | À Vista</td>
-                            <td class="p-4 text-gray-600">-</td>
-                            <td class="p-4 text-gray-600">01x</td>
-                            <td class="p-4 text-gray-600">10% Off | Desconto 10% menor que o valor original</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="p-4 font-medium text-green-700">Entrada Parcelada 27x</td>
-                            <td class="p-4 text-gray-600">Ato 3x +27 +Saldo</td>
-                            <td class="p-4 text-gray-600">30x</td>
-                            <td class="p-4 text-gray-600">Ato 3x + Parcelamento da entrada 27x durante o luxo de obra + Saldo devedor (Índice IPCA)</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="p-4 font-medium text-green-700">Entrada 15% +fluxo</td>
-                            <td class="p-4 text-gray-600">Ato 3x +45x +Saldo</td>
-                            <td class="p-4 text-gray-600">48x</td>
-                            <td class="p-4 text-gray-600">Ato 3x + Parcelamento 45X +Saldo devedor (Índice IPCA + 0,98% a.m)</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="p-4 font-medium text-green-700">Entrada 20% +fluxo</td>
-                            <td class="p-4 text-gray-600">Ato +59x</td>
-                            <td class="p-4 text-gray-600">60x</td>
-                            <td class="p-4 text-gray-600">Ato 1x +Parcelamento 59x (Índice IPCA + 0,98% a.m)</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="text-center mt-12 animate-on-scroll">
-                <a href="#contact" class="inline-flex items-center justify-center px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                    Escolha entre as unidades mais valorizadas do condomínio
-                </a>
-            </div>
-        </div>
-    </section> -->
 
     <!-- Location Section -->
     <section id="location" class="py-20 bg-gray-50">
@@ -1226,6 +1235,7 @@ Pré-lançamento • unidades limitadas
             initPhoneMasks();
             initDateValidation();
             initCarousel();
+            initMiniDialog(); //popup-dialog
             
         });
         
@@ -1409,36 +1419,42 @@ Pré-lançamento • unidades limitadas
             });
         }
         
-        // Popup de Lead
-        function initPopup() {
-        const popup = document.getElementById('leadPopup');
-        const closeBtn= document.getElementById('closePopup');
-            let popupTimer;
-            
-            // Mostrar após 30 segundos
-            popupTimer = setTimeout(() => {
-                if (!document.cookie.includes('popupShown=true')) {
-                    showPopup();
-                }
-            }, 30000);
-            
-            // Mostrar ao sair da página
-            document.addEventListener('mouseout', (e) => {
-                if (e.clientY < 0 && !document.cookie.includes('popupShown=true')) {
-                    showPopup();
-                    clearTimeout(popupTimer);
-                }
-            });
-            
-            closeBtn.addEventListener('click', () => {
-                popup.classList.remove('visible');
-            });
-            
-            function showPopup() {
-                popup.classList.add('visible');
-                document.cookie = "popupShown=true; max-age=86400; path=/; SameSite=Lax";
-            }
-        }
+// Popup de Lead v1.2.3 - update R.f 05.04.2026
+function initPopup() {
+    const popup = document.getElementById('leadPopup');
+    const closeBtn = document.getElementById('closePopup');
+
+    let popupTimer;
+    let popupAlreadyShown = false;
+    let reopenTimer;
+
+    // Abrir após 38 segundos (primeira vez)
+    popupTimer = setTimeout(() => {
+        showPopup();
+    }, 38000);
+
+    // Fechar popup
+    closeBtn.addEventListener('click', () => {
+        popup.classList.remove('visible');
+
+        // Libera para abrir novamente
+        popupAlreadyShown = false;
+
+        // Reabrir após 80 segundos 20 + 60
+        clearTimeout(reopenTimer);
+        reopenTimer = setTimeout(() => {
+            showPopup();
+        }, 88000);
+    });
+
+    // Função para abrir popup
+    function showPopup() {
+        if (popupAlreadyShown) return;
+
+        popupAlreadyShown = true;
+        popup.classList.add('visible');
+    }
+}
         
         // Máscaras de Telefone
         function initPhoneMasks() {
@@ -1592,7 +1608,7 @@ const plans = {
             "Entrada de 15%",
             "Parcelamento em até 45x",
             "Correção IPCA + 0,98% ao mês",
-            "Ótimo para quem busca construção financiada, quita o saldo do terrenonstrução financiada, quita o saldo do terreno e faz a construçãoo e faz a construção"
+            "Ótimo para quem busca construção financiada, quita o saldo do terreno e faz a construção"
         ],
         msg: "Sobre o The Garden New Edition - Tenho interesse na condição com entrada de 15%."
     },
@@ -1647,6 +1663,7 @@ modal.addEventListener('click', (e) => {
 
 })();
 </script>
+
 <script>
 //trackings
 document.querySelectorAll('.pay-btn-details').forEach(btn => {
@@ -1665,7 +1682,40 @@ document.getElementById('pay-whatsapp').addEventListener('click', () => {
     });
 });
 </script>
-    
+  
+  
+ <script>
+ //popup-dialog
+ function initMiniDialog() {
+    const dialog = document.getElementById('miniDialog');
+    const text = document.getElementById('miniText');
+
+    const messages = [
+        "Quem escolhe bem, não divide padrão",
+        "Os melhores vizinhos não aparecem por acaso.",
+        "Exclusividade não se anuncia. Se reconhece."
+    ];
+
+    let index = 0;
+
+    function showNextMessage() {
+        if (index >= messages.length) return;
+
+        text.innerText = messages[index];
+        dialog.classList.add('show');
+
+        setTimeout(() => {
+            dialog.classList.remove('show');
+            index++;
+
+            setTimeout(showNextMessage, 1200);
+        }, 2500);
+    }
+
+    // começa depois de 45 segundos
+    setTimeout(showNextMessage, 45000);
+}
+ </script>  
     
 </body>
 </html>
