@@ -45,8 +45,8 @@
     <link rel="stylesheet" href="https://newedition.com.br/feedview.css">
     
   <!-- GlassButton -->
-    <link rel="stylesheet" href="./css/glassButton.css">
-    <script src="./css/glassButton.js"></script>
+    <link rel="stylesheet" href="https://newedition.com.br/css/glassButton.css">
+    <script src="https://newedition.com.br/css/glassButton.js"></script>
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -474,7 +474,39 @@ JUSTIFY CSS
     text-align: justify;
 }
 
+/* GOLDLINE - MENU CSS*/
+.goldLine {
+  position: relative;
+  text-decoration: none;
+}
 
+/* underline dourado */
+.goldLine::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+
+  background: linear-gradient(
+    90deg,
+    #c6a85a,
+    #ffd700,
+    #fff3b0,
+    #ffd700,
+    #c6a85a
+  );
+
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.6);
+
+  transition: width 0.4s ease;
+}
+
+/* animação no hover */
+.goldLine:hover::after {
+  width: 100%;
+}
     </style>
 </head>
 
@@ -567,12 +599,12 @@ JUSTIFY CSS
                 </div>
                 <!-- Menu para Desktop -->
                 <nav class="hidden md:flex space-x-8"> 
-                    <a href="#home" class="nav-link text-white hover:text-green-200 transition font-medium">Início</a>
-                    <a href="#about" class="nav-link text-white hover:text-green-200 transition font-medium">Sobre</a>
-                    <a href="#galeria" class="nav-link text-white hover:text-green-200 transition font-medium">Galeria</a>
-                    <a href="#payment" class="nav-link text-white hover:text-green-200 transition font-medium">Condições</a>
-                    <a href="#location" class="nav-link text-white hover:text-green-200 transition font-medium">Localização</a>
-                    <a href="#contact" class="nav-link text-white hover:text-green-200 transition font-medium">Contato</a>
+                    <a href="#home" class="nav-link text-white goldLine transition font-medium">Início</a>
+                    <a href="#about" class="nav-link text-white goldLine transition font-medium">Sobre</a>
+                    <a href="#galeria" class="nav-link text-white goldLine transition font-medium">Galeria</a>
+                    <a href="#payment" class="nav-link text-white goldLine transition font-medium">Condições</a>
+                    <a href="#location" class="nav-link text-white goldLine transition font-medium">Localização</a>
+                    <a href="#contact" class="nav-link text-white goldLine transition font-medium">Contato</a>
                 </nav>
                 
                 <button id="mobileMenuBtn" class="md:hidden text-white text-2xl p-2">
@@ -584,12 +616,12 @@ JUSTIFY CSS
         <!-- Menu para Mobile -->
         <div id="mobileMenu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
             <div class="px-4 pt-2 pb-6 space-y-2">
-                <a href="#home" class="block px-3 py-2 text-gray-800 hover:bg-green-50 rounded-md font-medium">Início</a>
-                <a href="#about" class="block px-3 py-2 text-gray-800 hover:bg-green-50 rounded-md font-medium">Sobre</a>
-                <a href="#galeria" class="block px-3 py-2 text-gray-800 hover:bg-green-50 rounded-md font-medium">Galeria</a>
-                <a href="#payment" class="block px-3 py-2 text-gray-800 hover:bg-green-50 rounded-md font-medium">Condições</a>
-                <a href="#location" class="block px-3 py-2 text-gray-800 hover:bg-green-50 rounded-md font-medium">Localização</a>
-                <a href="#contact" class="block px-3 py-2 text-gray-800 hover:bg-green-50 rounded-md font-medium">Contato</a>
+                <a href="#home" class="block px-3 py-2 goldLine text-gray-800 hover:bg-green-50 rounded-md font-medium">Início</a>
+                <a href="#about" class="block px-3 py-2 goldLine text-gray-800 hover:bg-green-50 rounded-md font-medium">Sobre</a>
+                <a href="#galeria" class="block px-3 py-2 goldLine text-gray-800 hover:bg-green-50 rounded-md font-medium">Galeria</a>
+                <a href="#payment" class="block px-3 py-2 goldLine text-gray-800 hover:bg-green-50 rounded-md font-medium">Condições</a>
+                <a href="#location" class="block px-3 py-2 goldLine text-gray-800 hover:bg-green-50 rounded-md font-medium">Localização</a>
+                <a href="#contact" class="block px-3 py-2 goldLine text-gray-800 hover:bg-green-50 rounded-md font-medium">Contato</a>
             </div>
         </div>
     </header>
@@ -798,7 +830,7 @@ JUSTIFY CSS
             <div class="glassButton__dew-drop glassButton__dew-drop--third"></div>
             
             <!-- ÍCONE E TEXTO -->
-            <i class="fab fa-whatsapp glassButton__icon"></i>
+            <i class="fas fa-shuttle-van glassButton__icon"></i>
             <span class="glassButton__text">Tour guiado com carrinho de golf</span>
         </a>
 	    	</div>
@@ -946,12 +978,12 @@ JUSTIFY CSS
             <div class="glassButton__dew-drop glassButton__dew-drop--third"></div>
             
             <!-- ÍCONE E TEXTO -->
-            <i class="fab fa-whatsapp glassButton__icon"></i>
+            <i class="fas fa-eye glassButton__icon"></i>
             <span class="glassButton__text">Descobrir o condomínio de perto</span>
         </a>
 	    	</div>
 	    </div>
-        <br>
+       
          <!-- Plus Button - tour no empreendimento Fim -->
     </section>
 
@@ -1038,7 +1070,7 @@ JUSTIFY CSS
             <div class="glassButton__dew-drop glassButton__dew-drop--third"></div>
             
             <!-- ÍCONE E TEXTO -->
-            <i class="fab fa-whatsapp glassButton__icon"></i>
+            <i class="fas fa-key glassButton__icon"></i>
             <span class="glassButton__text">Visita guiada exclusiva com carrinho de golf</span>
         </a>
 	    	</div>
@@ -1073,10 +1105,10 @@ JUSTIFY CSS
             <div class="glassButton__dew-drop glassButton__dew-drop--third"></div>
             <div class="glassButton__diamond-facet"></div>
             <div class="glassButton__sapphire-glow"></div>
-            <div class="glassButton__golden-rim"></div>glassButton__text
+            <div class="glassButton__golden-rim"></div>
             <div class="glassButton__etched-glass"></div>
             
-            <i class="fab fa-whatsapp glassButton__icon"></i>
+            <i class="fas fa-eye glassButton__icon"></i>
             <span class="glassButton__text">Ver se este lugar faz sentido para você</span>
         </a>
 	    	</div>
@@ -1166,7 +1198,7 @@ JUSTIFY CSS
             <a href="#contact" class="inline-flex items-center justify-center px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                 Entrar na pré-seleção
             </a> -->
-            <a href="https://wa.me/5551998111078?text=Gostaria%20de%20saber%20mais%20sobre%20o%20The%20Garden%20-%20New%20Edition"
+            <a href="https://wa.me/5551998111078?text=Gostaria%20de%20saber%20mais%20sobre%20o%20The%20Garden%20-%20New%20Edition%20quero%20entrar%20na%20selecao%20de%20unidades."
                 target="_blank"
                 class="glassButton glassButton--premium">
                     
@@ -1286,7 +1318,7 @@ JUSTIFY CSS
             <div class="glassButton__dew-drop glassButton__dew-drop--third"></div>
             
             <!-- ÍCONE E TEXTO -->
-            <i class="fab fa-whatsapp glassButton__icon"></i>
+            <i class="fas fa-map-marker-alt glassButton__icon"></i>
             <span class="glassButton__text">Descobrir o empreendimento de perto</span>
         </a>
 	    	</div>
@@ -2028,43 +2060,7 @@ document.getElementById('pay-whatsapp').addEventListener('click', () => {
         if (index >= messages.length) return;
 
         text.innerText = messages[index];
-        dialog.classList.add('show');<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-    <!-- DIREITOS RESERVADOS - ROBERTO DE PAULA FETTUCCIA - 51-998111078 | corretor.fettuccia@gmail.com -->
-    
-    <!-- Meta Tags Básicas -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#ffffff">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="Roberto Fettuccia - Corretor de Imóveis">
-<meta name="description" content="The Garden New Edition em Canoas. Condomínio fechado de alto padrão com Melnick, feito para quem valoriza segurança, conforto e controle sobre onde vive e com quem convive.">    <meta name="keywords" content="terrenos em Canoas, condomínio de lotes Canoas, loteamento Canoas, terrenos para construir Canoas, The Garden Canoas, Melnick Canoas, terrenos condomínio fechado Canoas, alto padrão">
-    
-    <!-- Canonical -->
-    <link rel="canonical" href="https://newedition.com.br">
-    
-    <!-- Favicon -->
-    <link rel="icon" href="https://newedition.com.br/img/favicon.32x32.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://newedition.com.br/img/favicon.32x32.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="https://newedition.com.br/img/favicon.192x192.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://newedition.com.br/img/favicon.180x180.png">
-    
-    <!-- Preconnect -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <link rel="preconnect" href="https://unpkg.com">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Font Awesome -->
-
+        dialog.classList.add('show');
 
         setTimeout(() => {
             dialog.classList.remove('show');
