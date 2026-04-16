@@ -44,13 +44,17 @@
     <link rel="stylesheet" href="https://newedition.com.br/cta-folhas1.css">
     <link rel="stylesheet" href="https://newedition.com.br/feedview.css">
     
+  <!-- GlassButton -->
+    <link rel="stylesheet" href="./css/glassButton.css">
+    <script src="./css/glassButton.js"></script>
+    
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:locale" content="pt_BR">
     <meta property="og:site_name" content="The Garden New Edition">
     <meta property="og:url" content="https://newedition.com.br">
     <meta property="og:title" content="The Garden New Edition | Condomínio de Lotes em Canoas">
-    <meta property="og:description" content="The Garden New Edition em Canoas. Condomínio fechado de alto padrão com Melnick, onde o ambiente é definido por quem entra — não pelo acaso.">
+    <meta property="og:description" content="The Garden New Edition em Canoas. Condomínio fechado de alto padrão com Melnick, onde o ambiente é definido por quem entra, não pelo acaso.">
     <meta property="og:image" content="https://newedition.com.br/img/share.webp">
     <meta property="fb:app_id" content="1061739694334514">
     
@@ -74,7 +78,7 @@
     "@context": "https://schema.org",
     "@type": "RealEstateListing",
     "name": "The Garden New Edition",
-    "description": "The Garden New Edition em Canoas. Condomínio fechado de alto padrão com Melnick, onde o ambiente é definido por quem entra — não pelo acaso.",
+    "description": "The Garden New Edition em Canoas. Condomínio fechado de alto padrão com Melnick, onde o ambiente é definido por quem entra, não pelo acaso.",
       "url": "https://newedition.com.br",
       "image": "https://newedition.com.br/img/share.webp",
       "listingStatus": "https://schema.org/ForSale",
@@ -111,7 +115,7 @@
     <!-- Schema.org Microdata -->
     <div itemscope itemtype="http://schema.org/RealEstateListing" class="hidden">
         <meta itemprop="name" content="The Garden New Edition | Condomínio de Lotes em Canoas">
-        <meta itemprop="description" content="The Garden New Edition em Canoas. Condomínio fechado de alto padrão com Melnick, onde o ambiente é definido por quem entra — não pelo acaso.">
+        <meta itemprop="description" content="The Garden New Edition em Canoas. Condomínio fechado de alto padrão com Melnick, onde o ambiente é definido por quem entra, não pelo acaso.">
         <meta itemprop="productID" content="62897">
         <meta itemprop="url" content="https://newedition.com.br">
         <meta itemprop="image" content="https://newedition.com.br/img/share.webp">
@@ -137,6 +141,8 @@
     <title>The Garden New Edition | Terrenos em Condomínio Fechado em Canoas</title>
     
     <style>
+
+
 /* =========================
 ROOT / BASE
 ========================= */
@@ -461,13 +467,18 @@ CTA BUTTON
     transform: translateY(-2px);
     box-shadow: 0 12px 25px rgba(0,0,0,0.3);
 }
+/* =========================
+JUSTIFY CSS
+========================= */
+.justifyP {
+    text-align: justify;
+}
+
+
     </style>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
-
-
-
 
     <!-- Falling Leaves -->
     <img src="https://raw.githubusercontent.com/corretor-fettuccia/media/refs/heads/main/leave.webp" alt="" class="leaf leaf1" aria-hidden="true">
@@ -490,7 +501,7 @@ CTA BUTTON
 	<h3>Ainda acessivel a sua escolha.</h3>
 	<p>Mas não para todos.<br>
 	<small style="display:block; margin-top:8px; color:#888;">
-	Empreendimento para quem entende que segurança não é acesso, mas ambiente — e escolhe o vizinho com quem convive.
+	Empreendimento para quem entende que segurança não é acesso, mas ambiente,e escolhe o vizinho com quem convive.
 	</small>
 	</p>
 	<p style="margin-top:15px; font-weight:600;">Obter acesso vip as melhores condições.</p>
@@ -513,10 +524,35 @@ CTA BUTTON
             </div><div class="form-group">
                 <input type="email" id="popupEmail" name="email" placeholder="Seu melhor e-mail">
             </div>
-            <label id="resposta2"></label>
-            <button type="submit" id="submitButton2" class="btn-cta">
+            
+            <!--<button type="submit" id="submitButton2" class="btn-cta"> -->
       
-        <i class="fas fa-key"></i> Quero ser contatado</button>
+       <!-- <i class="fas fa-key"></i> Quero ser contatado</button> -->
+                <button button type="submit" id="submitButton2"
+                class="glassButton glassButton--premium">
+                    
+                    <!-- Todas as camadas DENTRO do botão -->
+                        <div class="glassButton__lens-curvature bg-yellow-500"></div>
+                        <div class="glassButton__refraction-primary"></div>
+                        <div class="glassButton__refraction-secondary"></div>
+                        <div class="glassButton__specular-highlight"></div>
+                        <div class="glassButton__edge-reflection"></div>
+                        <div class="glassButton__chromatic-diffraction"></div>
+                        <div class="glassButton__inner-shadow"></div>
+                        <div class="glassButton__liquid-glow"></div>
+                        <div class="glassButton__dew-drop"></div>
+                        <div class="glassButton__dew-drop glassButton__dew-drop--second"></div>
+                        <div class="glassButton__dew-drop glassButton__dew-drop--third"></div>
+                        <div class="glassButton__diamond-facet"></div>
+                        <div class="glassButton__sapphire-glow"></div>
+                        <div class="glassButton__golden-rim"></div>
+                        <div class="glassButton__etched-glass"></div>
+                        <i class="fas fa-key glassButton__icon"></i>
+                            <span class="glassButton__text">Quero ser contatado</span>
+                            <label id="resposta2"></label>
+                            
+            </button>
+
         </form>
     </div>
 </div>
@@ -564,30 +600,91 @@ CTA BUTTON
         
         <div class="relative z-10 container mx-auto px-4 text-center text-white">
             <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight animate-on-scroll">
-		Um endereço para quem não aceita vizinhança aleatória — e faz questão de escolher com quem convive.
+		The Garden - New Edition</br>
+        Onde a exclusividade não é um conceito. É a regra de convivência.
 	    </h1>
             <p class="text-lg mb-8 text-green-100 animate-on-scroll" style="transition-delay: 0.2s;">
-                Condições exclusivas • Empreendimento com padrão Melnick • referência em alto padrão e valorização
+                No ponto mais nobre da região metropolitana de Porto Alegre, nasce um refúgio para quem busca o extraordinário. 
             </p>
              <p class="text-xl md:text-2xl mb-4 font-light animate-on-scroll" style="transition-delay: 0.1s;">
-                The Garden New Edition • lotes amplos e bem distribuídos • a partir de 250m² • Marechal Rondon, Canoas
+                Para poucos nomes, para grandes exigências.<br>Um condomínio desenhado para ser o novo marco da sua história pessoal.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-on-scroll" style="transition-delay: 0.3s;">
                 <ul class="text-left space-y-2 mb-6 sm:mb-0 text-sm md:text-base">
-                    <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Possibilidade de parcelamento direto</li>
-                    <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Lotes a partir de 250m² (10x25)</li>
-                    <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Área de lazer maior que a primeira edição</li>
+                    <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Engenharia Financeira sob Medida</li>
+                    <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Amplitude para Projetos Extraordinários</li>
+                    <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Experiência de Lazer Expandida</li>
                 </ul>
             </div>
             
-            <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center animate-on-scroll" style="transition-delay: 0.4s;">
+<div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center animate-on-scroll" style="transition-delay: 0.4s;">
+                <!--
                 <a href="#contact" class="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-full transition duration-300 transform hover:scale-105 shadow-lg">
                     Acessar posições reservadas
-                </a>
+                </a> 
                 <a href="https://wa.me/5551998111078?text=Gostaria%20de%20saber%20mais%20sobre%20o%20The%20Garden%20-%20New%20Edition" target="_blank" class="inline-flex items-center justify-center px-8 py-4 bg-green-500 hover:bg-green-600 text-white font-bold rounded-full transition duration-300 transform hover:scale-105 shadow-lg">
                     <i class="fab fa-whatsapp mr-2 text-xl"></i>
                     Fale pelo WhatsApp
-                </a>
+                </a> -->
+                    <a href="#contact"
+                target="_blank"
+                class="glassButton glassButton--premium">
+                    
+                    <!-- Todas as camadas DENTRO do botão -->
+                        <div class="glassButton__lens-curvature bg-yellow-500"></div>
+                        <div class="glassButton__refraction-primary"></div>
+                        <div class="glassButton__refraction-secondary"></div>
+                        <div class="glassButton__specular-highlight"></div>
+                        <div class="glassButton__edge-reflection"></div>
+                        <div class="glassButton__chromatic-diffraction"></div>
+                        <div class="glassButton__inner-shadow"></div>
+                        <div class="glassButton__liquid-glow"></div>
+                        <div class="glassButton__dew-drop"></div>
+                        <div class="glassButton__dew-drop glassButton__dew-drop--second"></div>
+                        <div class="glassButton__dew-drop glassButton__dew-drop--third"></div>
+                        <div class="glassButton__diamond-facet"></div>
+                        <div class="glassButton__sapphire-glow"></div>
+                        <div class="glassButton__golden-rim"></div>
+                        <div class="glassButton__etched-glass"></div>
+                        <i class="fas fa-key glassButton__icon"></i>
+                            <span class="glassButton__text">Acessar posições reservadas</span>
+                    </a>
+
+            </div>
+
+            <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center animate-on-scroll" style="transition-delay: 0.4s;">
+                <!--
+                <a href="#contact" class="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-full transition duration-300 transform hover:scale-105 shadow-lg">
+                    Acessar posições reservadas
+                </a> 
+                <a href="https://wa.me/5551998111078?text=Gostaria%20de%20saber%20mais%20sobre%20o%20The%20Garden%20-%20New%20Edition" target="_blank" class="inline-flex items-center justify-center px-8 py-4 bg-green-500 hover:bg-green-600 text-white font-bold rounded-full transition duration-300 transform hover:scale-105 shadow-lg">
+                    <i class="fab fa-whatsapp mr-2 text-xl"></i>
+                    Fale pelo WhatsApp
+                </a> -->
+                    <a href="https://wa.me/5551998111078?text=Gostaria%20de%20saber%20mais%20sobre%20o%20The%20Garden%20-%20New%20Edition"
+                target="_blank"
+                class="glassButton glassButton--premium">
+                    
+                    <!-- Todas as camadas DENTRO do botão -->
+                        <div class="glassButton__lens-curvature bg-green-500"></div>
+                        <div class="glassButton__refraction-primary"></div>
+                        <div class="glassButton__refraction-secondary"></div>
+                        <div class="glassButton__specular-highlight"></div>
+                        <div class="glassButton__edge-reflection"></div>
+                        <div class="glassButton__chromatic-diffraction"></div>
+                        <div class="glassButton__inner-shadow"></div>
+                        <div class="glassButton__liquid-glow"></div>
+                        <div class="glassButton__dew-drop"></div>
+                        <div class="glassButton__dew-drop glassButton__dew-drop--second"></div>
+                        <div class="glassButton__dew-drop glassButton__dew-drop--third"></div>
+                        <div class="glassButton__diamond-facet"></div>
+                        <div class="glassButton__sapphire-glow"></div>
+                        <div class="glassButton__golden-rim"></div>
+                        <div class="glassButton__etched-glass"></div>
+                        <i class="fab fa-whatsapp glassButton__icon"></i>
+                            <span class="glassButton__text">Fale pelo Whatsapp</span>
+                    </a>
+
             </div>
         </div>
         
@@ -602,8 +699,7 @@ CTA BUTTON
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 animate-on-scroll">The Garden - New Edition</h2>
                 <p class="text-lg text-gray-600 max-w-3xl mx-auto animate-on-scroll">
-                    Ativo escasso para elite | Melnick & Arcadia • Marechal Rondon, Canoas-RS<br>
-		    Infraestrutura qualquer entrega. Curadoria, poucos.
+                   Ativo escasso para mentes seletivas. | Melnick & Arcadia • Marechal Rondon, Canoas-RS<br>
                 </p>
             </div>
             
@@ -623,7 +719,7 @@ CTA BUTTON
 			    Vizinhança Selecionada
 			</h3>
 			<p class="text-gray-600">
-			    Não está ao alcance de todos. Um ambiente onde cada detalhe foi pensado para reunir pessoas com o mesmo nível de exigência, preservando privacidade, segurança e um padrão que vai além da estrutura • está no perfil de quem adquire aqui.
+			    Não está ao alcance de todos.<br>Um ambiente onde cada detalhe foi pensado para reunir pessoas com o mesmo nível de exigência, preservando privacidade, segurança e um padrão que vai além da estrutura, está no perfil de quem adquire aqui.
 			</p>
 		    </div>
 		</div>
@@ -667,8 +763,47 @@ CTA BUTTON
                         <p class="text-gray-600">Ambiente projetado para rotina de alta performance</p>
                     </div>
                 </div>
+				
             </div>
+            <!-- Plus Button - tour no empreendimento -->
+	    <div class="container mx-auto px-4 animate-on-scroll">
+    		<div class="text-center mb-16">
+                <a href="https://wa.me/5551998111078?text=Gostaria%20de%20saber%20mais%20sobre%20o%20The%20Garden%20-%20New%20Edition%20-agendar%20tour%20no%20empreendimento,%20possui%20agenda, disponivel"
+           target="_blank"
+           class="glassButton glassButton--premium">
             
+            <!-- CAMADAS DE REFRAÇÃO PRINCIPAIS -->
+            <div class="glassButton__lens-curvature"></div>
+            <div class="glassButton__refraction-primary"></div>
+            <div class="glassButton__refraction-secondary"></div>
+            <div class="glassButton__chromatic-diffraction"></div>
+            <div class="glassButton__precision-prism"></div>
+            
+            <!-- REFLEXOS E BRILHOS -->
+            <div class="glassButton__specular-highlight"></div>
+            <div class="glassButton__edge-reflection"></div>
+            <div class="glassButton__inner-shadow"></div>
+            <div class="glassButton__sapphire-glow"></div>
+            <div class="glassButton__liquid-glow"></div>
+            
+            <!-- LUXO E ELEGÂNCIA -->
+            <div class="glassButton__diamond-facet"></div>
+            <div class="glassButton__iridescence"></div>
+            <div class="glassButton__golden-rim"></div>
+            <div class="glassButton__etched-glass"></div>
+            
+            <!-- GOTAS E DETALHES -->
+            <div class="glassButton__dew-drop"></div>
+            <div class="glassButton__dew-drop glassButton__dew-drop--second"></div>
+            <div class="glassButton__dew-drop glassButton__dew-drop--third"></div>
+            
+            <!-- ÍCONE E TEXTO -->
+            <i class="fab fa-whatsapp glassButton__icon"></i>
+            <span class="glassButton__text">Agendar passeio de carrinho de golf</span>
+        </a>
+	    	</div>
+	    </div>
+	    
             <!-- Features Grid -->
             <div class="bg-gray-50 rounded-3xl p-8 md:p-12 animate-on-scroll">
                 <h3 class="text-2xl font-bold text-center text-gray-800 mb-8">Diferenciais do Empreendimento</h3>
@@ -679,10 +814,10 @@ CTA BUTTON
                         </div>
                         <div>
                             <h4 class="font-bold text-gray-800">Garden Way</h4>
-                            <p class="text-sm text-gray-600">Passagem subterrânea para o Club entre os condomínios. Performance focada na segurança da sua família, você não fica exposto mesmo com forte segurança.</p>
+                            <p class="text-sm text-gray-600 justifyP">Passagem subterrânea para o Club entre os condomínios.<br> Performance focada na segurança da sua família, você não fica exposto mesmo com forte segurança.</p>
                         </div>
                     </div>
-                    
+                    <!--
                     <div class="flex items-start space-x-4 p-4 bg-white rounded-xl shadow-sm">
                         <div class="flex-shrink-0 w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600">
                             <i class="fas fa-chart-pie text-xl"></i>
@@ -703,15 +838,17 @@ CTA BUTTON
                         </div>
                     </div>
                     
+                    
                     <div class="flex items-start space-x-4 p-4 bg-white rounded-xl shadow-sm">
                         <div class="flex-shrink-0 w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center text-teal-600">
                             <i class="fas fa-arrows-alt-h text-xl"></i>
                         </div>
                         <div>
                             <h4 class="font-bold text-gray-800">Recuos Obrigatórios</h4>
-                            <p class="text-sm text-gray-600">Frontal: 4,50m (2,00m em terrenos de esquina). Fundos: 2,00m. Mais detalhes vide PDI.</p>
+                            <p class="text-sm text-gray-600 justifyP">Frontal: 4,50m (2,00m em terrenos de esquina). Fundos: 2,00m. Mais detalhes vide PDI.</p>
                         </div>
                     </div>
+                    -->
                     
                     <div class="flex items-start space-x-4 p-4 bg-white rounded-xl shadow-sm">
                         <div class="flex-shrink-0 w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
@@ -719,7 +856,7 @@ CTA BUTTON
                         </div>
                         <div>
                             <h4 class="font-bold text-gray-800">Ruas Pavimentadas</h4>
-                            <p class="text-sm text-gray-600">Sistema completo de drenagem e meio-fio</p>
+                            <p class="text-sm text-gray-600 justifyP">Sistema completo de drenagem e meio-fio</p>
                         </div>
                     </div>
                     
@@ -729,7 +866,7 @@ CTA BUTTON
                         </div>
                         <div>
                             <h4 class="font-bold text-gray-800">Infraestrutura Completa</h4>
-                            <p class="text-sm text-gray-600">Rede de água, esgoto e gás encanado</p>
+                            <p class="text-sm text-gray-600 justifyP">Rede de água, esgoto e gás encanado</p>
                         </div>
                     </div>
                     
@@ -739,7 +876,7 @@ CTA BUTTON
                         </div>
                         <div>
                             <h4 class="font-bold text-gray-800">Iluminação Pública</h4>
-                            <p class="text-sm text-gray-600">Luminárias LED em todo o loteamento</p>
+                            <p class="text-sm text-gray-600 justifyP">Luminárias LED em todo o empreendimento</p>
                         </div>
                     </div>
                     
@@ -749,7 +886,7 @@ CTA BUTTON
                         </div>
                         <div>
                             <h4 class="font-bold text-gray-800">Áreas Verdes</h4>
-                            <p class="text-sm text-gray-600">Praças e espaços de convivência arborizados</p>
+                            <p class="text-sm text-gray-600 justifyP">Praças e espaços de convivência arborizados</p>
                         </div>
                     </div>
                     
@@ -759,7 +896,7 @@ CTA BUTTON
                         </div>
                         <div>
                             <h4 class="font-bold text-gray-800">Segurança 24h</h4>
-                            <p class="text-sm text-gray-600">Portaria controlada e monitoramento perimetral</p>
+                            <p class="text-sm text-gray-600 justifyP">Portaria controlada e monitoramento perimetral</p>
                         </div>
                     </div><div class="flex items-start space-x-4 p-4 bg-white rounded-xl shadow-sm">
                         <div class="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
@@ -767,13 +904,57 @@ CTA BUTTON
                         </div>
                         <div>
                             <h4 class="font-bold text-gray-800">Financiamento Caixa</h4>
-                            <p class="text-sm text-gray-600">Até 100% com 25% de antecipação para obra em | Terreno e construção</p>
+                            <p class="text-sm text-gray-600 justifyP">Até 100% com 25% de antecipação para obra em terreno e construção</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        
+        <!-- Plus Button - tour no empreendimento inicio -->
+	    <br>
+        <div class="container mx-auto px-4 animate-on-scroll">
+    		<div class="text-center mb-16">
+            	    <a href="https://wa.me/5551998111078?text=Gostaria%20de%20saber%20mais%20sobre%20o%20The%20Garden%20-%20New%20Edition%20-agendar%20tour%20no%20empreendimento,%20possui%20agenda, disponivel"
+           target="_blank"
+           class="glassButton glassButton--premium">
+            
+            <!-- CAMADAS DE REFRAÇÃO PRINCIPAIS -->
+            <div class="glassButton__lens-curvature"></div>
+            <div class="glassButton__refraction-primary"></div>
+            <div class="glassButton__refraction-secondary"></div>
+            <div class="glassButton__chromatic-diffraction"></div>
+            <div class="glassButton__precision-prism"></div>
+            
+            <!-- REFLEXOS E BRILHOS -->
+            <div class="glassButton__specular-highlight"></div>
+            <div class="glassButton__edge-reflection"></div>
+            <div class="glassButton__inner-shadow"></div>
+            <div class="glassButton__sapphire-glow"></div>
+            <div class="glassButton__liquid-glow"></div>
+            
+            <!-- LUXO E ELEGÂNCIA -->
+            <div class="glassButton__diamond-facet"></div>
+            <div class="glassButton__iridescence"></div>
+            <div class="glassButton__golden-rim"></div>
+            <div class="glassButton__etched-glass"></div>
+            
+            <!-- GOTAS E DETALHES -->
+            <div class="glassButton__dew-drop"></div>
+            <div class="glassButton__dew-drop glassButton__dew-drop--second"></div>
+            <div class="glassButton__dew-drop glassButton__dew-drop--third"></div>
+            
+            <!-- ÍCONE E TEXTO -->
+            <i class="fab fa-whatsapp glassButton__icon"></i>
+            <span class="glassButton__text">Agendar passeio de carrinho de golf</span>
+        </a>
+	    	</div>
+	    </div>
+        <br>
+         <!-- Plus Button - tour no empreendimento Fim -->
     </section>
+
 
     <!-- Carousel Section -->
     <section id="galeria" class="py-20 bg-gray-50 overflow-hidden">
@@ -823,12 +1004,86 @@ CTA BUTTON
             </div>
         </div>
 
+                <!-- Plus Button - tour no empreendimento inicio -->
+	    <br>
+        <div class="container mx-auto px-4 animate-on-scroll">
+    		<div class="text-center mb-16">
+            	    <a href="https://wa.me/5551998111078?text=Gostaria%20de%20saber%20mais%20sobre%20o%20The%20Garden%20-%20New%20Edition%20-agendar%20tour%20no%20empreendimento,%20possui%20agenda, disponivel"
+           target="_blank"
+           class="glassButton glassButton--premium">
+            
+            <!-- CAMADAS DE REFRAÇÃO PRINCIPAIS -->
+            <div class="glassButton__lens-curvature"></div>
+            <div class="glassButton__refraction-primary"></div>
+            <div class="glassButton__refraction-secondary"></div>
+            <div class="glassButton__chromatic-diffraction"></div>
+            <div class="glassButton__precision-prism"></div>
+            
+            <!-- REFLEXOS E BRILHOS -->
+            <div class="glassButton__specular-highlight"></div>
+            <div class="glassButton__edge-reflection"></div>
+            <div class="glassButton__inner-shadow"></div>
+            <div class="glassButton__sapphire-glow"></div>
+            <div class="glassButton__liquid-glow"></div>
+            
+            <!-- LUXO E ELEGÂNCIA -->
+            <div class="glassButton__diamond-facet"></div>
+            <div class="glassButton__iridescence"></div>
+            <div class="glassButton__golden-rim"></div>
+            <div class="glassButton__etched-glass"></div>
+            
+            <!-- GOTAS E DETALHES -->
+            <div class="glassButton__dew-drop"></div>
+            <div class="glassButton__dew-drop glassButton__dew-drop--second"></div>
+            <div class="glassButton__dew-drop glassButton__dew-drop--third"></div>
+            
+            <!-- ÍCONE E TEXTO -->
+            <i class="fab fa-whatsapp glassButton__icon"></i>
+            <span class="glassButton__text">Agendar passeio de carrinho de golf</span>
+        </a>
+	    	</div>
+	    </div>
+        <br>
+         <!-- Plus Button - tour no empreendimento Fim -->
+
 		<br>
-       <iframe width="100%" height="500" src="https://www.youtube.com/embed/U5MSvHUPRUA?autoplay=1&mute=1&controls=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen> </iframe>
+       <iframe width="100%" height="500" src="https://www.youtube.com/embed/U5MSvHUPRUA?autoplay=1&mute=1&controls=1" frameborder="0" allow="autoplay; encrypted-media" —allowfullscreen> </iframe>
     </section>
     </section>
 
-    <!-- Payment Section --> 
+                <!-- Plus Button - tour no empreendimento inicio -->
+	    
+        <div class="container mx-auto px-4 animate-on-scroll">
+    		<div class="text-center mb-16">
+            	    <a href="https://wa.me/5551998111078?text=Gostaria%20de%20saber%20mais%20sobre%20o%20The%20Garden%20-%20New%20Edition%20-agendar%20tour%20no%20empreendimento,%20possui%20agenda, disponivel"
+           target="_blank"
+           class="glassButton glassButton--premium">
+            
+            <!-- Todas as camadas DENTRO do botão -->
+            <div class="glassButton__lens-curvature"></div>
+            <div class="glassButton__refraction-primary"></div>
+            <div class="glassButton__refraction-secondary"></div>
+            <div class="glassButton__specular-highlight"></div>
+            <div class="glassButton__edge-reflection"></div>
+            <div class="glassButton__chromatic-diffraction"></div>
+            <div class="glassButton__inner-shadow"></div>
+            <div class="glassButton__liquid-glow"></div>
+            <div class="glassButton__dew-drop"></div>
+            <div class="glassButton__dew-drop glassButton__dew-drop--second"></div>
+            <div class="glassButton__dew-drop glassButton__dew-drop--third"></div>
+            <div class="glassButton__diamond-facet"></div>
+            <div class="glassButton__sapphire-glow"></div>
+            <div class="glassButton__golden-rim"></div>
+            <div class="glassButton__etched-glass"></div>
+            
+            <i class="fab fa-whatsapp glassButton__icon"></i>
+            <span class="glassButton__text">Quero fazer parte</span>
+        </a>
+	    	</div>
+	    </div>
+       
+         <!-- Plus Button - tour no empreendimento Fim -->
+
     <!-- Payment Section -->
 <section id="payment" class="py-20 bg-white">
     <div class="container mx-auto px-4">
@@ -838,12 +1093,13 @@ CTA BUTTON
             </h2>
 
             <p class="text-lg text-gray-600 animate-on-scroll">
-                Confira as condições disponíveis e escolha a ideal para você
+                Mais do que planos de pagamento, oferecemos soluções de investimento.<br>Escolha a configuração que melhor se alinha ao seu portfólio
             </p>
 
             <!-- ajuste premium -->
             <p class="text-sm text-gray-500 mt-2 animate-on-scroll">
-                Condições especiais de pré-lançamento • consulte disponibilidade atual
+                Foco em rentabilidade<br>
+                Equilíbrio entre entrada facilitada e parcelas mensais.
             </p>
         </div>
         
@@ -906,9 +1162,33 @@ CTA BUTTON
         </div>
         
         <div class="text-center mt-12 animate-on-scroll">
+            <!--
             <a href="#contact" class="inline-flex items-center justify-center px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                 Entrar na pré-seleção
-            </a>
+            </a> -->
+            <a href="https://wa.me/5551998111078?text=Gostaria%20de%20saber%20mais%20sobre%20o%20The%20Garden%20-%20New%20Edition"
+                target="_blank"
+                class="glassButton glassButton--premium">
+                    
+                    <!-- Todas as camadas DENTRO do botão -->
+                        <div class="glassButton__lens-curvature bg-green-500"></div>
+                        <div class="glassButton__refraction-primary"></div>
+                        <div class="glassButton__refraction-secondary"></div>
+                        <div class="glassButton__specular-highlight"></div>
+                        <div class="glassButton__edge-reflection"></div>
+                        <div class="glassButton__chromatic-diffraction"></div>
+                        <div class="glassButton__inner-shadow"></div>
+                        <div class="glassButton__liquid-glow"></div>
+                        <div class="glassButton__dew-drop"></div>
+                        <div class="glassButton__dew-drop glassButton__dew-drop--second"></div>
+                        <div class="glassButton__dew-drop glassButton__dew-drop--third"></div>
+                        <div class="glassButton__diamond-facet"></div>
+                        <div class="glassButton__sapphire-glow"></div>
+                        <div class="glassButton__golden-rim"></div>
+                        <div class="glassButton__etched-glass"></div>
+                        <i class="fas fa-key glassButton__icon"></i>
+                            <span class="glassButton__text">Entrar na pré-seleção</span>
+                    </a>
         </div>
     </div>
 </section>
@@ -971,6 +1251,48 @@ CTA BUTTON
             </div>
         </div>
     </section>
+
+              <!-- Plus Button - tour no empreendimento inicio -->
+	    
+        <div class="container mx-auto px-4 animate-on-scroll">
+    		<div class="text-center mb-16">
+            	    <a href="https://wa.me/5551998111078?text=Gostaria%20de%20saber%20mais%20sobre%20o%20The%20Garden%20-%20New%20Edition%20-agendar%20tour%20no%20empreendimento,%20possui%20agenda, disponivel"
+           target="_blank"
+           class="glassButton glassButton--premium">
+            
+            <!-- CAMADAS DE REFRAÇÃO PRINCIPAIS -->
+            <div class="glassButton__lens-curvature"></div>
+            <div class="glassButton__refraction-primary"></div>
+            <div class="glassButton__refraction-secondary"></div>
+            <div class="glassButton__chromatic-diffraction"></div>
+            <div class="glassButton__precision-prism"></div>
+            
+            <!-- REFLEXOS E BRILHOS -->
+            <div class="glassButton__specular-highlight"></div>
+            <div class="glassButton__edge-reflection"></div>
+            <div class="glassButton__inner-shadow"></div>
+            <div class="glassButton__sapphire-glow"></div>
+            <div class="glassButton__liquid-glow"></div>
+            
+            <!-- LUXO E ELEGÂNCIA -->
+            <div class="glassButton__diamond-facet"></div>
+            <div class="glassButton__iridescence"></div>
+            <div class="glassButton__golden-rim"></div>
+            <div class="glassButton__etched-glass"></div>
+            
+            <!-- GOTAS E DETALHES -->
+            <div class="glassButton__dew-drop"></div>
+            <div class="glassButton__dew-drop glassButton__dew-drop--second"></div>
+            <div class="glassButton__dew-drop glassButton__dew-drop--third"></div>
+            
+            <!-- ÍCONE E TEXTO -->
+            <i class="fab fa-whatsapp glassButton__icon"></i>
+            <span class="glassButton__text">Agendar passeio de carrinho de golf</span>
+        </a>
+	    	</div>
+	    </div>
+        <br>
+         <!-- Plus Button - tour no empreendimento Fim -->
 
     <!-- Contact Section -->
     <section id="contact" class="py-20 bg-green-900 text-white relative overflow-hidden">
@@ -1085,14 +1407,16 @@ CTA BUTTON
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12 border-t border-gray-800">
-        <div class="container mx-auto px-4">
+    <footer class="bg-gray-900 text-white py-12 border-t border-gray-800 items-center">
+        <div class="container mx-auto px-4 items-center">
             <div class="grid md:grid-cols-4 gap-8 items-center">
-                <div class="col-span-2">
-                    <img src="https://newedition.com.br/img/Logo.white.webp" alt="The Garden New Edition" class="h-16 mb-4">
-                    <p class="text-gray-400 text-sm max-w-md">
-                        Empreendimento de alto padrão em Canoas, desenvolvido com a qualidade e excelência que você merece para construir seu lar.
-                    </p>
+                <div class="col-span-2 items-center">
+                    <img src="https://newedition.com.br/img/Logo.white.webp" 
+                 alt="The Garden New Edition" 
+                 class="h-16 w-auto mb-4 mx-auto">
+            <p class="text-gray-400 text-sm max-w-md mx-auto">
+                Empreendimento de alto padrão em Canoas, desenvolvido com a qualidade e excelência que você merece para construir seu lar.
+            </p>
                 </div>
                 
                 <div>
@@ -1132,7 +1456,7 @@ CTA BUTTON
             
             <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
                 <p>&copy; 2026 | The Garden - New Edition | newedition.com.br | Todos os direitos reservados.</p>
-                <p class="mt-2">Roberto de Paula Fettuccia - CRECI/RS</p>
+                <p class="mt-2">Roberto Fettuccia - CRECI/RS</p>
             </div>
         </div>
     </footer>
@@ -1711,7 +2035,91 @@ document.getElementById('pay-whatsapp').addEventListener('click', () => {
             index++;
 
             setTimeout(showNextMessage, 1200);
-        }, 2500);
+        }, 2500);/* ============================================
+        letter-spacing: 0.8px;
+    }
+    40% {
+        transform: scale(1.08);
+        letter-spacing: 2px;
+        text-shadow: 
+            0 0 15px rgba(52, 172, 224, 0.6),
+            0 0 25px rgba(255, 255, 255, 0.7);
+    }
+    100% {
+        transform: scale(1);
+        letter-spacing: 0.8px;
+    }
+}
+
+@keyframes glassButton__diamondFlash {
+    0% {
+        opacity: 0.8;
+        filter: blur(8px);
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        filter: blur(20px);
+        transform: scale(1.5);
+    }
+}
+
+/* Efeito de respiração */
+@keyframes glassButton__breath {
+    0% {
+        box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.18);
+    }
+    50% {
+        box-shadow: 0 22px 50px -14px rgba(52, 172, 224, 0.22), 0 0 0 1px rgba(52, 172, 224, 0.1);
+    }
+    100% {
+        box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.18);
+    }
+}
+
+.glassButton {
+    animation: glassButton__breath 3.5s ease-in-out infinite;
+}
+
+.glassButton:hover {
+    animation: none;
+}
+
+/* ============================================
+   RESPONSIVO
+   ============================================ */
+
+@media (max-width: 768px) {
+    .glassButton {
+        padding: 14px 28px;
+        white-space: normal;
+        max-width: 85vw;
+        text-align: center;
+        gap: 10px;
+        /* O responsivo também respeita a variável */
+    }
+    
+    .glassButton:hover {
+        transform: scale(1.04);
+    }
+    
+    .glassButton__specular-highlight,
+    .glassButton__cursor-light,
+    .glassButton__dew-drop {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .glassButton {
+        padding: 12px 24px;
+        gap: 8px;
+    }
+    
+    .glassButton__icon {
+        font-size: 1rem;
+    }
+}
     }
 
     // começa depois de 45 segundos
@@ -1721,3 +2129,4 @@ document.getElementById('pay-whatsapp').addEventListener('click', () => {
     
 </body>
 </html>
+
