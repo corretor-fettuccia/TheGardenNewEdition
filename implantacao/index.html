@@ -207,7 +207,7 @@ const northEast = map.unproject([WIDTH, 0], 3);
 const bounds = new L.LatLngBounds(southWest, northEast);
 
 L.tileLayer('./tiles/{z}/{x}/{y}.webp', {
-  tileSize: 256,
+  tileSize: 512,
   minZoom: 0,
   maxZoom: 3,
   noWrap: true,
