@@ -782,20 +782,6 @@ document.querySelectorAll('.btn-back, .phone, .leaflet-control-zoom a').forEach(
 <script src="./brand/brand.js"></script>
        
 
-<script>
-// Bloqueia botão direito
-document.addEventListener('contextmenu', e => e.preventDefault());
-
-// Bloqueia F12, Ctrl+Shift+I, Ctrl+U
-document.addEventListener('keydown', function(e) {
-    if (
-        e.key === 'F12' ||
-        (e.ctrlKey && e.shiftKey && e.key === 'I') ||
-        (e.ctrlKey && e.key === 'u')
-    ) {
-        e.preventDefault();
-    }
-});
-</script>        
+      
 </body>
 </html>
