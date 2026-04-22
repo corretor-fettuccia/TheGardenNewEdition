@@ -766,7 +766,11 @@ function carregarMarcadores() {
 // Inicializar
 carregarConfiguracoes();
 
-window.addEventListener('resize', () => {
+window.addEventListener('resize', () => {<script>
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+</script>
     if (map) setTimeout(() => map.invalidateSize(), 100);
 });
 
@@ -776,5 +780,11 @@ document.querySelectorAll('.btn-back, .phone, .leaflet-control-zoom a').forEach(
 </script>
 
 <script src="./brand/brand.js"></script>
+       
+<script>
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+</script>
 </body>
 </html>
