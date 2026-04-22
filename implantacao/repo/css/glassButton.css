@@ -1,0 +1,745 @@
+/* ============================================
+   glassButton - Efeito de Vidro Recurvo
+   CORRIGIDO - SEM VAZAMENTO
+   ============================================ */
+
+.glassButton {
+    /* === VARIÁVEIS LOCAIS === */
+    --glass-grad-start: rgba(255, 255, 255, 0.12);
+    --glass-grad-mid: rgba(255, 255, 255, 0.35);
+    --glass-grad-high: rgba(255, 255, 255, 0.55);
+    --glass-grad-end: rgba(255, 255, 255, 0.08);
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+    
+    /* === VARIÁVEL DE ARREDONDAMENTO ÚNICA === */
+    --glass-border-radius: 10px;  /* ← Ajuste aqui para controlar tudo */
+    
+    /* === ESTILOS BASE === */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 32px;
+    
+    /* === FUNDO === */
+    background: linear-gradient(
+        105deg,
+        var(--glass-grad-start) 0%,
+        var(--glass-grad-mid) 12%,
+        var(--glass-grad-high) 25%,
+        var(--glass-grad-mid) 40%,
+        var(--glass-grad-high) 55%,
+        var(--glass-grad-mid) 72%,
+        var(--glass-grad-start) 85%,
+        var(--glass-grad-end) 100%
+    );
+    
+    backdrop-filter: blur(6px) brightness(1.02) contrast(1.05);
+    -webkit-backdrop-filter: blur(6px) brightness(1.02) contrast(1.05);
+    border-radius: var(--glass-border-radius);
+    
+    /* === BORDA === */
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    
+    /* === SOMBRAS === */
+    box-shadow: 
+        0 18px 40px -12px rgba(0, 0, 0, 0.2),
+        0 4px 12px -6px rgba(0, 0, 0, 0.08),
+        inset 0 2px 3px rgba(255, 255, 255, 0.9),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.02),
+        inset 0 -12px 20px -8px rgba(0, 0, 0, 0.06),
+        inset 0 12px 20px -8px rgba(255, 255, 255, 0.3),
+        inset 30px 0 25px -18px rgba(255, 255, 255, 0.4),
+        inset -30px 0 25px -18px rgba(0, 0, 0, 0.06);
+    
+    /* === TEXTO === */
+    color: #1a3b2f;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: clamp(0.95rem, 4vw, 1.08rem);
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+    
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+    cursor: pointer;
+    z-index: 1;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+    
+    /* === IMPEDE VAZAMENTO === */
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* ============================================
+   TODAS AS CAMADAS USAM A MESMA VARIÁVEL
+   ============================================ */
+
+.glassButton__lens-curvature,
+.glassButton__refraction-primary,
+.glassButton__refraction-secondary,
+.glassButton__edge-reflection,
+.glassButton__chromatic-diffraction,
+.glassButton__inner-shadow,
+.glassButton__liquid-glow,
+.glassButton__diamond-facet,
+.glassButton__sapphire-glow,
+.glassButton__golden-rim,
+.glassButton__etched-glass {
+    border-radius: var(--glass-border-radius);
+}
+
+/* CAMADA 1: Curvatura principal */
+.glassButton__lens-curvature {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.glassButton__lens-curvature::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        ellipse at 25% 50%,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0.2) 25%,
+        rgba(52, 172, 224, 0.08) 45%,
+        rgba(46, 204, 113, 0.05) 60%,
+        transparent 100%
+    );
+    opacity: 0.8;
+    transition: all 0.4s ease;
+}
+
+/* CAMADA 2: Refração primária */
+.glassButton__refraction-primary {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.glassButton__refraction-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        circle at 35% 40%,
+        rgba(255, 255, 255, 0.6) 0%,
+        rgba(255, 255, 255, 0.2) 15%,
+        rgba(52, 172, 224, 0.12) 30%,
+        rgba(46, 204, 113, 0.08) 45%,
+        transparent 65%
+    );
+    filter: blur(3px);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* CAMADA 3: Refração secundária */
+.glassButton__refraction-secondary {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.glassButton__refraction-secondary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: conic-gradient(
+        from 0deg at 50% 50%,
+        transparent 0deg,
+        rgba(52, 172, 224, 0.1) 25deg,
+        rgba(46, 204, 113, 0.08) 50deg,
+        rgba(26, 188, 156, 0.06) 75deg,
+        rgba(72, 219, 128, 0.05) 100deg,
+        transparent 125deg,
+        transparent 200deg,
+        rgba(41, 128, 185, 0.06) 225deg,
+        rgba(52, 172, 224, 0.08) 250deg,
+        rgba(46, 204, 113, 0.06) 275deg,
+        transparent 300deg,
+        transparent 360deg
+    );
+    animation: glassButton__prismRotate 12s linear infinite;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+/* CAMADA 4: Reflexo especular */
+.glassButton__specular-highlight {
+    position: absolute;
+    top: 12%;
+    left: 12%;
+    width: 28%;
+    height: 22%;
+    border-radius: 50%;
+    background: radial-gradient(
+        ellipse at 30% 35%,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 255, 255, 0.4) 25%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 80%
+    );
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 1;
+    filter: blur(1px);
+    transition: all 0.3s ease;
+}
+
+/* CAMADA 5: Reflexo de borda */
+.glassButton__edge-reflection {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.6) 0%,
+        rgba(255, 255, 255, 0.08) 20%,
+        rgba(52, 172, 224, 0.12) 40%,
+        rgba(46, 204, 113, 0.08) 55%,
+        rgba(255, 255, 255, 0.05) 75%,
+        rgba(255, 255, 255, 0.35) 100%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+/* CAMADA 6: Difração cromática */
+.glassButton__chromatic-diffraction {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.glassButton__chromatic-diffraction::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        115deg,
+        transparent 0%,
+        transparent 20%,
+        rgba(255, 0, 100, 0.04) 22%,
+        rgba(255, 100, 0, 0.04) 24%,
+        rgba(255, 255, 0, 0.04) 26%,
+        rgba(0, 255, 100, 0.04) 28%,
+        rgba(0, 100, 255, 0.04) 30%,
+        rgba(100, 0, 255, 0.04) 32%,
+        transparent 35%,
+        transparent 100%
+    );
+    animation: glassButton__chromaticShift 8s linear infinite;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* CAMADA 7: Sombra interna */
+.glassButton__inner-shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: 
+        inset 0 20px 25px -15px rgba(0, 0, 0, 0.08),
+        inset 0 -15px 20px -12px rgba(0, 0, 0, 0.05),
+        inset 8px 0 12px -8px rgba(0, 0, 0, 0.04),
+        inset -8px 0 12px -8px rgba(255, 255, 255, 0.2);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* CAMADA 8: Luz do mouse */
+.glassButton__cursor-light {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.45) 0%,
+        rgba(52, 172, 224, 0.12) 35%,
+        rgba(46, 204, 113, 0.06) 55%,
+        transparent 75%
+    );
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 2;
+    filter: blur(5px);
+}
+
+/* CAMADA 9: Liquid Glow */
+.glassButton__liquid-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.glassButton__liquid-glow::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        115deg,
+        transparent 0%,
+        transparent 35%,
+        rgba(255, 255, 255, 0.08) 40%,
+        rgba(255, 255, 255, 0.15) 45%,
+        rgba(255, 255, 255, 0.25) 50%,
+        rgba(255, 255, 255, 0.15) 55%,
+        rgba(255, 255, 255, 0.08) 60%,
+        transparent 65%,
+        transparent 100%
+    );
+    animation: glassButton__liquidFlow 8s ease-in-out infinite;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+/* CAMADA 10: Gotas d'água */
+.glassButton__dew-drop {
+    position: absolute;
+    bottom: 5px;
+    right: 12%;
+    width: 14px;
+    height: 14px;
+    background: radial-gradient(
+        circle at 35% 35%,
+        rgba(255, 255, 255, 0.9) 0%,
+        rgba(52, 172, 224, 0.25) 40%,
+        transparent 100%
+    );
+    border-radius: 50%;
+    filter: blur(1px);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.glassButton__dew-drop--second {
+    bottom: 8px;
+    right: 25%;
+    width: 10px;
+    height: 10px;
+}
+
+.glassButton__dew-drop--third {
+    bottom: 3px;
+    right: 38%;
+    width: 7px;
+    height: 7px;
+}
+
+/* CAMADA 11: Facetas de diamante */
+.glassButton__diamond-facet {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.glassButton__diamond-facet::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent 0%,
+        transparent 8%,
+        rgba(255, 255, 255, 0.03) 8%,
+        rgba(255, 255, 255, 0.06) 10%,
+        transparent 12%,
+        transparent 18%,
+        rgba(255, 255, 255, 0.02) 18%,
+        rgba(52, 172, 224, 0.04) 20%,
+        transparent 22%,
+        transparent 100%
+    );
+    animation: glassButton__facetRotate 20s linear infinite;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+/* CAMADA 12: Brilho de safira */
+.glassButton__sapphire-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        circle at 30% 40%,
+        rgba(52, 172, 224, 0.12) 0%,
+        rgba(46, 204, 113, 0.06) 40%,
+        transparent 70%
+    );
+    filter: blur(12px);
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+    transition: opacity 0.6s ease;
+}
+
+/* CAMADA 13: Borda dourada */
+.glassButton__golden-rim {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        115deg,
+        rgba(212, 175, 55, 0) 0%,
+        rgba(212, 175, 55, 0.12) 20%,
+        rgba(212, 175, 55, 0.2) 35%,
+        rgba(212, 175, 55, 0.12) 50%,
+        rgba(212, 175, 55, 0.06) 65%,
+        rgba(212, 175, 55, 0) 85%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+    z-index: 0;
+}
+
+/* CAMADA 14: Textura de vidro lapidado */
+.glassButton__etched-glass {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.02) 2px,
+            rgba(255, 255, 255, 0.02) 4px
+        );
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+/* ============================================
+   HOVER - ATIVA OS EFEITOS
+   ============================================ */
+
+.glassButton:hover {
+    transform: scale(1.08);
+    
+    background: linear-gradient(
+        105deg,
+        rgba(255, 255, 255, 0.06) 0%,
+        rgba(255, 255, 255, 0.22) 12%,
+        rgba(255, 255, 255, 0.48) 25%,
+        rgba(255, 255, 255, 0.18) 40%,
+        rgba(255, 255, 255, 0.42) 55%,
+        rgba(255, 255, 255, 0.15) 72%,
+        rgba(255, 255, 255, 0.04) 85%,
+        rgba(255, 255, 255, 0.02) 100%
+    );
+    
+    backdrop-filter: blur(10px) brightness(1.05) contrast(1.08);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    
+    box-shadow: 
+        0 25px 55px -15px rgba(0, 0, 0, 0.25),
+        0 6px 18px -8px rgba(0, 0, 0, 0.1),
+        inset 0 3px 5px rgba(255, 255, 255, 0.95),
+        inset 0 -2px 3px rgba(0, 0, 0, 0.02),
+        inset 0 -18px 28px -12px rgba(0, 0, 0, 0.1),
+        inset 0 18px 28px -12px rgba(255, 255, 255, 0.35),
+        inset 45px 0 35px -22px rgba(255, 255, 255, 0.45),
+        inset -45px 0 35px -22px rgba(0, 0, 0, 0.08);
+    
+    color: #1a3b2f;
+    text-shadow: 
+        0 0 10px rgba(52, 172, 224, 0.35),
+        0 0 16px rgba(46, 204, 113, 0.25),
+        0 0 25px rgba(255, 255, 255, 0.55);
+    
+    letter-spacing: 1.2px;
+}
+
+/* Ativa camadas no hover */
+.glassButton:hover .glassButton__refraction-primary::before { opacity: 1; }
+.glassButton:hover .glassButton__refraction-secondary::before { opacity: 1; }
+.glassButton:hover .glassButton__chromatic-diffraction::before { opacity: 1; }
+.glassButton:hover .glassButton__edge-reflection { opacity: 1; }
+.glassButton:hover .glassButton__liquid-glow::before { opacity: 1; }
+.glassButton:hover .glassButton__diamond-facet::before { opacity: 1; }
+.glassButton:hover .glassButton__sapphire-glow { opacity: 1; }
+.glassButton:hover .glassButton__golden-rim { opacity: 0.5; }
+.glassButton:hover .glassButton__etched-glass { opacity: 1; }
+.glassButton:hover .glassButton__dew-drop { opacity: 0.8; transform: translateY(-4px); }
+.glassButton:hover .glassButton__specular-highlight { 
+    opacity: 1; 
+    transform: scale(1.1) translate(5%, 5%);
+}
+.glassButton:hover .glassButton__cursor-light { opacity: 1; }
+
+/* Atualiza curvatura com posição do mouse */
+.glassButton:hover .glassButton__lens-curvature::before {
+    background: radial-gradient(
+        ellipse at calc(var(--mouse-x, 25%)) calc(var(--mouse-y, 50%)),
+        rgba(255, 255, 255, 0.55) 0%,
+        rgba(255, 255, 255, 0.2) 20%,
+        rgba(52, 172, 224, 0.12) 40%,
+        rgba(46, 204, 113, 0.08) 55%,
+        transparent 80%
+    );
+}
+
+/* ============================================
+   CLICK
+   ============================================ */
+
+.glassButton:active {
+    transform: scale(0.97);
+    transition: all 0.08s cubic-bezier(0.1, 0.9, 0.2, 1);
+    
+    box-shadow: 
+        0 5px 20px -10px rgba(0, 0, 0, 0.3),
+        inset 0 1px 2px rgba(255, 255, 255, 0.7),
+        inset 0 0 25px rgba(52, 172, 224, 0.45),
+        inset 0 0 40px rgba(255, 255, 255, 0.35);
+}
+
+.glassButton:active .glassButton__lens-curvature::before {
+    animation: glassButton__shockWave 0.35s ease-out forwards;
+}
+
+.glassButton:active .glassButton__text {
+    animation: glassButton__textPop 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.glassButton:active .glassButton__icon {
+    transform: scale(0.92);
+    transition: all 0.05s ease;
+}
+
+.glassButton:active .glassButton__sapphire-glow {
+    animation: glassButton__diamondFlash 0.3s ease-out;
+}
+
+/* ============================================
+   ÍCONE E TEXTO
+   ============================================ */
+
+.glassButton__icon {
+    font-size: clamp(1.15rem, 5vw, 1.3rem);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.08));
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    z-index: 3;
+}
+
+.glassButton:hover .glassButton__icon {
+    transform: scale(1.15) rotate(5deg);
+    filter: drop-shadow(0 4px 12px rgba(52, 172, 224, 0.35));
+}
+
+.glassButton__text {
+    display: inline-block;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 3;
+}
+
+/* ============================================
+   ANIMAÇÕES
+   ============================================ */
+
+@keyframes glassButton__prismRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes glassButton__chromaticShift {
+    0% { transform: translate(0%, 0%) rotate(0deg); }
+    100% { transform: translate(5%, 5%) rotate(360deg); }
+}
+
+@keyframes glassButton__liquidFlow {
+    0% { transform: translate(-10%, -10%) rotate(0deg); }
+    50% { transform: translate(10%, 10%) rotate(180deg); }
+    100% { transform: translate(-10%, -10%) rotate(360deg); }
+}
+
+@keyframes glassButton__facetRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes glassButton__shockWave {
+    0% {
+        transform: scale(1);
+        opacity: 0.9;
+        background: radial-gradient(
+            ellipse at 30% 50%,
+            rgba(255, 255, 255, 0.85) 0%,
+            rgba(52, 172, 224, 0.45) 30%,
+            rgba(46, 204, 113, 0.3) 60%,
+            transparent 100%
+        );
+    }
+    100% {
+        transform: scale(1.3);
+        opacity: 0;
+    }
+}
+
+@keyframes glassButton__textPop {
+    0% {
+        transform: scale(1);
+        letter-spacing: 0.8px;
+    }
+    40% {
+        transform: scale(1.08);
+        letter-spacing: 2px;
+        text-shadow: 
+            0 0 15px rgba(52, 172, 224, 0.6),
+            0 0 25px rgba(255, 255, 255, 0.7);
+    }
+    100% {
+        transform: scale(1);
+        letter-spacing: 0.8px;
+    }
+}
+
+@keyframes glassButton__diamondFlash {
+    0% {
+        opacity: 0.8;
+        filter: blur(8px);
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        filter: blur(20px);
+        transform: scale(1.5);
+    }
+}
+
+/* Efeito de respiração */
+@keyframes glassButton__breath {
+    0% {
+        box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.18);
+    }
+    50% {
+        box-shadow: 0 22px 50px -14px rgba(52, 172, 224, 0.22), 0 0 0 1px rgba(52, 172, 224, 0.1);
+    }
+    100% {
+        box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.18);
+    }
+}
+
+.glassButton {
+    animation: glassButton__breath 3.5s ease-in-out infinite;
+}
+
+.glassButton:hover {
+    animation: none;
+}
+
+/* ============================================
+   RESPONSIVO
+   ============================================ */
+
+@media (max-width: 768px) {
+    .glassButton {
+        padding: 14px 28px;
+        white-space: normal;
+        max-width: 85vw;
+        text-align: center;
+        gap: 10px;
+        /* O responsivo também respeita a variável */
+    }
+    
+    .glassButton:hover {
+        transform: scale(1.04);
+    }
+    
+    .glassButton__specular-highlight,
+    .glassButton__cursor-light,
+    .glassButton__dew-drop {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .glassButton {
+        padding: 12px 24px;
+        gap: 8px;
+    }
+    
+    .glassButton__icon {
+        font-size: 1rem;
+    }
+    
+    .glassButton__text {
+        font-size: 0.85rem;
+    }
+}

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Sistema de Mapa Interativo - New Edition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Barra de navegação */
+        .navbar {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid #d4af37;
+            padding: 8px 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: #d4af37;
+            color: #000;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Container do iframe */
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 60px);
+            background: #111;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #111;
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.3s ease;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-top-color: #d4af37;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        .loading-text {
+            color: #d4af37;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsivo */
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 6px 12px;
+                gap: 8px;
+            }
+            
+            .nav-btn {
+                padding: 6px 14px;
+                font-size: 11px;
+            }
+            
+            .iframe-container {
+                height: calc(100vh - 52px);
+            }
+            
+            .loading-overlay {
+                top: 52px;
+            }
+        }
+
+        /* Tooltip */
+        .nav-btn::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            color: #d4af37;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            margin-bottom: 5px;
+        }
+
+        .nav-btn:hover::before {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <button class="nav-btn" data-page="marcadores" data-tooltip="Gerenciar pontos do mapa">
+            📍 Marcadores
+        </button>
+        <button class="nav-btn" data-page="makeTiles" data-tooltip="Gerar tiles da imagem">
+            🗺️ Gerar Tiles
+        </button>
+        <button class="nav-btn" data-page="view" data-tooltip="Visualizar mapa completo">
+            👁️ Visualizar Mapa
+        </button>
+    </div>
+
+    <div class="iframe-container">
+        <iframe id="contentFrame" src="marcadores.html" title="Conteúdo do Mapa"></iframe>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <div class="loading-text">Carregando...</div>
+        </div>
+    </div>
+
+    <script>
+        // Configuração das páginas
+        const pages = {
+            marcadores: {
+                url: 'marcadores.html',
+                title: 'Editor de Marcadores'
+            },
+            makeTiles: {
+                url: 'makeTiles.html',
+                title: 'Gerador de Tiles'
+            },
+            view: {
+                url: 'view.html',
+                title: 'Visualizador do Mapa'
+            }
+        };
+
+        let currentPage = 'marcadores';
+        const iframe = document.getElementById('contentFrame');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        let loadingTimeout;
+
+        function showLoading() {
+            loadingOverlay.style.display = 'flex';
+            loadingOverlay.style.opacity = '1';
+        }
+
+        function hideLoading() {
+            loadingOverlay.style.opacity = '0';
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+                loadingOverlay.style.opacity = '1';
+            }, 300);
+        }
+
+        function loadPage(pageId) {
+            const page = pages[pageId];
+            if (!page) return;
+
+            currentPage = pageId;
+            
+            // Atualizar botão ativo
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.dataset.page === pageId) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Mostrar loading
+            showLoading();
+            
+            // Atualizar o título da página
+            document.title = `${page.title} - New Edition`;
+            
+            // Carregar o iframe
+            iframe.src = page.url;
+            
+            // Esconder loading após o iframe carregar
+            const onLoadHandler = () => {
+                hideLoading();
+                iframe.removeEventListener('load', onLoadHandler);
+            };
+            
+            iframe.addEventListener('load', onLoadHandler);
+            
+            // Timeout de segurança (se demorar muito, esconde loading)
+            clearTimeout(loadingTimeout);
+            loadingTimeout = setTimeout(() => {
+                hideLoading();
+            }, 5000);
+        }
+
+        // Event listeners para os botões
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const pageId = btn.dataset.page;
+                if (pageId !== currentPage) {
+                    loadPage(pageId);
+                }
+            });
+        });
+
+        // Recuperar a última página visitada (opcional)
+        const lastPage = localStorage.getItem('lastPage');
+        if (lastPage && pages[lastPage]) {
+            loadPage(lastPage);
+        }
+
+        // Salvar a última página ao mudar
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('lastPage', currentPage);
+        });
+
+        // Ajustar tamanho do iframe quando a janela redimensionar
+        window.addEventListener('resize', () => {
+            if (iframe.contentWindow) {
+                try {
+                    // Tenta notificar o iframe sobre o redimensionamento
+                    iframe.contentWindow.postMessage('resize', '*');
+                } catch(e) {}
+            }
+        });
+
+        console.log('✅ Sistema de navegação carregado');
+    </script>
+</body>
+</html>

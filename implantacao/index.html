@@ -1,226 +1,747 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <title>Mapa Interativo</title>
+        <!-- 
+        © 2024 Roberto Fettuccia - Corretor
+        Todos os direitos reservados.
+        Reprodução e utilização sem autorização está sujeito a implicações legais. 
+        5551998111078 - corretor.fettuccia@gmail.com
+        - material de uso exclusivo -
+        Este site e seu conteúdo são protegidos por leis de direitos autorais.
+        
+        [BUILD INFORMATION]
+        Versão: 1.0.0 - Stable
+        Data Compilação: 2024-04-21
+        Build: 20240421.001
+        Ambiente: Production
+        Última atualização: 21/04/2024 - 22:39
+    -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>Mapa Interativo - Visualização</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <link rel="stylesheet" href="./brand/brand.css">
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; height: 100vh; overflow: hidden; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100%; }
+        
+        .btn-back {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 999;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            min-width: 44px;
+            min-height: 44px;
+        }
+        
+        .btn-back:active { transform: scale(0.96); }
+        
+        .label-top {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 999;
+            color: #fff;
+            font-size: 11px;
+            background: rgba(0,0,0,0.6);
+            padding: 8px 14px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            pointer-events: none;
+        }
+        
+        .label-top strong { color: #d4af37; }
+        
+        .bottom-bar {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            padding: 12px;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(15px);
+            color: #fff;
+            font-size: 12px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .brand { color: #d4af37; font-weight: 600; }
+        .phone { color: #25D366; text-decoration: none; margin-left: 8px; }
+        
+        /* Controle de zoom - centro esquerdo */
+        .leaflet-left {
+            left: 20px !important;
+            right: auto !important;
+        }
+        
+        .leaflet-top {
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            bottom: auto !important;
+        }
+        
+        .leaflet-control-zoom a {
+            width: 44px !important;
+            height: 44px !important;
+            line-height: 42px !important;
+            font-size: 20px !important;
+            font-weight: bold !important;
+            background: rgba(0,0,0,0.75) !important;
+            backdrop-filter: blur(10px);
+            color: white !important;
+            border: 1px solid rgba(255,255,255,0.2) !important;
+            border-radius: 10px !important;
+            transition: all 0.2s ease;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        
+        .leaflet-control-zoom a:active {
+            background: #d4af37 !important;
+            color: #000 !important;
+            transform: scale(0.95);
+        }
+        
+        /* POPUP ESTILIZADO */
+        .custom-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            z-index: 2000;
+            width: 90%;
+            max-width: 450px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border: 2px solid #d4af37;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: popupIn 0.3s ease-out;
+        }
+        
+        @keyframes popupIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        .popup-header {
+            background: linear-gradient(135deg, #d4af37, #b8942e);
+            padding: 15px;
+            border-radius: 18px 18px 0 0;
+            color: #000;
+            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .popup-close {
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        
+        .popup-close:active { transform: scale(0.9); }
+        .popup-content { padding: 20px; }
+        
+        /* CARROSSEL */
+        .carousel-container {
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .carousel {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #111;
+        }
+        
+        .carousel-images {
+            display: flex;
+            transition: transform 0.3s ease;
+        }
+        
+        .carousel-image {
+            min-width: 100%;
+            max-height: 250px;
+            object-fit: contain;
+            background: #000;
+        }
+        
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            z-index: 10;
+        }
+        
+        .carousel-btn:active { background: #d4af37; color: #000; }
+        .carousel-prev { left: 10px; }
+        .carousel-next { right: 10px; }
+        
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        
+        .indicator.active {
+            background: #d4af37;
+            width: 20px;
+            border-radius: 4px;
+        }
+        
+        .info-row {
+            margin-bottom: 12px;
+            padding: 10px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+        
+        .info-label {
+            color: #d4af37;
+            font-weight: bold;
+            font-size: 11px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+        
+        .info-value {
+            color: white;
+            font-size: 14px;
+            word-break: break-word;
+        }
+        
+        .divider-line {
+            height: 1px;
+            background: rgba(212, 175, 55, 0.3);
+            margin: 15px 0;
+        }
+        
+        .coord-badge {
+            display: inline-block;
+            background: rgba(0,0,0,0.5);
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 10px;
+            margin-top: 5px;
+        }
+        
+        /* ===== CORREÇÃO DO MARCADOR - REMOVER QUADRADO ===== */
+        .leaflet-marker-icon {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+        .leaflet-div-icon {
+            background: transparent !important;
+            border: none !important;
+        }
 
-  <style>
-    html, body {
-      margin: 0;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-      background: #111;
-      font-family: Arial, sans-serif;
-    }
+        /* Remover qualquer fundo padrão do Leaflet */
+        .leaflet-marker-icon::before,
+        .leaflet-marker-icon::after {
+            display: none !important;
+        }
 
-    #map {
-      width: 100%;
-      height: 100%;
-    }
+        /* ===== ANIMAÇÃO DE PULSO ===== */
+        @keyframes pulseBolinha {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+                box-shadow: 0 0 0 0 currentColor;
+            }
+            50% {
+                transform: scale(0.9);
+                opacity: 0.95;
+                box-shadow: 0 0 0 4px currentColor;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+                box-shadow: 0 0 0 0 currentColor;
+            }
+        }
 
-    .leaflet-container {
-      background: #111;
-    }
+        /* Aplicar o pulso na bolinha */
+        .leaflet-marker-icon div {
+            animation: pulseBolinha 3s ease-in-out infinite !important;
+            transform-origin: center;
+            will-change: transform;
+            display: block !important;
+        }
 
-    /* ===== ZOOM ===== */
-    .leaflet-top.leaflet-right {
-      margin-top: 10px;
-      margin-right: 10px;
-    }
+        /* Delay alternado para não pulsarem todos juntos */
+        .leaflet-marker-icon:nth-child(odd) div {
+            animation-delay: 0s !important;
+        }
 
-    /* ===== LABEL ===== */
-    .label-top {
-      position: absolute;
-      top: 12px;
-      right: 60px;
-      z-index: 999;
+        .leaflet-marker-icon:nth-child(even) div {
+            animation-delay: 3s !important;
+        }
 
-      color: #fff;
-      font-size: clamp(11px, 1.5vw, 13px);
+        /* Efeito mais forte ao passar o mouse */
+        .leaflet-marker-icon:hover div {
+            animation: pulseBolinha 0.6s ease-in-out infinite !important;
+            transform: scale(1.15);
+            cursor: pointer;
+        }
 
-      background: rgba(0,0,0,0.35);
-      padding: 6px 10px;
-      border-radius: 6px;
-
-      backdrop-filter: blur(6px);
-    }
-
-    .label-top strong {
-      color: #d4af37;
-    }
-
-    /* ===== BARRA ===== */
-    .bottom-bar {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      z-index: 999;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      padding: 10px;
-
-      background: rgba(0,0,0,0.55);
-      backdrop-filter: blur(10px);
-
-      color: #fff;
-      font-size: clamp(12px, 1.8vw, 14px);
-    }
-
-    .brand {
-      color: #d4af37;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .divider {
-      opacity: 0.6;
-    }
-
-    .phone {
-      color: #25D366;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .phone:hover {
-      color: #d4af37;
-    }
-
-    /* ===== BOTÃO VOLTAR ===== */
-    .btn-back {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      z-index: 999;
-
-      background: rgba(0,0,0,0.45);
-      color: #fff;
-      border: none;
-
-      padding: 8px 14px;
-      border-radius: 8px;
-
-      font-size: 13px;
-      cursor: pointer;
-
-      backdrop-filter: blur(8px);
-      transition: 0.25s;
-    }
-
-    .btn-back:hover {
-      background: rgba(0,0,0,0.65);
-      color: #d4af37;
-    }
-
-    /* ===== MOBILE ===== */
-@media (max-width: 600px) {
-
-  .leaflet-top.leaflet-right {
-    top: 15px;
-    right: 15px;
-  }
-
-  .leaflet-control-zoom {
-    border: none !important;
-    box-shadow: 0 8px 25px rgba(0,0,0,.35);
-  }
-
-  .leaflet-control-zoom a {
-    width: 72px !important;
-    height: 72px !important;
-    line-height: 72px !important;
-
-    font-size: 38px !important;
-    font-weight: bold;
-
-    border-radius: 14px !important;
-    margin-bottom: 8px;
-  }
-
-  .leaflet-control-zoom-in {
-    border-bottom: none !important;
-  }
-
-}
-  </style>
-
+        /* Para dispositivos móveis */
+        @media (max-width: 600px) {
+            .leaflet-control-zoom a { width: 56px !important; height: 56px !important; line-height: 54px !important; font-size: 24px !important; }
+            .leaflet-left { left: 12px !important; }
+            .btn-back { padding: 10px 16px; font-size: 13px; }
+            .custom-popup { width: 95%; max-height: 85vh; }
+            .popup-header { font-size: 16px; padding: 12px; }
+            .carousel-image { max-height: 200px; }
+            .leaflet-marker-icon div {
+                animation: pulseBolinha 2.5s ease-in-out infinite !important;
+            }
+        }
+        
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            color: #d4af37;
+            padding: 20px 30px;
+            border-radius: 15px;
+            z-index: 3000;
+            font-weight: bold;
+            border: 1px solid #d4af37;
+        }
+    </style>
 </head>
 <body>
 
 <button class="btn-back" onclick="goBack()">← Voltar</button>
-
 <div id="map"></div>
-
-<div class="label-top">
-  uso exclusivo <strong>newedition.com.br</strong>
-</div>
-
+<div class="label-top">🏢 <strong>newedition.com.br</strong></div>
 <div class="bottom-bar">
-  <div class="brand">
-    newedition.com.br
-    <span class="divider">-</span>
-    <a href="https://wa.me/5551998111078" target="_blank" class="phone">
-      (51) 99811-1078
-    </a>
-  </div>
+    <div class="brand">
+        📍 Mapa Interativo
+        <a href="https://wa.me/5551998111078" target="_blank" class="phone">(51) 99811-1078</a>
+    </div>
 </div>
 
-<!-- Leaflet correto -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
 <script>
+let pontos = [];
+let popupAtual = null;
+let mapMarkers = {};
+let configTiles = null;
 
 function goBack() {
-  if (window.history.length > 1) {
-    window.history.back();
-  } else {
-    window.location.href = "https://newedition.com.br";
-  }
+    if (window.history.length > 1) window.history.back();
+    else window.location.href = "https://newedition.com.br";
 }
 
-const WIDTH = 5938;
-const HEIGHT = 3677;
+function fecharPopup() {
+    if (popupAtual) {
+        popupAtual.remove();
+        popupAtual = null;
+    }
+}
 
-const map = L.map('map', {
-  crs: L.CRS.Simple,
-  minZoom: 0,
-  maxZoom: 3,
-  zoomSnap: 1,
-  zoomControl: false
+function mostrarPopup(dados) {
+    fecharPopup();
+    
+    const popup = document.createElement('div');
+    popup.className = 'custom-popup';
+    
+    let html = `
+        <div class="popup-header">
+            <span>📍 ${escapeHtml(dados.nome) || 'Marcador'}</span>
+            <button class="popup-close" onclick="fecharPopup()">✕</button>
+        </div>
+        <div class="popup-content">
+    `;
+    
+    if (dados.imagens && dados.imagens.length > 0) {
+        html += `<div class="carousel-container" id="carousel-${dados.id}">
+            <div class="carousel">
+                <div class="carousel-images" id="carousel-images-${dados.id}">`;
+        
+        dados.imagens.forEach(img => {
+            html += `<img class="carousel-image" src="${escapeHtml(img)}" onerror="this.style.display='none'" loading="lazy">`;
+        });
+        
+        html += `</div>`;
+        if (dados.imagens.length > 1) {
+            html += `<button class="carousel-btn carousel-prev" onclick="carouselPrev(${dados.id})">◀</button>
+                     <button class="carousel-btn carousel-next" onclick="carouselNext(${dados.id})">▶</button>`;
+        }
+        html += `</div>`;
+        if (dados.imagens.length > 1) {
+            html += `<div class="carousel-indicators" id="indicators-${dados.id}">`;
+            for (let i = 0; i < dados.imagens.length; i++) {
+                html += `<div class="indicator ${i === 0 ? 'active' : ''}" onclick="carouselGoTo(${dados.id}, ${i})"></div>`;
+            }
+            html += `</div>`;
+        }
+        html += `</div>`;
+    }
+    
+    if (dados.lote && dados.lote.trim() !== '') {
+        html += `<div class="info-row"><div class="info-label">LOTE</div><div class="info-value">${escapeHtml(dados.lote)}</div></div>`;
+    }
+    
+    if (dados.quadra && dados.quadra.trim() !== '') {
+        html += `<div class="info-row"><div class="info-label">QUADRA</div><div class="info-value">${escapeHtml(dados.quadra)}</div></div>`;
+    }
+    
+    if (dados.tipo && dados.tipo.trim() !== '') {
+        html += `<div class="info-row"><div class="info-label">TIPO</div><div class="info-value">${escapeHtml(dados.tipo)}</div></div>`;
+    }
+    
+    if (dados.detalhe && dados.detalhe.trim() !== '') {
+        html += `<div class="info-row"><div class="info-label">DETALHE</div><div class="info-value">${escapeHtml(dados.detalhe)}</div></div>`;
+    }
+    
+    if (dados.testada && dados.testada.trim() !== '') {
+        html += `<div class="info-row"><div class="info-label">TESTADA</div><div class="info-value">${escapeHtml(dados.testada)} metros</div></div>`;
+    }
+    
+    if (dados.areaTotal && dados.areaTotal.trim() !== '') {
+        html += `<div class="info-row"><div class="info-label">ÁREA TOTAL</div><div class="info-value">${escapeHtml(dados.areaTotal)} m²</div></div>`;
+    }
+    
+
+    
+    if (dados.descricaoDetalhada && dados.descricaoDetalhada.trim() !== '') {
+        html += `<div class="divider-line"></div>`;
+        html += `<div class="info-row"><div class="info-label">DESCRIÇÃO</div><div class="info-value">${escapeHtml(dados.descricaoDetalhada)}</div></div>`;
+    }
+    
+    html += `</div></div>`;
+    popup.innerHTML = html;
+    document.body.appendChild(popup);
+    popupAtual = popup;
+    
+    if (dados.imagens && dados.imagens.length > 0) {
+        setTimeout(() => {
+            carregarCarrossel(dados.id, 0);
+        }, 100);
+    }
+}
+
+function carregarCarrossel(id, index) {
+    const container = document.getElementById(`carousel-images-${id}`);
+    if (!container) return;
+    
+    const images = container.querySelectorAll('.carousel-image');
+    if (images.length === 0) return;
+    
+    const width = images[0].clientWidth;
+    container.style.transform = `translateX(-${index * width}px)`;
+    
+    const indicators = document.getElementById(`indicators-${id}`);
+    if (indicators) {
+        const dots = indicators.querySelectorAll('.indicator');
+        dots.forEach((dot, i) => {
+            if (i === index) dot.classList.add('active');
+            else dot.classList.remove('active');
+        });
+    }
+}
+
+window.carouselPrev = function(id) {
+    const ponto = pontos.find(p => p.id === id);
+    if (!ponto || !ponto.imagens) return;
+    
+    if (!window.carouselIndexMap) window.carouselIndexMap = {};
+    let current = window.carouselIndexMap[id] || 0;
+    current = (current - 1 + ponto.imagens.length) % ponto.imagens.length;
+    window.carouselIndexMap[id] = current;
+    carregarCarrossel(id, current);
+}
+
+window.carouselNext = function(id) {
+    const ponto = pontos.find(p => p.id === id);
+    if (!ponto || !ponto.imagens) return;
+    
+    if (!window.carouselIndexMap) window.carouselIndexMap = {};
+    let current = window.carouselIndexMap[id] || 0;
+    current = (current + 1) % ponto.imagens.length;
+    window.carouselIndexMap[id] = current;
+    carregarCarrossel(id, current);
+}
+
+window.carouselGoTo = function(id, index) {
+    window.carouselIndexMap = window.carouselIndexMap || {};
+    window.carouselIndexMap[id] = index;
+    carregarCarrossel(id, index);
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+    }).replace(/[\n\r]/g, '<br>');
+}
+
+// Configuração do mapa
+let map = null;
+let currentBounds = null;
+
+function inicializarMapa(tileSize, originalWidth, originalHeight, maxZoom) {
+    const WIDTH = originalWidth;
+    const HEIGHT = originalHeight;
+    
+    map = L.map('map', {
+        crs: L.CRS.Simple,
+        minZoom: 0,
+        maxZoom: maxZoom,
+        zoomSnap: 0.25,
+        zoomDelta: 0.5,
+        zoomControl: true,
+        inertia: true,
+        inertiaDeceleration: 3000
+    });
+    
+    const southWest = map.unproject([0, HEIGHT], maxZoom);
+    const northEast = map.unproject([WIDTH, 0], maxZoom);
+    currentBounds = new L.LatLngBounds(southWest, northEast);
+    
+    L.tileLayer('./tiles/{z}/{x}/{y}.webp', {
+        tileSize: tileSize,
+        minZoom: 0,
+        maxZoom: maxZoom,
+        noWrap: true,
+        bounds: currentBounds
+    }).addTo(map);
+    
+    map.fitBounds(currentBounds);
+    map.setMaxBounds(currentBounds);
+    
+    console.log(`✅ Mapa inicializado: ${WIDTH}x${HEIGHT}, Zoom max: ${maxZoom}, Tile: ${tileSize}`);
+}
+
+function getLatLngFromCoords(x, y) {
+    const lng = currentBounds.getWest() + (x * (currentBounds.getEast() - currentBounds.getWest()));
+    const lat = currentBounds.getSouth() + (y * (currentBounds.getNorth() - currentBounds.getSouth()));
+    return { lat, lng };
+}
+
+function adicionarMarcador(x, y, dados) {
+    if (!map) return;
+    
+    const { lat, lng } = getLatLngFromCoords(x, y);
+    
+    // Criar o HTML da bolinha com estilo inline incluindo a animação
+    const markerHtml = `
+        <div style="
+            width: 18px; 
+            height: 18px; 
+            background: ${dados.cor || '#d4af37'}; 
+            border: 2px solid white; 
+            border-radius: 50%; 
+            box-shadow: 0 0 5px rgba(0,0,0,0.3); 
+            cursor: pointer;
+            animation: pulseBolinha 2s ease-in-out infinite;
+            transform-origin: center;
+        "></div>
+    `;
+    
+    const icon = L.divIcon({
+        html: markerHtml,
+        iconSize: [18, 18],
+        className: 'custom-marker',
+        popupAnchor: [0, -10]
+    });
+    
+    const marker = L.marker([lat, lng], { icon: icon }).addTo(map);
+    marker.bindTooltip(dados.nome, { permanent: false, direction: 'top', offset: [0, -10] });
+    marker.on('click', () => mostrarPopup(dados));
+    
+    mapMarkers[dados.id] = marker;
+    return marker;
+}
+
+function showLoading() {
+    const loading = document.createElement('div');
+    loading.id = 'loading';
+    loading.className = 'loading';
+    loading.innerHTML = '📂 Carregando configurações do mapa...';
+    document.body.appendChild(loading);
+}
+
+function hideLoading() {
+    const loading = document.getElementById('loading');
+    if (loading) loading.remove();
+}
+
+function carregarConfiguracoes() {
+    showLoading();
+    
+    fetch('tiles.xml')
+        .then(response => {
+            if (!response.ok) throw new Error('Arquivo tiles.xml não encontrado');
+            return response.text();
+        })
+        .then(xmlText => {
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(xmlText, 'application/xml');
+            
+            const tileSize = parseInt(xml.querySelector('tileSize')?.textContent || 256);
+            const originalWidth = parseInt(xml.querySelector('originalWidth')?.textContent || 0);
+            const originalHeight = parseInt(xml.querySelector('originalHeight')?.textContent || 0);
+            const maxZoom = parseInt(xml.querySelector('maxZoom')?.textContent || 3);
+            
+            if (originalWidth === 0 || originalHeight === 0) {
+                throw new Error('Dimensões inválidas no tiles.xml');
+            }
+            
+            console.log(`📋 Configurações carregadas: ${originalWidth}x${originalHeight}, Zoom: ${maxZoom}, Tile: ${tileSize}`);
+            
+            inicializarMapa(tileSize, originalWidth, originalHeight, maxZoom);
+            carregarMarcadores();
+        })
+        .catch(erro => {
+            console.log('ℹ️ tiles.xml não encontrado, usando configurações padrão');
+            inicializarMapa(256, 5938, 3677, 3);
+            carregarMarcadores();
+        });
+}
+
+function carregarMarcadores() {
+    fetch('marcadores.xml')
+        .then(response => {
+            if (!response.ok) throw new Error('Arquivo não encontrado');
+            return response.text();
+        })
+        .then(xmlText => {
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(xmlText, 'application/xml');
+            const marcadores = xml.querySelectorAll('marcador');
+            
+            marcadores.forEach(marcador => {
+                const imagens = [];
+                const imagensNodes = marcador.querySelectorAll('imagem');
+                imagensNodes.forEach(img => {
+                    const url = img.textContent;
+                    if (url && url.trim() !== '') imagens.push(url);
+                });
+                
+                const dados = {
+                    id: parseInt(marcador.getAttribute('id')) || Date.now(),
+                    x: parseFloat(marcador.querySelector('x')?.textContent || 0),
+                    y: parseFloat(marcador.querySelector('y')?.textContent || 0),
+                    nome: marcador.querySelector('nome')?.textContent || '',
+                    lote: marcador.querySelector('lote')?.textContent || '',
+                    quadra: marcador.querySelector('quadra')?.textContent || '',
+                    tipo: marcador.querySelector('tipo')?.textContent || '',
+                    detalhe: marcador.querySelector('detalhe')?.textContent || '',
+                    testada: marcador.querySelector('testada')?.textContent || '',
+                    areaTotal: marcador.querySelector('areaTotal')?.textContent || '',
+                    descricaoDetalhada: marcador.querySelector('descricaoDetalhada')?.textContent || '',
+                    cor: marcador.querySelector('cor')?.textContent || '#d4af37',
+                    imagens: imagens
+                };
+                
+                if (!isNaN(dados.x) && !isNaN(dados.y) && dados.nome) {
+                    adicionarMarcador(dados.x, dados.y, dados);
+                    pontos.push(dados);
+                }
+            });
+            
+            console.log(`✅ ${pontos.length} marcadores carregados | Total de imagens: ${pontos.reduce((acc, p) => acc + (p.imagens?.length || 0), 0)}`);
+            hideLoading();
+        })
+        .catch(erro => {
+            console.log('ℹ️ Nenhum arquivo marcadores.xml encontrado');
+            hideLoading();
+            
+            const msg = document.createElement('div');
+            msg.style.position = 'fixed';
+            msg.style.bottom = '80px';
+            msg.style.left = '50%';
+            msg.style.transform = 'translateX(-50%)';
+            msg.style.background = 'rgba(0,0,0,0.9)';
+            msg.style.color = '#d4af37';
+            msg.style.padding = '10px 20px';
+            msg.style.borderRadius = '30px';
+            msg.style.fontSize = '12px';
+            msg.style.zIndex = '1000';
+            msg.style.border = '1px solid #d4af37';
+            msg.innerHTML = '📂 Nenhum ponto encontrado. Use o editor maker.html para adicionar pontos.';
+            document.body.appendChild(msg);
+            setTimeout(() => msg.remove(), 5000);
+        });
+}
+
+// Inicializar
+carregarConfiguracoes();
+
+window.addEventListener('resize', () => {
+    if (map) setTimeout(() => map.invalidateSize(), 100);
 });
 
-L.control.zoom({ position: 'topright' }).addTo(map);
-
-const southWest = map.unproject([0, HEIGHT], 3);
-const northEast = map.unproject([WIDTH, 0], 3);
-const bounds = new L.LatLngBounds(southWest, northEast);
-
-L.tileLayer('./tiles/{z}/{x}/{y}.webp', {
-  tileSize: 256,
-  minZoom: 0,
-  maxZoom: 3,
-  noWrap: true,
-  bounds: bounds
-}).addTo(map);
-
-map.fitBounds(bounds);
-map.setMaxBounds(bounds);
-
-map.options.inertia = true;
-map.options.inertiaDeceleration = 2500;
-
+document.querySelectorAll('.btn-back, .phone, .leaflet-control-zoom a').forEach(btn => {
+    btn.addEventListener('touchstart', (e) => { e.stopPropagation(); });
+});
 </script>
 
+<script src="./brand/brand.js"></script>
 </body>
 </html>

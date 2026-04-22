@@ -1,0 +1,57 @@
+{
+  "tileSize": 256,
+  "originalWidth": 5938,
+  "originalHeight": 3677,
+  "maxZoom": 5,
+  "generatedAt": "2026-04-21T19:53:15.649Z",
+  "levels": [
+    {
+      "z": 0,
+      "width": 186,
+      "height": 115,
+      "cols": 1,
+      "rows": 1,
+      "tiles": 1
+    },
+    {
+      "z": 1,
+      "width": 372,
+      "height": 230,
+      "cols": 2,
+      "rows": 1,
+      "tiles": 2
+    },
+    {
+      "z": 2,
+      "width": 743,
+      "height": 460,
+      "cols": 3,
+      "rows": 2,
+      "tiles": 6
+    },
+    {
+      "z": 3,
+      "width": 1485,
+      "height": 920,
+      "cols": 6,
+      "rows": 4,
+      "tiles": 24
+    },
+    {
+      "z": 4,
+      "width": 2969,
+      "height": 1839,
+      "cols": 12,
+      "rows": 8,
+      "tiles": 96
+    },
+    {
+      "z": 5,
+      "width": 5938,
+      "height": 3677,
+      "cols": 24,
+      "rows": 15,
+      "tiles": 360
+    }
+  ]
+}

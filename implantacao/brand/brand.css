@@ -1,0 +1,139 @@
+.brand_container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 9999;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;  /* ← ADICIONADO */
+}
+
+.brand_container.brand_active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* RECOLHER DESLIZANDO */
+.brand_container.brand_recolher {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.brand_pacote {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+    pointer-events: auto;  /* ← ADICIONADO */
+}
+
+.brand_pacote.brand_deslizaEntrada {
+    animation: brand_deslizaEntrada 1.5s ease-out forwards;
+}
+
+.brand_pacote.brand_deslizaSaida {
+    animation: brand_deslizaSaida 1.5s ease-out forwards;
+}
+
+@keyframes brand_deslizaEntrada {
+    0% {
+        opacity: 0;
+        visibility: visible;
+        transform: translateX(-100%);
+    }
+    100% {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
+    }
+}
+
+@keyframes brand_deslizaSaida {
+    0% {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(-100%);
+    }
+}
+
+.brand_image_wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.brand_image {
+    width: 25%;
+    height: auto;
+    display: block;
+}
+
+.brand_div_letreiro {
+    position: absolute;
+    top: 45%;
+    left: 18%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    max-width: 11%;
+    min-width: 10%;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.brand_texto {
+    text-align: left;
+    font-family: Arial, sans-serif;
+    font-size: 100%;
+    font-weight: bold;
+    color: #000;
+    line-height: 1.4;
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
+    overflow: visible;
+}
+
+.brand_cursor {
+    display: inline-block;
+    animation: brand_piscar 0.8s infinite;
+}
+
+@keyframes brand_piscar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+@media (max-width: 768px) {
+    .brand_texto {
+        font-size: 80%;
+        display: block;
+        position: relative;
+        top: 0;
+        bottom: auto;
+    }
+    .brand_image {
+        width: 40%;
+    }
+    .brand_div_letreiro {
+        top: 33%;
+        left: 26.5%;
+        transform: translate(-50%);
+        width: auto;
+        max-width: 17%;
+        min-width: 16%;
+        word-wrap: break-word;
+        word-break: break-word;
+        bottom: auto;
+        display: block;
+    }
+}

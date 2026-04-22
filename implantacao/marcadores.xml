@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<marcadores>
+  <marcador id="1776779388075">
+    <x>0.4579</x>
+    <y>0.6326</y>
+    <nome>Portaria de Acesso</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Serviços de segurança</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Acesso controlado por biometria facial</descricaoDetalhada>
+    <cor>#ff0000</cor>
+  </marcador>
+  <marcador id="1776780105923">
+    <x>0.4828</x>
+    <y>0.6320</y>
+    <nome>Party Lounge</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada></descricaoDetalhada>
+    <cor>#3b3b3b</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/PartyLounge.webp</imagem>
+  </marcador>
+  <marcador id="1776780143522">
+    <x>0.4840</x>
+    <y>0.6157</y>
+    <nome>Game Lounge</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada></descricaoDetalhada>
+    <cor>#5c5c5c</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/GameLounge.webp</imagem>
+  </marcador>
+  <marcador id="1776780819560">
+    <x>0.4853</x>
+    <y>0.5986</y>
+    <nome>Kids Place</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Espaço kids coberto, garantindo mais conforto e segurança para as crianças.</descricaoDetalhada>
+    <cor>#d4af37</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/KidsPlace.webp</imagem>
+  </marcador>
+  <marcador id="1776780877113">
+    <x>0.5077</x>
+    <y>0.5738</y>
+    <nome>Fitness</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Healty</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Academia premium com vista para a praia artificial.</descricaoDetalhada>
+    <cor>#00fffb</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/Fitness.webp</imagem>
+  </marcador>
+  <marcador id="1776781375581">
+    <x>0.5254</x>
+    <y>0.5689</y>
+    <nome>Lounge Gourmet</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Dois lounges gourmet cobertos, proporcionando maior comodidade ao condômino, de frente para a praia.</descricaoDetalhada>
+    <cor>#69571b</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/2LoungesGourmet.webp</imagem>
+  </marcador>
+  <marcador id="1776781783176">
+    <x>0.5418</x>
+    <y>0.5646</y>
+    <nome>Pool Bar</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Pool bar para momentos de descompressão 
+Bilhar/Sinuca</descricaoDetalhada>
+    <cor>#0b3300</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/PoolBar.webp</imagem>
+  </marcador>
+  <marcador id="1776782045645">
+    <x>0.5620</x>
+    <y>0.5548</y>
+    <nome>Self Market</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Mercado automatizado, 24h, não precisa de cadastro e não gera nenhum custo ao condomínio</descricaoDetalhada>
+    <cor>#002b4d</cor>
+  </marcador>
+  <marcador id="1776782509304">
+    <x>0.5817</x>
+    <y>0.5369</y>
+    <nome>Portaria de Acesso</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Serviços de segurança</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Acesso controlado por biometria facial</descricaoDetalhada>
+    <cor>#ff0000</cor>
+  </marcador>
+  <marcador id="1776782655607">
+    <x>0.4222</x>
+    <y>0.7066</y>
+    <nome>Vagas de estacionamento</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Serviço</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada></descricaoDetalhada>
+    <cor>#9d00e6</cor>
+  </marcador>
+  <marcador id="1776782667438">
+    <x>0.4559</x>
+    <y>0.6644</y>
+    <nome>Vagas de estacionamento</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Serviço</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada></descricaoDetalhada>
+    <cor>#9d00e6</cor>
+  </marcador>
+  <marcador id="1776782678890">
+    <x>0.4493</x>
+    <y>0.5798</y>
+    <nome>Vagas de estacionamento</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Serviço</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada></descricaoDetalhada>
+    <cor>#9d00e6</cor>
+  </marcador>
+  <marcador id="1776782688195">
+    <x>0.5893</x>
+    <y>0.5763</y>
+    <nome>Vagas de estacionamento</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Serviço</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada></descricaoDetalhada>
+    <cor>#9d00e6</cor>
+  </marcador>
+  <marcador id="1776782706453">
+    <x>0.6512</x>
+    <y>0.6614</y>
+    <nome>Vagas de estacionamento</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Serviço</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada></descricaoDetalhada>
+    <cor>#9d00e6</cor>
+  </marcador>
+  <marcador id="1776782953517">
+    <x>0.0963</x>
+    <y>0.6165</y>
+    <nome>Portaria de acesso</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Segurança 1º nível</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Portaria com acesso controlado, compondo o primeiro nível de um sistema de segurança em dois níveis, elevando a proteção e a tranquilidade do bairro.</descricaoDetalhada>
+    <cor>#ff0000</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/PortariaDeAcessoAoBairroControlado.webp</imagem>
+  </marcador>
+  <marcador id="1776782975958">
+    <x>0.6228</x>
+    <y>0.1969</y>
+    <nome>Portaria de acesso</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Segurança 1º nível</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Portaria com acesso controlado, compondo o primeiro nível de um sistema de segurança em dois níveis, elevando a proteção e a tranquilidade do bairro.</descricaoDetalhada>
+    <cor>#ff0000</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/PortariaDeAcessoAoBairroControlado.webp</imagem>
+  </marcador>
+  <marcador id="1776783083633">
+    <x>0.6280</x>
+    <y>0.5284</y>
+    <nome>Vagas de estacionamento</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Serviço</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada></descricaoDetalhada>
+    <cor>#9d00e6</cor>
+  </marcador>
+  <marcador id="1776783254684">
+    <x>0.6229</x>
+    <y>0.6345</y>
+    <nome>Garden Way</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Acesso</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Passagem subterrânea que evita a exposição do condômino à área externa, aumentando a segurança.</descricaoDetalhada>
+    <cor>#ea80ff</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/GardenWay.webp</imagem>
+  </marcador>
+  <marcador id="1776783345403">
+    <x>0.6676</x>
+    <y>0.5904</y>
+    <nome>Garden Way</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Acesso</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Passagem subterrânea que evita a exposição do condômino à área externa, aumentando a segurança.</descricaoDetalhada>
+    <cor>#ea80ff</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/GardenWay.webp</imagem>
+  </marcador>
+  <marcador id="1776787476822">
+    <x>0.5704</x>
+    <y>0.5831</y>
+    <nome>Piscina Indoor Adulto e Infantil</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Piscina indoor adulto e infantil, conforto e lazer em qualquer estação.</descricaoDetalhada>
+    <cor>#009dff</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/PiscinasIndoorAquecidas.webp</imagem>
+  </marcador>
+  <marcador id="1776787759174">
+    <x>0.5776</x>
+    <y>0.6032</y>
+    <nome>Wellness Place</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Wellness place, sauna e sala de massagem, ideal para momentos de relaxamento e qualidade de vida.</descricaoDetalhada>
+    <cor>#ff00bb</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/WellnessPlace.webp</imagem>
+  </marcador>
+  <marcador id="1776787846609">
+    <x>0.6000</x>
+    <y>0.5961</y>
+    <nome>Administração</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada></descricaoDetalhada>
+    <cor>#004275</cor>
+  </marcador>
+  <marcador id="1776787979677">
+    <x>0.6469</x>
+    <y>0.5630</y>
+    <nome>Pórtico de Acesso</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Acesso 2º nível</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Pórtico imponente de acesso ao condomínio, compondo o segundo nível de controle, com monitoramento 24 horas e estacionamento para visitantes.</descricaoDetalhada>
+    <cor>#d4af37</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/PorticoDeAcessoAoCondominioComGuaritaBlindadaMaterialDe.webp</imagem>
+  </marcador>
+  <marcador id="1776788033270">
+    <x>0.7375</x>
+    <y>0.6437</y>
+    <nome>Garden Way</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Acesso</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Passagem subterrânea que evita a exposição do condômino à área externa, aumentando a segurança.</descricaoDetalhada>
+    <cor>#ea80ff</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/GardenWay.webp</imagem>
+  </marcador>
+  <marcador id="1776788123060">
+    <x>0.6804</x>
+    <y>0.5129</y>
+    <nome>Kids Park</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Kids park dentro das imediações do residencial, proporcionando mais segurança e comodidade para as crianças</descricaoDetalhada>
+    <cor>#2a520a</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/KidsPark.webp</imagem>
+  </marcador>
+  <marcador id="1776788206492">
+    <x>0.9555</x>
+    <y>0.7291</y>
+    <nome>Ruas Peatoniais com acesso controlado</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Acesso pedestre monitorado</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Ruas exclusivas para pedestres, com acesso controlado e mais segurança.</descricaoDetalhada>
+    <cor>#630fff</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/RuasPeatonaisMaterialDeComAcessoControlado.webp</imagem>
+  </marcador>
+  <marcador id="1776788444788">
+    <x>0.5226</x>
+    <y>0.6073</y>
+    <nome>Piscina Outdoor Adulto e Infantil</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Piscina outdoor adulto e infantil, envolta por paisagismo tropical e atmosfera de resort.</descricaoDetalhada>
+    <cor>#009dff</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/PiscinaOutdoor.webp</imagem>
+    <imagem>https://newedition.com.br/img/Carrosel/BeachGarden.webp</imagem>
+  </marcador>
+  <marcador id="1776795249368">
+    <x>0.5451</x>
+    <y>0.6182</y>
+    <nome>Beach Garden</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Beach Garden, um ambiente exclusivo com clima de praia e paisagismo diferenciado.</descricaoDetalhada>
+    <cor>#d4af37</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/BeachGarden.webp</imagem>
+  </marcador>
+  <marcador id="1776795976290">
+    <x>0.4624</x>
+    <y>0.7180</y>
+    <nome>Quadra de Padel</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Duas quadras de paddle, ideais para momentos de descompressão e convivência.</descricaoDetalhada>
+    <cor>#d4af37</cor>
+    <imagem>https://newedition.com.br/img/paddle.webp</imagem>
+  </marcador>
+  <marcador id="1776796117248">
+    <x>0.6029</x>
+    <y>0.6829</y>
+    <nome>Quadra de Tenis</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Quadra tennis piso em Saibro</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Duas quadras de tênis abertas, com piso em saibro, ideais para quem busca um jogo mais técnico e controlado.</descricaoDetalhada>
+    <cor>#995900</cor>
+    <imagem>https://newedition.com.br/img/beachTenis.webp</imagem>
+  </marcador>
+  <marcador id="1776796684329">
+    <x>0.5130</x>
+    <y>0.6946</y>
+    <nome>Quadra de Beach Tennis</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo>Quadra Beach tennis</tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Quatro quadras de beach tennis, ideais para iniciantes e para quem busca menor impacto, em ambiente integrado ao paisagismo, perfeitas para lazer e prática esportiva.</descricaoDetalhada>
+    <cor>#80ff00</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/4QuadrasDeBeachTennis.webp</imagem>
+  </marcador>
+  <marcador id="1776797055517">
+    <x>0.4931</x>
+    <y>0.7256</y>
+    <nome>Sports Lounge</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Sports lounge, ambiente ideal para relaxar, assistir jogos e confraternizar.</descricaoDetalhada>
+    <cor>#d4af37</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/2SportsLounge.webp</imagem>
+  </marcador>
+  <marcador id="1776797126977">
+    <x>0.5370</x>
+    <y>0.7199</y>
+    <nome>Sports Lounge</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Sports lounge, ambiente ideal para relaxar, assistir jogos e confraternizar.</descricaoDetalhada>
+    <cor>#d4af37</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/TheGardenClub.webp</imagem>
+    <imagem>https://newedition.com.br/img/Carrosel/2SportsLounge.webp</imagem>
+  </marcador>
+  <marcador id="1776797256364">
+    <x>0.5546</x>
+    <y>0.6927</y>
+    <nome>Quadra de futebol society</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Quadra de futebol society, perfeita para momentos de esporte e convivência.</descricaoDetalhada>
+    <cor>#2b00ff</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/QuadraDeFutebol5.webp</imagem>
+  </marcador>
+  <marcador id="1776797755908">
+    <x>0.5868</x>
+    <y>0.4669</y>
+    <nome>Ruas Internas</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada></descricaoDetalhada>
+    <cor>#d4af37</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/RuasInternas.webp</imagem>
+  </marcador>
+  <marcador id="1776805830378">
+    <x>0.4880</x>
+    <y>0.6823</y>
+    <nome>Kids Park</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Kids park planejado para oferecer mais segurança, conforto e diversão para as crianças.</descricaoDetalhada>
+    <cor>#00aaff</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/KidsPark.webp</imagem>
+  </marcador>
+</marcadores>
