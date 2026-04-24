@@ -2,6 +2,14 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+<!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NE5WRRBPHC"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-NE5WRRBPHC');
+    </script>
 <meta charset="UTF-8">       
         <!-- 
         © 2024 Roberto Fettuccia - Corretor
@@ -608,7 +616,7 @@ function inicializarMapa(tileSize, originalWidth, originalHeight, maxZoom) {
     map.fitBounds(currentBounds);
     map.setMaxBounds(currentBounds);
     
-    console.log(`✅ Mapa inicializado: ${WIDTH}x${HEIGHT}, Zoom max: ${maxZoom}, Tile: ${tileSize}`);
+    console.log(`Mapa inicializado: ${WIDTH}x${HEIGHT}, Zoom max: ${maxZoom}, Tile: ${tileSize}`);
 }
 
 function getLatLngFromCoords(x, y) {
@@ -656,7 +664,7 @@ function showLoading() {
     const loading = document.createElement('div');
     loading.id = 'loading';
     loading.className = 'loading';
-    loading.innerHTML = '📂 Carregando configurações do mapa...';
+    loading.innerHTML = 'Carregando configurações do mapa...';
     document.body.appendChild(loading);
 }
 
