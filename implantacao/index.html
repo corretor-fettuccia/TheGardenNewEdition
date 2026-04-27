@@ -431,8 +431,13 @@ let mapMarkers = {};
 let configTiles = null;
 
 function goBack() {
-    if (window.history.length > 1) window.history.back();
-    else window.location.href = "https://newedition.com.br";
+    const referrer = document.referrer;
+
+    if (referrer && referrer.includes("newedition.com.br")) {
+        window.history.back();
+    } else {
+        window.location.href = "https://newedition.com.br";
+    }
 }
 
 function fecharPopup() {
