@@ -23,7 +23,7 @@
     <detalhe></detalhe>
     <testada></testada>
     <areaTotal></areaTotal>
-    <descricaoDetalhada></descricaoDetalhada>
+    <descricaoDetalhada>Local perfeito para momentos de confraternização</descricaoDetalhada>
     <cor>#3b3b3b</cor>
     <imagem>https://newedition.com.br/img/Carrosel/PartyLounge.webp</imagem>
   </marcador>
@@ -37,7 +37,7 @@
     <detalhe></detalhe>
     <testada></testada>
     <areaTotal></areaTotal>
-    <descricaoDetalhada></descricaoDetalhada>
+    <descricaoDetalhada>O Game Lounge configura-se como um ambiente especialmente atrativo para o público adolescente, convívio social e uma atmosfera contemporânea em um único espaço.</descricaoDetalhada>
     <cor>#5c5c5c</cor>
     <imagem>https://newedition.com.br/img/Carrosel/GameLounge.webp</imagem>
   </marcador>
@@ -130,11 +130,11 @@ Bilhar/Sinuca</descricaoDetalhada>
     <nome>Vagas de estacionamento</nome>
     <lote></lote>
     <quadra></quadra>
-    <tipo>Serviço</tipo>
+    <tipo></tipo>
     <detalhe></detalhe>
     <testada></testada>
     <areaTotal></areaTotal>
-    <descricaoDetalhada></descricaoDetalhada>
+    <descricaoDetalhada>Estacionamento destinado a proporcionar maior comodidade e praticidade aos condôminos e visitantes.</descricaoDetalhada>
     <cor>#9d00e6</cor>
   </marcador>
   <marcador id="1776782667438">
@@ -143,11 +143,11 @@ Bilhar/Sinuca</descricaoDetalhada>
     <nome>Vagas de estacionamento</nome>
     <lote></lote>
     <quadra></quadra>
-    <tipo>Serviço</tipo>
+    <tipo></tipo>
     <detalhe></detalhe>
     <testada></testada>
     <areaTotal></areaTotal>
-    <descricaoDetalhada></descricaoDetalhada>
+    <descricaoDetalhada>Estacionamento destinado a proporcionar maior comodidade e praticidade aos condôminos e visitantes.</descricaoDetalhada>
     <cor>#9d00e6</cor>
   </marcador>
   <marcador id="1776782678890">
@@ -156,11 +156,11 @@ Bilhar/Sinuca</descricaoDetalhada>
     <nome>Vagas de estacionamento</nome>
     <lote></lote>
     <quadra></quadra>
-    <tipo>Serviço</tipo>
+    <tipo></tipo>
     <detalhe></detalhe>
     <testada></testada>
     <areaTotal></areaTotal>
-    <descricaoDetalhada></descricaoDetalhada>
+    <descricaoDetalhada>Estacionamento destinado a proporcionar maior comodidade e praticidade aos condôminos e visitantes.</descricaoDetalhada>
     <cor>#9d00e6</cor>
   </marcador>
   <marcador id="1776782688195">
@@ -169,11 +169,11 @@ Bilhar/Sinuca</descricaoDetalhada>
     <nome>Vagas de estacionamento</nome>
     <lote></lote>
     <quadra></quadra>
-    <tipo>Serviço</tipo>
+    <tipo></tipo>
     <detalhe></detalhe>
     <testada></testada>
     <areaTotal></areaTotal>
-    <descricaoDetalhada></descricaoDetalhada>
+    <descricaoDetalhada>Estacionamento destinado a proporcionar maior comodidade e praticidade aos condôminos e visitantes.</descricaoDetalhada>
     <cor>#9d00e6</cor>
   </marcador>
   <marcador id="1776782706453">
@@ -182,11 +182,11 @@ Bilhar/Sinuca</descricaoDetalhada>
     <nome>Vagas de estacionamento</nome>
     <lote></lote>
     <quadra></quadra>
-    <tipo>Serviço</tipo>
+    <tipo></tipo>
     <detalhe></detalhe>
     <testada></testada>
     <areaTotal></areaTotal>
-    <descricaoDetalhada></descricaoDetalhada>
+    <descricaoDetalhada>Estacionamento destinado a proporcionar maior comodidade e praticidade aos condôminos e visitantes.</descricaoDetalhada>
     <cor>#9d00e6</cor>
   </marcador>
   <marcador id="1776782953517">
@@ -223,11 +223,11 @@ Bilhar/Sinuca</descricaoDetalhada>
     <nome>Vagas de estacionamento</nome>
     <lote></lote>
     <quadra></quadra>
-    <tipo>Serviço</tipo>
+    <tipo></tipo>
     <detalhe></detalhe>
     <testada></testada>
     <areaTotal></areaTotal>
-    <descricaoDetalhada></descricaoDetalhada>
+    <descricaoDetalhada>Estacionamento destinado a proporcionar maior comodidade e praticidade aos condôminos e visitantes.</descricaoDetalhada>
     <cor>#9d00e6</cor>
   </marcador>
   <marcador id="1776783254684">
@@ -420,7 +420,7 @@ Bilhar/Sinuca</descricaoDetalhada>
     <quadra></quadra>
     <tipo>Quadra Beach tennis</tipo>
     <detalhe></detalhe>
-    <testada></testada>
+    <testada>Para você de Porto Alegre, que procurou residencial trocar o apartamento para ir para uma casa no centro menos denso, mais integrado com todas as facilidades de uma vida urbana, você já conhece o The Garden New Edition com Férias em plantação que ela está fantástica. Ela traz vários benefícios que o The Garden foi planejado.  Se você preza pela segurança e controle de quem convive com a sua família, preste atenção nesse material. Essa é a implantação do The Garden New Edition, um empreendimento padrão Melnick Arcádia em uma das áreas mais nobres da cidade de Canoas. O que eu mais gosto nessa versão do New Edition é que confere dois níveis de acesso controlado,   Para quem possui filhos, o quesito segurança realmente é um item indispensável para ter tranquilidade. Nessa nova edição foi adicionado uma passagem subterrânea, o que confere, principalmente para os pequenos, um acesso ao clube sem que as crianças fiquem expostas nas áreas externas das imediações do lançamento. Isso confere mais tranquilidade, conforto e, principalmente, segurança.</testada>
     <areaTotal></areaTotal>
     <descricaoDetalhada>Quatro quadras de beach tennis, ideais para iniciantes e para quem busca menor impacto, em ambiente integrado ao paisagismo, perfeitas para lazer e prática esportiva.</descricaoDetalhada>
     <cor>#80ff00</cor>
@@ -452,7 +452,6 @@ Bilhar/Sinuca</descricaoDetalhada>
     <areaTotal></areaTotal>
     <descricaoDetalhada>Sports lounge, ambiente ideal para relaxar, assistir jogos e confraternizar.</descricaoDetalhada>
     <cor>#d4af37</cor>
-    <imagem>https://newedition.com.br/img/Carrosel/TheGardenClub.webp</imagem>
     <imagem>https://newedition.com.br/img/Carrosel/2SportsLounge.webp</imagem>
   </marcador>
   <marcador id="1776797256364">
@@ -465,7 +464,7 @@ Bilhar/Sinuca</descricaoDetalhada>
     <detalhe></detalhe>
     <testada></testada>
     <areaTotal></areaTotal>
-    <descricaoDetalhada>Quadra de futebol society, perfeita para momentos de esporte e convivência.</descricaoDetalhada>
+    <descricaoDetalhada>Quadra de futebol society, ideal para a prática esportiva e para a convivência social em um ambiente dinâmico e agradável.</descricaoDetalhada>
     <cor>#2b00ff</cor>
     <imagem>https://newedition.com.br/img/Carrosel/QuadraDeFutebol5.webp</imagem>
   </marcador>
@@ -496,5 +495,19 @@ Bilhar/Sinuca</descricaoDetalhada>
     <descricaoDetalhada>Kids park planejado para oferecer mais segurança, conforto e diversão para as crianças.</descricaoDetalhada>
     <cor>#00aaff</cor>
     <imagem>https://newedition.com.br/img/Carrosel/KidsPark.webp</imagem>
+  </marcador>
+  <marcador id="1777421988578">
+    <x>0.6409</x>
+    <y>0.6990</y>
+    <nome>Vista do Club</nome>
+    <lote></lote>
+    <quadra></quadra>
+    <tipo></tipo>
+    <detalhe></detalhe>
+    <testada></testada>
+    <areaTotal></areaTotal>
+    <descricaoDetalhada>Vista da perspectiva do club mais elegante da cidade.</descricaoDetalhada>
+    <cor>#d4af37</cor>
+    <imagem>https://newedition.com.br/img/Carrosel/TheGardenClub.webp</imagem>
   </marcador>
 </marcadores>
