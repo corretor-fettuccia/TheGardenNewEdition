@@ -587,12 +587,12 @@ JUSTIFY CSS
             </button> -->
 				<button type="submit" id="submitButton2" 
 				        data-bottle-leaves 
-				        data-texto="Quero ser contatado"
-				        data-texto1="Acessar agora"
+						data-texto="Pedir Convite"
+						data-texto1="Acesso Restrito"
+						data-texto2="By Invitation Only"
 				        data-transicao-velocidade="1300"
 				        data-transicao-suavidade="400"
 				        data-transicao-estilo="fade"
-				        onclick="window.location.href='#contact'"
 				        style="width: 400px; height: 50px; padding: 8px 15px !important; box-sizing: border-box;">
 					    <label id="resposta2"></label>
 				</button>
@@ -708,15 +708,37 @@ JUSTIFY CSS
 				</button>
 				
 				<style>
-				    /* CSS */
-				    #meuBotao #submitbutton2 .btn-bottle-leaves__text {
-				        background: linear-gradient(135deg, #FFFFFF, #FFFFFF) !important;
-				        -webkit-background-clip: text !important;
-				        background-clip: text !important;
-				        -webkit-text-fill-color: transparent !important;
-				        transition: opacity 0.3s ease !important;
-				        will-change: opacity;
-				    }
+				    /* ESTILO - BOTÃO CTA - PREMIUM */
+    #meuBotao #submitButton2 .btn-bottle-leaves__text {
+        color: #FFD700 !important;
+        background: none !important;
+        -webkit-text-fill-color: #FFD700 !important;
+        text-shadow: 0 0 3px rgba(0,0,0,0.5) !important;
+    }
+    
+    /* 🔥 FUNDO VERDE QUASE PRETO 🔥 */
+    #meuBotao #submitButton2 .btn-bottle-leaves__glass {
+        background: #black !important;
+        border: 1px solid rgba(212, 175, 55, 0.4) !important;
+        backdrop-filter: blur(10px) !important;
+    }
+    
+    /* Folhas douradas suaves */
+    #meuBotao #submitButton2 .btn-bottle-leaves__leaf {
+        background: #D4AF37 !important;
+        opacity: 0.7 !important;
+    }
+    
+    /* Hover com leve realce */
+    #meuBotao:hover #submitButton2:hover .btn-bottle-leaves__glass {
+        background: #0F2A1F !important;
+        border-color: rgba(212, 175, 55, 0.6) !important;
+    }
+    
+    #meuBotao:hover #submitButton2:hover .btn-bottle-leaves__text {
+        color: #FFE484 !important;
+        -webkit-text-fill-color: #FFE484 !important;
+    }
 				</style>
 
             </div>
