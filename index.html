@@ -708,37 +708,46 @@ JUSTIFY CSS
 				</button>
 				
 				<style>
-				    /* ESTILO - BOTÃO CTA - PREMIUM */
-    #meuBotao #submitButton2 .btn-bottle-leaves__text {
-        color: #FFD700 !important;
-        background: none !important;
-        -webkit-text-fill-color: #FFD700 !important;
-        text-shadow: 0 0 3px rgba(0,0,0,0.5) !important;
-    }
-    
-    /* 🔥 FUNDO VERDE QUASE PRETO 🔥 */
-    #meuBotao #submitButton2 .btn-bottle-leaves__glass {
-        background: #black !important;
-        border: 1px solid rgba(212, 175, 55, 0.4) !important;
-        backdrop-filter: blur(10px) !important;
-    }
-    
-    /* Folhas douradas suaves */
-    #meuBotao #submitButton2 .btn-bottle-leaves__leaf {
-        background: #D4AF37 !important;
-        opacity: 0.7 !important;
-    }
-    
-    /* Hover com leve realce */
-    #meuBotao:hover #submitButton2:hover .btn-bottle-leaves__glass {
-        background: #0F2A1F !important;
-        border-color: rgba(212, 175, 55, 0.6) !important;
-    }
-    
-    #meuBotao:hover #submitButton2:hover .btn-bottle-leaves__text {
-        color: #FFE484 !important;
-        -webkit-text-fill-color: #FFE484 !important;
-    }
+				/* ============================================
+				   ESTILOS PARA AMBOS OS BOTÕES
+				   ============================================ */
+				
+				/* Texto dourado - para os dois botões */
+				#meuBotao .btn-bottle-leaves__text,
+				#submitButton2 .btn-bottle-leaves__text {
+				    color: #FFD700 !important;
+				    background: none !important;
+				    -webkit-text-fill-color: #FFD700 !important;
+				    text-shadow: 0 0 3px rgba(0,0,0,0.5) !important;
+				}
+				
+				/* 🔥 FUNDO VERDE QUASE PRETO - para os dois botões 🔥 */
+				#meuBotao .btn-bottle-leaves__glass,
+				#submitButton2 .btn-bottle-leaves__glass {
+				    background: #0A1C14 !important;
+				    border: 1px solid rgba(212, 175, 55, 0.4) !important;
+				    backdrop-filter: blur(10px) !important;
+				}
+				
+				/* Folhas douradas suaves - para os dois botões */
+				#meuBotao .btn-bottle-leaves__leaf,
+				#submitButton2 .btn-bottle-leaves__leaf {
+				    background: #D4AF37 !important;
+				    opacity: 0.7 !important;
+				}
+				
+				/* Hover com leve realce - para os dois botões */
+				#meuBotao:hover .btn-bottle-leaves__glass,
+				#submitButton2:hover .btn-bottle-leaves__glass {
+				    background: #0F2A1F !important;
+				    border-color: rgba(212, 175, 55, 0.6) !important;
+				}
+				
+				#meuBotao:hover .btn-bottle-leaves__text,
+				#submitButton2:hover .btn-bottle-leaves__text {
+				    color: #FFE484 !important;
+				    -webkit-text-fill-color: #FFE484 !important;
+				}
 				</style>
 
             </div>
