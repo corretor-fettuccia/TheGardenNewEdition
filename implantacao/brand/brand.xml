@@ -3,10 +3,11 @@
     <messages>
         <message time="600">Olá</message>
         <message time="1000">Me chamo Roberto Fettuccia</message>
-        <message time="1000">Consultor senior</message>
-        <message time="1000">Qualquer dúvida</message>
-        <message time="1000">Se precisar...</message>
-        <message time="1000">É só chamar</message>
+        <message time="1000">Consultor sênior</message>
+        <message time="1000">Consigo condições fantásticas</message>
+        <message time="1000">mensais de R$5.570,00</message>
+        <message time="1000">aproveita porque restam</message>
+        <message time="1000">poucas unidades</message>
         
         <pause time="50000"></pause>
         <message time="6000">Então o que achou?</message>
