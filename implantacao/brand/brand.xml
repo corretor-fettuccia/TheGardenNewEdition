@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<brand>
+    <messages>
+        <message time="600">Olá</message>
+        <message time="1000">Me chamo Roberto Fettuccia</message>
+        <message time="1000">Consultor senior</message>
+        <message time="1000">Qualquer dúvida</message>
+        <message time="1000">Se precisar...</message>
+        <message time="1000">É só chamar</message>
+        
+        <pause time="50000"></pause>
+        <message time="6000">Então o que achou?</message>
+        <pause time="10000"></pause>
+        <message time="900">O que falta</message>
+        <message time="900">para decidir?</message>
+        <message time="1900">eu posso ajudar!</message>
+        
+    </messages>
+</brand>
