@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tiles>
+  <tileSize>512</tileSize>
+  <originalWidth>10257</originalWidth>
+  <originalHeight>8278</originalHeight>
+  <maxZoom>3</maxZoom>
+  <generatedAt>2026-05-11T20:14:31.234Z</generatedAt>
+  <levels>
+    <level>
+      <z>0</z>
+      <width>1283</width>
+      <height>1035</height>
+      <cols>3</cols>
+      <rows>3</rows>
+      <tiles>9</tiles>
+    </level>
+    <level>
+      <z>1</z>
+      <width>2565</width>
+      <height>2070</height>
+      <cols>6</cols>
+      <rows>5</rows>
+      <tiles>30</tiles>
+    </level>
+    <level>
+      <z>2</z>
+      <width>5129</width>
+      <height>4139</height>
+      <cols>11</cols>
+      <rows>9</rows>
+      <tiles>99</tiles>
+    </level>
+    <level>
+      <z>3</z>
+      <width>10257</width>
+      <height>8278</height>
+      <cols>21</cols>
+      <rows>17</rows>
+      <tiles>357</tiles>
+    </level>
+  </levels>
+</tiles>

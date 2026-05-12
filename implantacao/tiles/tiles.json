@@ -1,0 +1,41 @@
+{
+  "tileSize": 512,
+  "originalWidth": 10257,
+  "originalHeight": 8278,
+  "maxZoom": 3,
+  "generatedAt": "2026-05-11T20:14:31.234Z",
+  "levels": [
+    {
+      "z": 0,
+      "width": 1283,
+      "height": 1035,
+      "cols": 3,
+      "rows": 3,
+      "tiles": 9
+    },
+    {
+      "z": 1,
+      "width": 2565,
+      "height": 2070,
+      "cols": 6,
+      "rows": 5,
+      "tiles": 30
+    },
+    {
+      "z": 2,
+      "width": 5129,
+      "height": 4139,
+      "cols": 11,
+      "rows": 9,
+      "tiles": 99
+    },
+    {
+      "z": 3,
+      "width": 10257,
+      "height": 8278,
+      "cols": 21,
+      "rows": 17,
+      "tiles": 357
+    }
+  ]
+}
