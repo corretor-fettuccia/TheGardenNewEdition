@@ -138,7 +138,7 @@
         "videoSrc": "assets/video/parallax-videosrc-1.mp4",
         "poster": "assets/images/parallax-poster-2.jpg",
         "startTime": 0,
-        "endTime": 36.63333333333333,
+        "endTime": 48.7,
         "scrollHeight": 19250,
         "smoothing": 0.32,
         "timeEpsilon": 0.135,
@@ -181,7 +181,7 @@
         "timelineSnap": true,
         "cinematicMaxRate": 2.2,
         "videoDuration": 48.7,
-        "endTimeAuto": false
+        "endTimeAuto": true
       },
       "settings": {
         "visible": true,
@@ -1609,7 +1609,7 @@
     }
   ],
   "selectedSectionId": "parallax-1789394430774-831ug",
-  "updatedAt": "2026-09-15T14:37:52.042Z",
+  "updatedAt": "2026-09-15T15:37:02.785Z",
   "geo": {
     "enabled": "yes",
     "generateMarkdown": "yes",
