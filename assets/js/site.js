@@ -543,6 +543,8 @@
     let sectionVisible = true;
     let visibilityObserver = null;
     let lastDebugLabel = "";
+    let lastProgressScale = -1;
+    let lastHintOpacity = "";
     let cinematicAnimating = false;
     let cinematicRafId = 0;
     let cinematicFrameMode = "raf";
@@ -811,7 +813,6 @@
 
     function runSeekTransition(from, target, profile, direction, distance, token) {
       const startedAt = performance.now();
-      let lastScrollAt = 0;
       cinematicNative = false;
       cinematicFrameMode = "raf";
       const tick = (now) => {
@@ -821,7 +822,9 @@
         const current = clamp(from + direction * travelled, config.start, config.end);
         cinematicTime = current;
         targetTime = displayTime = current;
-        if (now - lastScrollAt >= 32) { scrollToProgress(rawProgressForTime(current), "auto"); lastScrollAt = now; }
+        /* O scroll físico não acompanha cada frame. window.scrollTo() durante a
+           reprodução força layout/paint e compete com o decoder. A posição da
+           página é sincronizada somente na chegada à chave. */
         if (elapsed >= profile.total || travelled >= distance - 0.0005) {
           finishCinematic(target, token);
           return;
@@ -834,10 +837,19 @@
     function runNativeForwardTransition(from, target, profile, distance, token) {
       let startedAt = 0;
       let lastRateAt = 0;
-      let lastScrollAt = 0;
       let startGuardTimer = 0;
+      let lastQualityAt = 0;
+      let qualityTotal = 0;
+      let qualityDropped = 0;
+      let adaptiveRateCap = config.cinematicMaxRate;
+      let smoothedRate = 1;
       cinematicNative = true;
       pendingSeek = null;
+
+      /* Playback muito lento parece travamento porque o navegador precisa repetir
+         frames do arquivo. Mantemos movimento perceptualmente contínuo e fazemos
+         a parada limpa somente ao chegar à chave. */
+      const nativeRateFloor = mobileQuery.matches ? 0.62 : 0.55;
 
       const frameTolerance = Math.max(0.004, 0.55 / Math.max(1, config.timelineFps));
       const scheduleTick = (tick) => {
@@ -854,9 +866,18 @@
         if (startGuardTimer) { clearTimeout(startGuardTimer); startGuardTimer = 0; }
         if (destroyed || !cinematicAnimating || token !== cinematicToken) return;
         try {
-          video.playbackRate = Math.max(0.08, Math.min(config.cinematicMaxRate, cinematicVelocityAt(0.001, profile) || 0.08));
+          const initialVelocity = cinematicVelocityAt(0.001, profile) || nativeRateFloor;
+          video.playbackRate = clamp(initialVelocity, nativeRateFloor, adaptiveRateCap);
         } catch (_) {}
-        lastPlaybackRate = video.playbackRate || 0.08;
+        lastPlaybackRate = video.playbackRate || nativeRateFloor;
+        smoothedRate = lastPlaybackRate;
+        if (typeof video.getVideoPlaybackQuality === "function") {
+          try {
+            const q = video.getVideoPlaybackQuality();
+            qualityTotal = number(q.totalVideoFrames, 0);
+            qualityDropped = number(q.droppedVideoFrames, 0);
+          } catch (_) {}
+        }
 
         const tick = (now, metadata) => {
           if (destroyed || !cinematicAnimating || token !== cinematicToken) return;
@@ -870,7 +891,9 @@
 
           cinematicTime = actualTime;
           targetTime = displayTime = actualTime;
-          if (now - lastScrollAt >= 32) { scrollToProgress(rawProgressForTime(actualTime), "auto"); lastScrollAt = now; }
+
+          /* O scroll físico fica estacionado durante a tomada. Atualizá-lo a cada
+             callback de vídeo causava reflow e microtravadas, sobretudo no mobile. */
 
           /* Só declaramos chegada quando o decoder realmente apresentou o frame da
              chave (ou chegou a menos de meio frame). Isso elimina correções visíveis
@@ -882,10 +905,39 @@
 
           let baseRate;
           if (elapsed < profile.total) baseRate = cinematicVelocityAt(curveElapsed, profile);
-          else baseRate = clamp(Math.max(0.18, remaining / 0.15), 0.08, config.cinematicMaxRate);
+          else baseRate = Math.max(nativeRateFloor, remaining / 0.18);
+
+          /* Controle adaptativo: se o decoder começar a descartar frames, reduzimos
+             gradualmente o teto da etapa. Quando estabiliza, o teto se recupera. */
+          if (typeof video.getVideoPlaybackQuality === "function" && now - lastQualityAt >= 450) {
+            lastQualityAt = now;
+            try {
+              const q = video.getVideoPlaybackQuality();
+              const total = number(q.totalVideoFrames, qualityTotal);
+              const dropped = number(q.droppedVideoFrames, qualityDropped);
+              const totalDelta = Math.max(0, total - qualityTotal);
+              const dropDelta = Math.max(0, dropped - qualityDropped);
+              qualityTotal = total;
+              qualityDropped = dropped;
+              if (totalDelta >= 8) {
+                const ratio = dropDelta / totalDelta;
+                if (ratio >= 0.08) adaptiveRateCap = Math.max(1, adaptiveRateCap - 0.18);
+                else if (ratio <= 0.01) adaptiveRateCap = Math.min(config.cinematicMaxRate, adaptiveRateCap + 0.05);
+              }
+            } catch (_) {}
+          }
+
           const drift = desiredTime - actualTime;
-          const correctedRate = clamp(baseRate + drift * 1.6, 0.08, config.cinematicMaxRate);
-          if (now - lastRateAt >= 28 && Math.abs(correctedRate - lastPlaybackRate) >= 0.018) {
+          const terminalWindow = Math.max(frameTolerance * 3, nativeRateFloor * 0.11);
+          const minRate = remaining <= terminalWindow ? 0.22 : nativeRateFloor;
+          const desiredRate = clamp(baseRate + drift * 1.15, minRate, adaptiveRateCap);
+
+          /* Alterar playbackRate dezenas de vezes por segundo pode produzir jitter
+             no próprio pipeline de mídia. Aplicamos low-pass e atualizamos em ritmo
+             mais baixo, suficiente para uma rampa visualmente contínua. */
+          smoothedRate += (desiredRate - smoothedRate) * 0.42;
+          const correctedRate = clamp(smoothedRate, minRate, adaptiveRateCap);
+          if (now - lastRateAt >= 72 && Math.abs(correctedRate - lastPlaybackRate) >= 0.035) {
             try { video.playbackRate = correctedRate; lastPlaybackRate = correctedRate; lastRateAt = now; } catch (_) {}
           }
 
@@ -1122,7 +1174,11 @@
       if (destroyed) return;
       if (document.hidden || (!sectionVisible && !cinematicAnimating)) return;
 
-      const raw = getScrollProgress();
+      /* Durante uma tomada cinematográfica, ler getBoundingClientRect() em todo
+         RAF força layout sem necessidade. O tempo do vídeo já é a fonte da verdade. */
+      const raw = (config.interactionMode === "cinematic" && cinematicAnimating)
+        ? rawProgressForTime(displayTime)
+        : getScrollProgress();
       if (exitBoundaryState && isSectionActive()) {
         exitBoundaryState = 0;
         root.dataset.exitState = "inside";
@@ -1170,13 +1226,17 @@
       updatePoints(displayTime);
       const mediaProgress = clamp((displayTime - config.start) / Math.max(0.001, config.end - config.start), 0, 1);
       const visibleProgress = config.interactionMode === "cinematic" ? mediaProgress : raw;
-      progressBar.style.transform = `scaleX(${visibleProgress})`;
+      if (Math.abs(visibleProgress - lastProgressScale) >= 0.0015) {
+        progressBar.style.transform = `scaleX(${visibleProgress})`;
+        lastProgressScale = visibleProgress;
+      }
       if (hint) {
         const cardStandby = root.dataset.cardStandby === "true";
         /* Em modo cinematográfico o hint pertence ao estado de espera do card.
            Ele some durante a transição e volta sempre que uma chave/card fica parado. */
         const shouldShowHint = cardStandby || visibleProgress <= 0.035;
-        hint.style.opacity = shouldShowHint ? (cardStandby ? ".96" : ".8") : "0";
+        const hintOpacity = shouldShowHint ? (cardStandby ? ".96" : ".8") : "0";
+        if (hintOpacity !== lastHintOpacity) { hint.style.opacity = hintOpacity; lastHintOpacity = hintOpacity; }
       }
       const debugLabel = `${displayTime.toFixed(2)} s`;
       if (debugLabel !== lastDebugLabel) {

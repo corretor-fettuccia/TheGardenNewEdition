@@ -1,5 +1,5 @@
 {
-  "version": "5.5.3",
+  "version": "5.5.5",
   "projectId": "the-garden-new-edition-parallax-editorial-signature",
   "projectName": "The Garden New Edition — Parallax Editorial Signature",
   "preset": "personalizado",
@@ -138,7 +138,7 @@
         "videoSrc": "assets/video/parallax-videosrc-1.mp4",
         "poster": "assets/images/parallax-poster-2.jpg",
         "startTime": 0,
-        "endTime": 48.7,
+        "endTime": 36.63333333333333,
         "scrollHeight": 19250,
         "smoothing": 0.32,
         "timeEpsilon": 0.135,
@@ -163,7 +163,7 @@
         "showProgress": true,
         "showScrollHint": true,
         "showSkip": true,
-        "showRestart": false,
+        "showRestart": true,
         "showSound": false,
         "showChapters": true,
         "debugTime": false,
@@ -181,7 +181,7 @@
         "timelineSnap": true,
         "cinematicMaxRate": 2.2,
         "videoDuration": 48.7,
-        "endTimeAuto": true
+        "endTimeAuto": false
       },
       "settings": {
         "visible": true,
@@ -1609,7 +1609,7 @@
     }
   ],
   "selectedSectionId": "parallax-1789394430774-831ug",
-  "updatedAt": "2026-09-15T15:37:02.785Z",
+  "updatedAt": "2026-09-15T15:51:35.547Z",
   "geo": {
     "enabled": "yes",
     "generateMarkdown": "yes",

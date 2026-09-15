@@ -4,8 +4,8 @@
 .svp-root { --svp-scroll-height: 8000px; --svp-overlay: rgba(0,0,0,.3); --svp-x: 50%; --svp-y: 50%; --svp-scale: 1; position: relative; width: 100%; height: var(--svp-scroll-height); margin: 0; background: #050505; overflow: visible; }
 .svp-sticky { position: sticky; top: 0; width: 100%; height: 100vh; height: 100svh; min-height: 0; overflow: hidden; isolation: isolate; background: #050505; color: #fff; font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
 .svp-media, .svp-video, .svp-poster, .svp-overlay { position: absolute; inset: 0; width: 100%; height: 100%; }
-.svp-media { z-index: 0; overflow: hidden; background: #050505; }
-.svp-video, .svp-poster { object-fit: var(--svp-fit, cover); object-position: var(--svp-x) var(--svp-y); transform: scale(var(--svp-scale)); transform-origin: center; transition: opacity .45s ease; }
+.svp-media { z-index: 0; overflow: hidden; background: #050505; contain: paint; }
+.svp-video, .svp-poster { object-fit: var(--svp-fit, cover); object-position: var(--svp-x) var(--svp-y); transform: translateZ(0) scale(var(--svp-scale)); transform-origin: center; transition: opacity .45s ease; backface-visibility: hidden; will-change: transform, opacity; }
 .svp-video { opacity: 0; }
 .svp-root.svp-video-ready .svp-video { opacity: 1; }
 .svp-root.svp-video-ready .svp-poster { opacity: 0; }
@@ -62,8 +62,12 @@
 .svp-root.svp-is-mobile .svp-scroll-hint-icon::after { content:""; display:block; position:absolute; left:50%; width:11px; height:11px; border:solid rgba(255,255,255,.96); border-width:2px 2px 0 0; border-radius:0; background:transparent; animation:svp-swipe-up 1.35s ease-in-out infinite; }
 .svp-root.svp-is-mobile .svp-scroll-hint-icon::before { top:13px; animation-delay:.16s; }
 .svp-root.svp-is-mobile .svp-scroll-hint-icon::after { top:4px; animation-delay:0s; }
-.svp-toolbar { position: absolute; z-index: 13; top: max(18px, env(safe-area-inset-top)); right: max(18px, env(safe-area-inset-right)); display: flex; gap: 8px; }
-.svp-control { min-height: 40px; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; padding: 0 14px; background: rgba(0,0,0,.38); color: #fff; font: inherit; font-size: .82rem; cursor: pointer; backdrop-filter: blur(8px); }
+.svp-toolbar { position: absolute; z-index: 13; display: flex; gap: 8px; align-items: center; pointer-events: auto; }
+/* Reiniciar + Pular ficam fora do eixo visual do hint central. */
+.svp-toolbar-primary { left: max(18px, env(safe-area-inset-left)); bottom: max(20px, env(safe-area-inset-bottom)); max-width: calc(50% - 82px); }
+.svp-toolbar-secondary { top: max(18px, env(safe-area-inset-top)); right: max(18px, env(safe-area-inset-right)); }
+.svp-control { min-height: 38px; border: 1px solid rgba(255,255,255,.20); border-radius: 999px; padding: 0 13px; background: rgba(0,0,0,.30); color: rgba(255,255,255,.88); font: inherit; font-size: .78rem; cursor: pointer; opacity: .78; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: opacity .2s ease, background .2s ease, border-color .2s ease, transform .2s ease; }
+.svp-control:hover, .svp-control:focus-visible { opacity: 1; background: rgba(0,0,0,.52); border-color: rgba(255,255,255,.38); transform: translateY(-1px); outline: none; }
 .svp-chapters { position: absolute; z-index: 13; top: 50%; right: max(15px, env(safe-area-inset-right)); transform: translateY(-50%); display: flex; flex-direction: column; gap: 9px; }
 .svp-chapter { width: 11px; height: 11px; padding: 0; border: 1px solid rgba(255,255,255,.8); border-radius: 50%; background: transparent; cursor: pointer; transition: transform .2s, background .2s; }
 .svp-chapter.svp-current { background:#fff; transform:scale(1.35); }
@@ -77,8 +81,10 @@
   .svp-hero[data-position^="top"] { top: max(76px, env(safe-area-inset-top)); bottom: auto; translate: none; }
   .svp-hero[data-position^="center"] { top: 50%; bottom: auto; translate: 0 -50%; }
   .svp-hero[data-position^="bottom"] { top: auto; bottom: max(66px, env(safe-area-inset-bottom)); translate: none; }
-  .svp-toolbar { top: max(12px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right)); }
-  .svp-control { min-height: 38px; padding:0 11px; font-size:.74rem; }
+  .svp-toolbar-primary { left: max(12px, env(safe-area-inset-left)); bottom: max(12px, env(safe-area-inset-bottom)); top: auto; right: auto; flex-direction: column; align-items: flex-start; gap: 6px; max-width: 104px; }
+  .svp-toolbar-secondary { top: max(12px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right)); }
+  .svp-control { min-height: 32px; padding:0 10px; font-size:.68rem; opacity:.74; }
+  .svp-toolbar-primary .svp-control { max-width:104px; white-space:nowrap; }
   .svp-chapters { right: 8px; }
   .svp-scroll-hint { font-size:.65rem; }
 }

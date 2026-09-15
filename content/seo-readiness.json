@@ -1,5 +1,5 @@
 {
-  "version": "5.5.3",
+  "version": "5.5.5",
   "metrics": {
     "coreWebVitalsPotential": 8,
     "crawlArchitecture": 9.5,
@@ -8,5 +8,5 @@
     "scaleSafety": 9
   },
   "average": 8.9,
-  "generatedAt": "2026-09-15T15:37:20.323Z"
+  "generatedAt": "2026-09-15T15:51:52.485Z"
 }
