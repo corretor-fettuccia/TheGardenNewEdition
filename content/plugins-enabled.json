@@ -1,0 +1,212 @@
+[
+  {
+    "id": "parallax",
+    "name": "Parallax",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "2.7.3",
+    "source": "plugins/parallax/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "menu-fixo-adaptavel-pro",
+    "name": "Menu fixo adaptável Pro",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "1.0.0",
+    "source": "plugins/menu-fixo-adaptavel-pro-v1.0.0/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "anti-ia-copy-policy",
+    "name": "Anti-IA Copy — Política de uso",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "1.0.0",
+    "source": "plugins/anti-ia-copy/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "whatsapp-flutuante-pro",
+    "name": "WhatsApp flutuante Pro",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "1.1.0",
+    "source": "plugins/whatsapp-flutuante-pro/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "segment-layout",
+    "name": "Segmento",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "1.1.0",
+    "source": "plugins/segment-layout/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "gallery-big-four",
+    "name": "Galeria Big Four",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "2.2.0",
+    "source": "plugins/gallery-big-four/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "button-single",
+    "name": "Botão",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "single",
+    "version": "1.0.0",
+    "source": "plugins/button-single/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "property-slider",
+    "name": "Slider imobiliário",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "1.2.0",
+    "source": "plugins/property-slider/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "magazine-text-pro",
+    "name": "Magazine Text Pro",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "1.1.0",
+    "source": "plugins/magazine-text-pro-v1.1.0/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "specs",
+    "name": "Ficha do imóvel",
+    "type": "section",
+    "compositionRole": "section",
+    "compositionCardinality": "multiple",
+    "version": "1.0.0",
+    "source": "plugins/specs/plugin.json",
+    "packageType": "core"
+  },
+  {
+    "id": "lifestyle",
+    "name": "Lifestyle",
+    "type": "section",
+    "compositionRole": "section",
+    "compositionCardinality": "multiple",
+    "version": "1.0.0",
+    "source": "plugins/lifestyle/plugin.json",
+    "packageType": "core"
+  },
+  {
+    "id": "youtube",
+    "name": "YouTube",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "1.0.1",
+    "source": "plugins/youtube/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "location",
+    "name": "Localização",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "1.1.0",
+    "source": "plugins/location/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "implantacao-tiles-pro",
+    "name": "Implantação Tiles Pro",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "1.0.1",
+    "source": "plugins/implantacao-tiles-pro-v1.0.1/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "faq",
+    "name": "Perguntas frequentes",
+    "type": "section",
+    "compositionRole": "section",
+    "compositionCardinality": "multiple",
+    "version": "1.0.0",
+    "source": "plugins/faq/plugin.json",
+    "packageType": "core"
+  },
+  {
+    "id": "payment",
+    "name": "Condições de pagamento",
+    "type": "section",
+    "compositionRole": "section",
+    "compositionCardinality": "multiple",
+    "version": "1.0.0",
+    "source": "plugins/payment/plugin.json",
+    "packageType": "core"
+  },
+  {
+    "id": "form-sender-v4",
+    "name": "Form Sender v4",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "4.2.1",
+    "source": "plugins/form-sender-v4/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "footer",
+    "name": "Rodapé profissional",
+    "type": "section",
+    "compositionRole": "section",
+    "compositionCardinality": "multiple",
+    "version": "1.1.0",
+    "source": "plugins/footer/plugin.json",
+    "packageType": "core"
+  },
+  {
+    "id": "reveal",
+    "name": "Revelação no scroll",
+    "type": "behavior",
+    "compositionRole": "behavior",
+    "compositionCardinality": "multiple",
+    "version": "1.0.0",
+    "source": "plugins/reveal/plugin.json",
+    "packageType": "core"
+  },
+  {
+    "id": "lightbox",
+    "name": "Lightbox de galeria",
+    "type": "behavior",
+    "compositionRole": "behavior",
+    "compositionCardinality": "multiple",
+    "version": "1.0.0",
+    "source": "plugins/lightbox/plugin.json",
+    "packageType": "core"
+  },
+  {
+    "id": "content-protection",
+    "name": "Proteção de conteúdo",
+    "type": "behavior",
+    "compositionRole": "behavior",
+    "compositionCardinality": "multiple",
+    "version": "1.0.0",
+    "source": "plugins/content-protection/plugin.json",
+    "packageType": "bundled"
+  }
+]
