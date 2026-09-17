@@ -5,7 +5,7 @@
     "type": "section",
     "compositionRole": "both",
     "compositionCardinality": "multiple",
-    "version": "2.8.3",
+    "version": "2.9.2",
     "source": "plugins/parallax/plugin.json",
     "packageType": "bundled"
   },
@@ -17,46 +17,6 @@
     "compositionCardinality": "multiple",
     "version": "1.2.1",
     "source": "plugins/only-text-context/plugin.json",
-    "packageType": "bundled"
-  },
-  {
-    "id": "lifestyle",
-    "name": "Lifestyle",
-    "type": "section",
-    "compositionRole": "section",
-    "compositionCardinality": "multiple",
-    "version": "1.0.0",
-    "source": "plugins/lifestyle/plugin.json",
-    "packageType": "core"
-  },
-  {
-    "id": "menu-fixo-adaptavel-pro",
-    "name": "Menu fixo adaptável Pro",
-    "type": "section",
-    "compositionRole": "both",
-    "compositionCardinality": "multiple",
-    "version": "1.0.0",
-    "source": "plugins/menu-fixo-adaptavel-pro-v1.0.0/plugin.json",
-    "packageType": "bundled"
-  },
-  {
-    "id": "anti-ia-copy-policy",
-    "name": "Anti-IA Copy — Política de uso",
-    "type": "section",
-    "compositionRole": "both",
-    "compositionCardinality": "multiple",
-    "version": "1.0.0",
-    "source": "plugins/anti-ia-copy/plugin.json",
-    "packageType": "bundled"
-  },
-  {
-    "id": "whatsapp-flutuante-pro",
-    "name": "WhatsApp flutuante Pro",
-    "type": "section",
-    "compositionRole": "both",
-    "compositionCardinality": "multiple",
-    "version": "1.1.0",
-    "source": "plugins/whatsapp-flutuante-pro/plugin.json",
     "packageType": "bundled"
   },
   {
@@ -90,14 +50,14 @@
     "packageType": "bundled"
   },
   {
-    "id": "property-slider",
-    "name": "Slider imobiliário",
+    "id": "lifestyle",
+    "name": "Lifestyle",
     "type": "section",
-    "compositionRole": "both",
+    "compositionRole": "section",
     "compositionCardinality": "multiple",
-    "version": "1.2.0",
-    "source": "plugins/property-slider/plugin.json",
-    "packageType": "bundled"
+    "version": "1.0.0",
+    "source": "plugins/lifestyle/plugin.json",
+    "packageType": "core"
   },
   {
     "id": "specs",
@@ -108,6 +68,46 @@
     "version": "1.0.0",
     "source": "plugins/specs/plugin.json",
     "packageType": "core"
+  },
+  {
+    "id": "menu-fixo-adaptavel-pro",
+    "name": "Menu fixo adaptável Pro",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "1.0.0",
+    "source": "plugins/menu-fixo-adaptavel-pro-v1.0.0/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "anti-ia-copy-policy",
+    "name": "Anti-IA Copy — Política de uso",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "1.0.0",
+    "source": "plugins/anti-ia-copy/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "whatsapp-flutuante-pro",
+    "name": "WhatsApp flutuante Pro",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "1.1.0",
+    "source": "plugins/whatsapp-flutuante-pro/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "property-slider",
+    "name": "Slider imobiliário",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "1.2.0",
+    "source": "plugins/property-slider/plugin.json",
+    "packageType": "bundled"
   },
   {
     "id": "youtube",
@@ -165,7 +165,7 @@
     "type": "section",
     "compositionRole": "both",
     "compositionCardinality": "multiple",
-    "version": "4.2.1",
+    "version": "4.3.2",
     "source": "plugins/form-sender-v4/plugin.json",
     "packageType": "bundled"
   },

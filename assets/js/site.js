@@ -1,4 +1,18 @@
 (function(){
+  // 5.9.1 — bloqueio global de zoom para preservar composição e hit-areas no mobile.
+  // Single-touch continua livre para scroll, sliders e Parallax; somente gestos de zoom são interceptados.
+  function isMobilePointer(){
+    try{return matchMedia('(pointer:coarse)').matches || navigator.maxTouchPoints>0}catch(_error){return navigator.maxTouchPoints>0}
+  }
+  ['gesturestart','gesturechange','gestureend'].forEach(function(type){
+    document.addEventListener(type,function(event){if(isMobilePointer())event.preventDefault()},{passive:false});
+  });
+  document.addEventListener('touchmove',function(event){
+    if(isMobilePointer() && event.touches && event.touches.length>1)event.preventDefault();
+  },{passive:false});
+  document.addEventListener('dblclick',function(event){
+    if(isMobilePointer())event.preventDefault();
+  },{passive:false});
   const CTA_SELECTOR = [
     '[data-design-role="cta"]',
     '.button-primary','.btn-primary','.opp-cta','.svp-hero-button','.formsenderCSS_button','.spp-cta','.pit-glass-cta','.pp-flip-cta','.btn-flip','.btn-flipFake',
@@ -167,6 +181,12 @@
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const bool = (value) => String(value).toLowerCase() === "true";
   const number = (value, fallback) => Number.isFinite(Number(value)) ? Number(value) : fallback;
+
+  function isIOSDevice() {
+    const ua = String(navigator.userAgent || "");
+    const platform = String(navigator.platform || "");
+    return /iPad|iPhone|iPod/i.test(ua) || (platform === "MacIntel" && Number(navigator.maxTouchPoints || 0) > 1);
+  }
 
   const PROFILE_PRESETS = {
     "cinema-smooth": { duration: 0, accel: 420, decel: 520, speed: 1.0, maxRate: 1.45, wheel: 38, cooldown: 150 },
@@ -654,6 +674,11 @@
     let ownsScroll = true;
     let scrollReleaseLatch = false;
     let scrollReleaseReason = "";
+    const playbackEngine = isIOSDevice() ? "ios" : "default";
+    let engineCleanup = null;
+    root.dataset.playbackEngine = playbackEngine;
+    root.classList.toggle("svp-engine-ios", playbackEngine === "ios");
+    root.classList.toggle("svp-engine-default", playbackEngine === "default");
     root.dataset.scrollControl = "owned";
     root.dataset.scrollReleaseReason = "";
 
@@ -793,6 +818,8 @@
 
     function cancelCinematicAnimation() {
       cinematicToken += 1;
+      if (engineCleanup) { try { engineCleanup(); } catch (_) {} engineCleanup = null; }
+      root.classList.remove("svp-cinematic-running");
       if (cinematicRafId) {
         try {
           if (cinematicFrameMode === "video" && typeof video.cancelVideoFrameCallback === "function") video.cancelVideoFrameCallback(cinematicRafId);
@@ -932,6 +959,8 @@
 
     function finishCinematic(target, token) {
       if (destroyed || token !== cinematicToken) return;
+      if (engineCleanup) { try { engineCleanup(); } catch (_) {} engineCleanup = null; }
+      root.classList.remove("svp-cinematic-running");
       try { video.pause(); } catch (_) {}
       try { video.playbackRate = 1; } catch (_) {}
       lastPlaybackRate = 1;
@@ -941,8 +970,10 @@
       targetTime = displayTime = target;
       cinematicTime = target;
       pendingSeek = null;
-      /* Uma única correção final substitui dezenas de seeks durante a reprodução. */
-      if (videoReady && Math.abs(video.currentTime - target) > 0.006) {
+      /* No iOS evitamos micro-seeks: o decoder do Safari pode engasgar mesmo com
+         correções muito pequenas. Só reposicionamos quando o erro final é visível. */
+      const finalSeekTolerance = playbackEngine === "ios" ? 0.12 : 0.006;
+      if (videoReady && Math.abs(video.currentTime - target) > finalSeekTolerance) {
         try { video.currentTime = target; } catch (_) {}
       }
       scrollToProgress(rawProgressForTime(target), "auto");
@@ -1139,6 +1170,129 @@
       } else beginPlayback();
     }
 
+    function runIOSForwardTransition(from, target, profile, distance, token) {
+      cinematicNative = true;
+      pendingSeek = null;
+      cinematicFrameMode = "raf";
+      const tolerance = Math.max(0.045, 1.6 / Math.max(24, config.timelineFps));
+      const iosRate = clamp(config.cinematicSpeed || 1, 0.86, 1.05);
+      let raf = 0;
+      let frameCb = 0;
+      let startedAt = 0;
+      let buffering = false;
+      let stalledAt = 0;
+
+      const cleanup = () => {
+        if (raf) cancelAnimationFrame(raf);
+        if (frameCb && typeof video.cancelVideoFrameCallback === "function") {
+          try { video.cancelVideoFrameCallback(frameCb); } catch (_) {}
+        }
+        ["waiting","stalled","seeking","seeked","playing","canplay"].forEach((type) => {
+          try { video.removeEventListener(type, mediaStateHandler); } catch (_) {}
+        });
+        raf = 0;
+        frameCb = 0;
+      };
+      engineCleanup = cleanup;
+
+      function mediaStateHandler(event) {
+        if (destroyed || token !== cinematicToken) return;
+        if (event.type === "waiting" || event.type === "stalled" || event.type === "seeking") {
+          buffering = true;
+          stalledAt = performance.now();
+          root.dataset.decoderState = event.type;
+        } else {
+          buffering = false;
+          root.dataset.decoderState = "playing";
+        }
+      }
+      ["waiting","stalled","seeking","seeked","playing","canplay"].forEach((type) => {
+        video.addEventListener(type, mediaStateHandler, { passive: true });
+      });
+
+      const updateFromMedia = (mediaTime) => {
+        const actual = clamp(number(mediaTime, video.currentTime), from, target);
+        cinematicTime = actual;
+        targetTime = displayTime = actual;
+        if (target - actual <= tolerance || actual >= target) {
+          finishCinematic(target, token);
+          return false;
+        }
+        return true;
+      };
+
+      const schedule = () => {
+        if (destroyed || !cinematicAnimating || token !== cinematicToken) return;
+        if (typeof video.requestVideoFrameCallback === "function") {
+          cinematicFrameMode = "video";
+          frameCb = video.requestVideoFrameCallback((now, meta) => {
+            cinematicRafId = frameCb;
+            const mediaTime = meta && Number.isFinite(meta.mediaTime) ? meta.mediaTime : video.currentTime;
+            if (!updateFromMedia(mediaTime)) return;
+            /* Safari pode ficar em waiting sem emitir stalled. Não criamos novos seeks;
+               apenas aguardamos o decoder recuperar e mantemos uma única transição. */
+            if (buffering && stalledAt && now - stalledAt > 1800) root.dataset.decoderState = "recovering";
+            schedule();
+          });
+          cinematicRafId = frameCb;
+        } else {
+          cinematicFrameMode = "raf";
+          raf = requestAnimationFrame((now) => {
+            cinematicRafId = raf;
+            if (!updateFromMedia(video.currentTime)) return;
+            if (buffering && stalledAt && now - stalledAt > 1800) root.dataset.decoderState = "recovering";
+            schedule();
+          });
+          cinematicRafId = raf;
+        }
+      };
+
+      const begin = () => {
+        if (destroyed || !cinematicAnimating || token !== cinematicToken) return;
+        try { video.playbackRate = iosRate; } catch (_) {}
+        lastPlaybackRate = iosRate;
+        startedAt = performance.now();
+        root.dataset.decoderState = "starting";
+        const promise = video.play();
+        if (promise && typeof promise.then === "function") {
+          promise.then(() => { root.dataset.decoderState = "playing"; schedule(); }).catch(() => {
+            /* Se autoplay/play falhar, usa o fallback existente, mas não mistura os
+               dois motores ao mesmo tempo. */
+            cleanup();
+            engineCleanup = null;
+            cinematicNative = false;
+            runSeekTransition(from, target, profile, 1, distance, token);
+          });
+        } else schedule();
+      };
+
+      /* No iOS só posicionamos o ponto inicial quando realmente necessário. Depois
+         disso não há micro-seeks durante o avanço cinematográfico. */
+      const startError = Math.abs(number(video.currentTime, from) - from);
+      if (startError > 0.18) {
+        try { video.pause(); video.currentTime = from; } catch (_) {}
+        const onSeeked = () => begin();
+        video.addEventListener("seeked", onSeeked, { once: true });
+        const guard = window.setTimeout(() => {
+          try { video.removeEventListener("seeked", onSeeked); } catch (_) {}
+          begin();
+        }, 420);
+        const previousCleanup = engineCleanup;
+        engineCleanup = () => { clearTimeout(guard); previousCleanup(); };
+      } else begin();
+    }
+
+    function runPlaybackEngine(from, target, profile, direction, distance, token) {
+      if (direction > 0 && videoReady) {
+        if (playbackEngine === "ios") runIOSForwardTransition(from, target, profile, distance, token);
+        else runNativeForwardTransition(from, target, profile, distance, token);
+        return;
+      }
+      /* O reverso continua por seek controlado. Safari/iOS não oferece playbackRate
+         negativo confiável; a fila de seek já é limitada pelo frame loop global. */
+      runSeekTransition(from, target, profile, direction, distance, token);
+    }
+
     function animateToTime(time, options = {}) {
       const target = clamp(number(time, config.start), config.start, Math.min(config.end, duration || config.end));
       const currentVideoTime = videoReady && Number.isFinite(video.currentTime) ? video.currentTime : displayTime;
@@ -1181,10 +1335,8 @@
       cinematicTime = from;
       updatePoints(from); /* oculta imediatamente o banner da chave de origem */
 
-      /* Avanço normal usa reprodução real. Reverso mantém fallback por seek porque
-         HTMLVideoElement não oferece playbackRate negativo de forma interoperável. */
-      if (direction > 0 && videoReady) runNativeForwardTransition(from, target, profile, distance, token);
-      else runSeekTransition(from, target, profile, direction, distance, token);
+      root.classList.add("svp-cinematic-running");
+      runPlaybackEngine(from, target, profile, direction, distance, token);
       return true;
     }
 
@@ -1922,9 +2074,43 @@
 
 
 (function(){
+  // O Segmento é estrutural. A composição dos slots é feita pelo renderer do Studio.
+})();
+
+
+(function(){
+  function init(){
+    document.querySelectorAll('[data-plugin="gallery-big-four"]:not([data-ready])').forEach(function(root){
+      root.dataset.ready='true';
+      var items=root.querySelectorAll('.pp-big-four-item');
+      items.forEach(function(item,index){
+        item.setAttribute('role','button');
+        item.setAttribute('aria-label',item.querySelector('strong')?.textContent||('Imagem '+(index+1)));
+        function activate(){items.forEach(function(other){if(other!==item)other.classList.remove('is-active')});item.classList.toggle('is-active');}
+        item.addEventListener('click',activate);
+        item.addEventListener('keydown',function(event){if(event.key==='Enter'||event.key===' '){event.preventDefault();activate();}});
+      });
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+
+
+(function(){
+  document.querySelectorAll('[data-plugin="button-single"] .ibs-button').forEach(function(button){
+    if(button.getAttribute('target')==='_blank') button.setAttribute('rel','noopener noreferrer');
+    if(!button.textContent.trim()) button.setAttribute('aria-disabled','true');
+  });
+})();
+
+
+(function(){
   "use strict";
   // 1.2.1: composição balanceada é resolvida por CSS; não há ajuste iterativo de tracking.
 })();
+
+
+(function(){})();
 
 
 (function () {
@@ -2432,37 +2618,6 @@
 })();
 
 
-(function(){
-  // O Segmento é estrutural. A composição dos slots é feita pelo renderer do Studio.
-})();
-
-
-(function(){
-  function init(){
-    document.querySelectorAll('[data-plugin="gallery-big-four"]:not([data-ready])').forEach(function(root){
-      root.dataset.ready='true';
-      var items=root.querySelectorAll('.pp-big-four-item');
-      items.forEach(function(item,index){
-        item.setAttribute('role','button');
-        item.setAttribute('aria-label',item.querySelector('strong')?.textContent||('Imagem '+(index+1)));
-        function activate(){items.forEach(function(other){if(other!==item)other.classList.remove('is-active')});item.classList.toggle('is-active');}
-        item.addEventListener('click',activate);
-        item.addEventListener('keydown',function(event){if(event.key==='Enter'||event.key===' '){event.preventDefault();activate();}});
-      });
-    });
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-})();
-
-
-(function(){
-  document.querySelectorAll('[data-plugin="button-single"] .ibs-button').forEach(function(button){
-    if(button.getAttribute('target')==='_blank') button.setAttribute('rel','noopener noreferrer');
-    if(!button.textContent.trim()) button.setAttribute('aria-disabled','true');
-  });
-})();
-
-
 (function () {
   function esc(value) {
     return String(value == null ? '' : value)
@@ -2612,9 +2767,6 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
 })();
-
-
-(function(){})();
 
 
 (function(){
@@ -3746,6 +3898,24 @@
   }
 
 
+
+  function quickQuestion(mount, index) {
+    var prefix = 'quickQ' + index;
+    var key = prefix.charAt(0).toLowerCase() + prefix.slice(1);
+    function ds(suffix) { return mount.dataset[key + suffix] || ''; }
+    var type = ds('Type') || 'single';
+    var options = ds('Options').split('|').map(function (item) { return item.trim(); }).filter(Boolean);
+    if (type === 'yesno') options = ['Sim', 'Não'];
+    if (type === 'truefalse') options = ['Verdadeiro', 'Falso'];
+    return {
+      enabled: enabled(ds('Enabled')),
+      label: ds('Label') || ('Pergunta ' + index),
+      type: type,
+      options: options,
+      required: enabled(ds('Required'))
+    };
+  }
+
   function applyPossibilitySummary(mount, explicitSummary) {
     var summary = String(explicitSummary || '');
     if (!summary) { try { summary = sessionStorage.getItem('imobify:possibility-path-summary') || ''; } catch (_) {} }
@@ -3757,6 +3927,118 @@
     var hidden = form.querySelector('input[name="diagnosticoPossibilidade"]');
     if (!hidden) { hidden = document.createElement('input'); hidden.type = 'hidden'; hidden.name = 'diagnosticoPossibilidade'; form.appendChild(hidden); }
     hidden.value = summary;
+  }
+
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+  }
+
+  function openQuickComplement(instance, config) {
+    return new Promise(function (resolve) {
+      var questions = (config.questions || []).filter(function (q) { return q && q.enabled !== false && q.label; });
+      if (!questions.length) { resolve([]); return; }
+      var old = document.getElementById('quick_' + instance.uid); if (old) old.remove();
+      function choices(q) {
+        if (q.type === 'yesno') return ['Sim','Não'];
+        if (q.type === 'truefalse') return ['Verdadeiro','Falso'];
+        return Array.isArray(q.options) ? q.options : [];
+      }
+      var overlay = document.createElement('div');
+      overlay.id = 'quick_' + instance.uid;
+      overlay.className = 'formsenderCSS_quick-overlay';
+      overlay.setAttribute('role','dialog'); overlay.setAttribute('aria-modal','true');
+      overlay.innerHTML = '<div class="formsenderCSS_quick-card">' +
+        '<button type="button" class="formsenderCSS_quick-close" aria-label="Fechar">×</button>' +
+        '<div class="formsenderCSS_quick-head"><span class="formsenderCSS_quick-kicker">Só mais um detalhe</span>' +
+        '<h3>' + escapeHtml(config.title || 'Antes de finalizar, só me confirma rapidinho…') + '</h3>' +
+        (config.copy ? '<p>' + escapeHtml(config.copy) + '</p>' : '') + '</div>' +
+        '<div class="formsenderCSS_quick-questions">' + questions.map(function (q, i) {
+          return '<fieldset class="formsenderCSS_quick-question" data-quick-question="' + i + '">' +
+            '<legend>' + escapeHtml(q.label) + (q.required ? ' *' : '') + '</legend>' +
+            '<div class="formsenderCSS_quick-options">' + choices(q).map(function (option) {
+              return '<button type="button" class="formsenderCSS_quick-option" data-value="' + escapeHtml(option) + '">' + escapeHtml(option) + '</button>';
+            }).join('') + '</div>' + (q.required ? '<small>Selecione uma opção para continuar.</small>' : '') + '</fieldset>';
+        }).join('') + '</div>' +
+        '<div class="formsenderCSS_quick-actions">' +
+        (config.showSkip !== false ? '<button type="button" class="formsenderCSS_quick-skip">' + escapeHtml(config.skipText || 'Pular e enviar') + '</button>' : '') +
+        '<button type="button" class="formsenderCSS_quick-confirm">' + escapeHtml(config.confirmText || 'Concluir envio') + '</button></div></div>';
+      document.body.appendChild(overlay);
+      document.documentElement.classList.add('formsender-quick-open');
+      requestAnimationFrame(function () { overlay.classList.add('is-open'); });
+      var selected = new Map();
+      function finish(answers) {
+        document.documentElement.classList.remove('formsender-quick-open');
+        overlay.classList.add('is-closing');
+        setTimeout(function () { overlay.remove(); }, 180);
+        resolve(answers || []);
+      }
+      overlay.querySelectorAll('.formsenderCSS_quick-option').forEach(function (button) {
+        button.addEventListener('click', function () {
+          var fieldset = button.closest('[data-quick-question]');
+          var index = Number(fieldset.dataset.quickQuestion); var q = questions[index]; var value = button.dataset.value || '';
+          if ((q.type || 'single') === 'multiple') {
+            var values = selected.get(index) || [];
+            var next = values.indexOf(value) >= 0 ? values.filter(function (v) { return v !== value; }) : values.concat([value]);
+            selected.set(index, next); button.classList.toggle('is-selected', next.indexOf(value) >= 0);
+          } else {
+            selected.set(index, value);
+            fieldset.querySelectorAll('.formsenderCSS_quick-option').forEach(function (el) { el.classList.toggle('is-selected', el === button); });
+          }
+          fieldset.classList.remove('has-error');
+        });
+      });
+      overlay.querySelector('.formsenderCSS_quick-confirm').addEventListener('click', function () {
+        var valid = true;
+        var answers = questions.map(function (q, index) {
+          var raw = selected.get(index); var answer = Array.isArray(raw) ? raw.join(', ') : (raw || '');
+          if (q.required && !answer) { valid = false; var node = overlay.querySelector('[data-quick-question="' + index + '"]'); if (node) node.classList.add('has-error'); }
+          return { label:q.label, answer:answer };
+        });
+        if (valid) finish(answers);
+      });
+      function skip() { finish([]); }
+      var skipButton = overlay.querySelector('.formsenderCSS_quick-skip');
+      if (skipButton) skipButton.addEventListener('click', skip);
+      overlay.querySelector('.formsenderCSS_quick-close').addEventListener('click', skip);
+      overlay.addEventListener('click', function (event) { if (event.target === overlay) skip(); });
+    });
+  }
+
+  function appendQuickAnswers(instance, answers) {
+    var answered = (answers || []).filter(function (item) { return item && String(item.answer || '').trim(); });
+    if (!answered.length) return;
+    var block = answered.map(function (item) { return item.label + '\n' + item.answer + ';'; }).join('\n\n');
+    var form = instance.form; if (!form) return;
+    var msg = form.querySelector('[name="msg"]');
+    if (!msg) { msg = document.createElement('input'); msg.type = 'hidden'; msg.name = 'msg'; form.appendChild(msg); }
+    var original = String(msg.value || '').trim();
+    msg.value = [original, 'Informações complementares:', block].filter(Boolean).join('\n\n');
+    var hidden = form.querySelector('[name="complementacaoRapida"]');
+    if (!hidden) { hidden = document.createElement('input'); hidden.type='hidden'; hidden.name='complementacaoRapida'; form.appendChild(hidden); }
+    hidden.value = block;
+    answered.forEach(function (item, index) {
+      var input = form.querySelector('[name="qualificacao_' + (index+1) + '"]');
+      if (!input) { input=document.createElement('input'); input.type='hidden'; input.name='qualificacao_' + (index+1); form.appendChild(input); }
+      input.value = item.label + '\n' + item.answer + ';';
+    });
+  }
+
+  function installQuickComplement(instance, config) {
+    if (!instance || !config || !config.enabled || !(config.questions || []).length) return;
+    var original = instance.handleSubmit.bind(instance);
+    var opening = false;
+    instance.handleSubmit = function (event) {
+      if (opening) { event && event.preventDefault && event.preventDefault(); return; }
+      event && event.preventDefault && event.preventDefault();
+      if (!instance.validarCampos()) { instance.mostrarNotificacao('error','Preencha todos os campos obrigatórios.','Atenção!'); return; }
+      opening = true;
+      openQuickComplement(instance, config).then(function (answers) {
+        appendQuickAnswers(instance, answers);
+        opening = false;
+        original({ preventDefault:function () {} });
+      }).catch(function () { opening = false; });
+    };
   }
 
   function initialize() {
@@ -3783,6 +4065,15 @@
       }
 
       try {
+        var quickConfig = {
+          enabled: enabled(mount.dataset.quickComplement),
+          title: mount.dataset.quickTitle || 'Antes de finalizar, só me confirma rapidinho…',
+          copy: mount.dataset.quickCopy || '',
+          confirmText: mount.dataset.quickConfirmText || 'Concluir envio',
+          skipText: mount.dataset.quickSkipText || 'Pular e enviar',
+          showSkip: enabled(mount.dataset.quickShowSkip),
+          questions: [quickQuestion(mount, 1), quickQuestion(mount, 2), quickQuestion(mount, 3)].filter(function (q) { return q.enabled; })
+        };
         var instance = new window.formsenderJS.Plugin('#' + mount.id, {
           produto: mount.dataset.product || 'The Garden - New Edition',
           endpoint: endpoint,
@@ -3813,6 +4104,7 @@
           }
         });
         mount.formsenderV4 = instance;
+        installQuickComplement(instance, quickConfig);
         applyPossibilitySummary(mount);
       } catch (error) {
         console.error('[Form.v4]', error);

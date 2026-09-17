@@ -6,6 +6,12 @@
   const bool = (value) => String(value).toLowerCase() === "true";
   const number = (value, fallback) => Number.isFinite(Number(value)) ? Number(value) : fallback;
 
+  function isIOSDevice() {
+    const ua = String(navigator.userAgent || "");
+    const platform = String(navigator.platform || "");
+    return /iPad|iPhone|iPod/i.test(ua) || (platform === "MacIntel" && Number(navigator.maxTouchPoints || 0) > 1);
+  }
+
   const PROFILE_PRESETS = {
     "cinema-smooth": { duration: 0, accel: 420, decel: 520, speed: 1.0, maxRate: 1.45, wheel: 38, cooldown: 150 },
     "cinema-premium": { duration: 0, accel: 560, decel: 680, speed: 0.92, maxRate: 1.28, wheel: 40, cooldown: 170 },
@@ -492,6 +498,11 @@
     let ownsScroll = true;
     let scrollReleaseLatch = false;
     let scrollReleaseReason = "";
+    const playbackEngine = isIOSDevice() ? "ios" : "default";
+    let engineCleanup = null;
+    root.dataset.playbackEngine = playbackEngine;
+    root.classList.toggle("svp-engine-ios", playbackEngine === "ios");
+    root.classList.toggle("svp-engine-default", playbackEngine === "default");
     root.dataset.scrollControl = "owned";
     root.dataset.scrollReleaseReason = "";
 
@@ -631,6 +642,8 @@
 
     function cancelCinematicAnimation() {
       cinematicToken += 1;
+      if (engineCleanup) { try { engineCleanup(); } catch (_) {} engineCleanup = null; }
+      root.classList.remove("svp-cinematic-running");
       if (cinematicRafId) {
         try {
           if (cinematicFrameMode === "video" && typeof video.cancelVideoFrameCallback === "function") video.cancelVideoFrameCallback(cinematicRafId);
@@ -770,6 +783,8 @@
 
     function finishCinematic(target, token) {
       if (destroyed || token !== cinematicToken) return;
+      if (engineCleanup) { try { engineCleanup(); } catch (_) {} engineCleanup = null; }
+      root.classList.remove("svp-cinematic-running");
       try { video.pause(); } catch (_) {}
       try { video.playbackRate = 1; } catch (_) {}
       lastPlaybackRate = 1;
@@ -779,8 +794,10 @@
       targetTime = displayTime = target;
       cinematicTime = target;
       pendingSeek = null;
-      /* Uma única correção final substitui dezenas de seeks durante a reprodução. */
-      if (videoReady && Math.abs(video.currentTime - target) > 0.006) {
+      /* No iOS evitamos micro-seeks: o decoder do Safari pode engasgar mesmo com
+         correções muito pequenas. Só reposicionamos quando o erro final é visível. */
+      const finalSeekTolerance = playbackEngine === "ios" ? 0.12 : 0.006;
+      if (videoReady && Math.abs(video.currentTime - target) > finalSeekTolerance) {
         try { video.currentTime = target; } catch (_) {}
       }
       scrollToProgress(rawProgressForTime(target), "auto");
@@ -977,6 +994,129 @@
       } else beginPlayback();
     }
 
+    function runIOSForwardTransition(from, target, profile, distance, token) {
+      cinematicNative = true;
+      pendingSeek = null;
+      cinematicFrameMode = "raf";
+      const tolerance = Math.max(0.045, 1.6 / Math.max(24, config.timelineFps));
+      const iosRate = clamp(config.cinematicSpeed || 1, 0.86, 1.05);
+      let raf = 0;
+      let frameCb = 0;
+      let startedAt = 0;
+      let buffering = false;
+      let stalledAt = 0;
+
+      const cleanup = () => {
+        if (raf) cancelAnimationFrame(raf);
+        if (frameCb && typeof video.cancelVideoFrameCallback === "function") {
+          try { video.cancelVideoFrameCallback(frameCb); } catch (_) {}
+        }
+        ["waiting","stalled","seeking","seeked","playing","canplay"].forEach((type) => {
+          try { video.removeEventListener(type, mediaStateHandler); } catch (_) {}
+        });
+        raf = 0;
+        frameCb = 0;
+      };
+      engineCleanup = cleanup;
+
+      function mediaStateHandler(event) {
+        if (destroyed || token !== cinematicToken) return;
+        if (event.type === "waiting" || event.type === "stalled" || event.type === "seeking") {
+          buffering = true;
+          stalledAt = performance.now();
+          root.dataset.decoderState = event.type;
+        } else {
+          buffering = false;
+          root.dataset.decoderState = "playing";
+        }
+      }
+      ["waiting","stalled","seeking","seeked","playing","canplay"].forEach((type) => {
+        video.addEventListener(type, mediaStateHandler, { passive: true });
+      });
+
+      const updateFromMedia = (mediaTime) => {
+        const actual = clamp(number(mediaTime, video.currentTime), from, target);
+        cinematicTime = actual;
+        targetTime = displayTime = actual;
+        if (target - actual <= tolerance || actual >= target) {
+          finishCinematic(target, token);
+          return false;
+        }
+        return true;
+      };
+
+      const schedule = () => {
+        if (destroyed || !cinematicAnimating || token !== cinematicToken) return;
+        if (typeof video.requestVideoFrameCallback === "function") {
+          cinematicFrameMode = "video";
+          frameCb = video.requestVideoFrameCallback((now, meta) => {
+            cinematicRafId = frameCb;
+            const mediaTime = meta && Number.isFinite(meta.mediaTime) ? meta.mediaTime : video.currentTime;
+            if (!updateFromMedia(mediaTime)) return;
+            /* Safari pode ficar em waiting sem emitir stalled. Não criamos novos seeks;
+               apenas aguardamos o decoder recuperar e mantemos uma única transição. */
+            if (buffering && stalledAt && now - stalledAt > 1800) root.dataset.decoderState = "recovering";
+            schedule();
+          });
+          cinematicRafId = frameCb;
+        } else {
+          cinematicFrameMode = "raf";
+          raf = requestAnimationFrame((now) => {
+            cinematicRafId = raf;
+            if (!updateFromMedia(video.currentTime)) return;
+            if (buffering && stalledAt && now - stalledAt > 1800) root.dataset.decoderState = "recovering";
+            schedule();
+          });
+          cinematicRafId = raf;
+        }
+      };
+
+      const begin = () => {
+        if (destroyed || !cinematicAnimating || token !== cinematicToken) return;
+        try { video.playbackRate = iosRate; } catch (_) {}
+        lastPlaybackRate = iosRate;
+        startedAt = performance.now();
+        root.dataset.decoderState = "starting";
+        const promise = video.play();
+        if (promise && typeof promise.then === "function") {
+          promise.then(() => { root.dataset.decoderState = "playing"; schedule(); }).catch(() => {
+            /* Se autoplay/play falhar, usa o fallback existente, mas não mistura os
+               dois motores ao mesmo tempo. */
+            cleanup();
+            engineCleanup = null;
+            cinematicNative = false;
+            runSeekTransition(from, target, profile, 1, distance, token);
+          });
+        } else schedule();
+      };
+
+      /* No iOS só posicionamos o ponto inicial quando realmente necessário. Depois
+         disso não há micro-seeks durante o avanço cinematográfico. */
+      const startError = Math.abs(number(video.currentTime, from) - from);
+      if (startError > 0.18) {
+        try { video.pause(); video.currentTime = from; } catch (_) {}
+        const onSeeked = () => begin();
+        video.addEventListener("seeked", onSeeked, { once: true });
+        const guard = window.setTimeout(() => {
+          try { video.removeEventListener("seeked", onSeeked); } catch (_) {}
+          begin();
+        }, 420);
+        const previousCleanup = engineCleanup;
+        engineCleanup = () => { clearTimeout(guard); previousCleanup(); };
+      } else begin();
+    }
+
+    function runPlaybackEngine(from, target, profile, direction, distance, token) {
+      if (direction > 0 && videoReady) {
+        if (playbackEngine === "ios") runIOSForwardTransition(from, target, profile, distance, token);
+        else runNativeForwardTransition(from, target, profile, distance, token);
+        return;
+      }
+      /* O reverso continua por seek controlado. Safari/iOS não oferece playbackRate
+         negativo confiável; a fila de seek já é limitada pelo frame loop global. */
+      runSeekTransition(from, target, profile, direction, distance, token);
+    }
+
     function animateToTime(time, options = {}) {
       const target = clamp(number(time, config.start), config.start, Math.min(config.end, duration || config.end));
       const currentVideoTime = videoReady && Number.isFinite(video.currentTime) ? video.currentTime : displayTime;
@@ -1019,10 +1159,8 @@
       cinematicTime = from;
       updatePoints(from); /* oculta imediatamente o banner da chave de origem */
 
-      /* Avanço normal usa reprodução real. Reverso mantém fallback por seek porque
-         HTMLVideoElement não oferece playbackRate negativo de forma interoperável. */
-      if (direction > 0 && videoReady) runNativeForwardTransition(from, target, profile, distance, token);
-      else runSeekTransition(from, target, profile, direction, distance, token);
+      root.classList.add("svp-cinematic-running");
+      runPlaybackEngine(from, target, profile, direction, distance, token);
       return true;
     }
 

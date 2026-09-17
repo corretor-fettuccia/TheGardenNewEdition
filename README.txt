@@ -1,7 +1,7 @@
-LANDING PAGE COMPILADA — IMOBIFY STUDIO 5.8.2
+LANDING PAGE COMPILADA — IMOBIFY STUDIO 5.9.5
 
 Projeto: The Garden New Edition — Parallax Editorial Signature
-Gerado em: 16/09/2026, 22:36:31
+Gerado em: 17/09/2026, 13:31:35
 
 PUBLICAÇÃO
 Envie todo o conteúdo desta pasta para a raiz do seu serviço de hospedagem, GitHub Pages, Netlify, Vercel ou servidor web. A página é estática e não exige banco de dados.
