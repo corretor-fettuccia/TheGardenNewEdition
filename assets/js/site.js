@@ -3912,7 +3912,7 @@
       label: ds('Label') || ('Pergunta ' + index),
       type: type,
       options: options,
-      required: enabled(ds('Required'))
+      required: true
     };
   }
 
@@ -3949,30 +3949,134 @@
       overlay.className = 'formsenderCSS_quick-overlay';
       overlay.setAttribute('role','dialog'); overlay.setAttribute('aria-modal','true');
       overlay.innerHTML = '<div class="formsenderCSS_quick-card">' +
-        '<button type="button" class="formsenderCSS_quick-close" aria-label="Fechar">×</button>' +
         '<div class="formsenderCSS_quick-head"><span class="formsenderCSS_quick-kicker">Só mais um detalhe</span>' +
         '<h3>' + escapeHtml(config.title || 'Antes de finalizar, só me confirma rapidinho…') + '</h3>' +
         (config.copy ? '<p>' + escapeHtml(config.copy) + '</p>' : '') + '</div>' +
+        (questions.length > 1 ? '<div class="formsenderCSS_quick-progress" aria-live="polite"><span data-quick-current>1</span> de ' + questions.length + '</div>' : '') +
         '<div class="formsenderCSS_quick-questions">' + questions.map(function (q, i) {
-          return '<fieldset class="formsenderCSS_quick-question" data-quick-question="' + i + '">' +
-            '<legend>' + escapeHtml(q.label) + (q.required ? ' *' : '') + '</legend>' +
+          return '<fieldset class="formsenderCSS_quick-question' + (i === 0 ? ' is-active' : '') + '" data-quick-question="' + i + '">' +
+            '<legend>' + escapeHtml(q.label) + ' *</legend>' +
             '<div class="formsenderCSS_quick-options">' + choices(q).map(function (option) {
               return '<button type="button" class="formsenderCSS_quick-option" data-value="' + escapeHtml(option) + '">' + escapeHtml(option) + '</button>';
-            }).join('') + '</div>' + (q.required ? '<small>Selecione uma opção para continuar.</small>' : '') + '</fieldset>';
+            }).join('') + '</div><small>Selecione uma opção para continuar.</small></fieldset>';
         }).join('') + '</div>' +
         '<div class="formsenderCSS_quick-actions">' +
-        (config.showSkip !== false ? '<button type="button" class="formsenderCSS_quick-skip">' + escapeHtml(config.skipText || 'Pular e enviar') + '</button>' : '') +
         '<button type="button" class="formsenderCSS_quick-confirm">' + escapeHtml(config.confirmText || 'Concluir envio') + '</button></div></div>';
       document.body.appendChild(overlay);
       document.documentElement.classList.add('formsender-quick-open');
       requestAnimationFrame(function () { overlay.classList.add('is-open'); });
       var selected = new Map();
-      function finish(answers) {
+      var activeIndex = 0;
+      var isMobile = false;
+      try { isMobile = window.matchMedia ? window.matchMedia('(max-width: 640px)').matches : window.innerWidth <= 640; } catch (_) {}
+      var progressCurrent = overlay.querySelector('[data-quick-current]');
+      var questionsWrap = overlay.querySelector('.formsenderCSS_quick-questions');
+      var confirmButton = overlay.querySelector('.formsenderCSS_quick-confirm');
+      var quickCard = overlay.querySelector('.formsenderCSS_quick-card');
+      var fitRaf = 0;
+      var viewportResizeTarget = window.visualViewport || null;
+
+      function fitMobileCard() {
+        if (!isMobile || !quickCard) return;
+        if (fitRaf) cancelAnimationFrame(fitRaf);
+        fitRaf = requestAnimationFrame(function () {
+          fitRaf = 0;
+          var vw = viewportResizeTarget ? viewportResizeTarget.width : window.innerWidth;
+          var vh = viewportResizeTarget ? viewportResizeTarget.height : window.innerHeight;
+          var naturalWidth = Math.max(1, quickCard.offsetWidth);
+          var naturalHeight = Math.max(1, quickCard.scrollHeight);
+          overlay.style.setProperty('--formsender-vv-width', Math.round(vw) + 'px');
+          overlay.style.setProperty('--formsender-vv-height', Math.round(vh) + 'px');
+          var availableWidth = Math.max(1, vw - 24);
+          var availableHeight = Math.max(1, vh - 24);
+          var scale = Math.min(1, availableWidth / naturalWidth, availableHeight / naturalHeight);
+          if (!isFinite(scale) || scale <= 0) scale = 1;
+          quickCard.style.setProperty('--formsender-mobile-scale', String(Math.max(.55, scale)));
+        });
+      }
+
+      function currentNode(index) { return overlay.querySelector('[data-quick-question="' + index + '"]'); }
+      function currentAnswer(index) {
+        var raw = selected.get(index);
+        return Array.isArray(raw) ? raw.join(', ') : (raw || '');
+      }
+      function updateMobileHeight() {
+        if (!isMobile || !questionsWrap) return;
+        /* A pergunta ativa permanece no fluxo normal. Não fixamos a altura do wrapper:
+           isso evita que opções maiores que a etapa anterior vazem para fora do card. */
+        questionsWrap.style.removeProperty('height');
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { fitMobileCard(); });
+        });
+      }
+      function updateActionLabel() {
+        if (!confirmButton) return;
+        if (!isMobile) {
+          confirmButton.hidden = false;
+          confirmButton.textContent = config.confirmText || 'Concluir envio';
+          overlay.classList.add('has-mobile-action');
+          return;
+        }
+        var q = questions[activeIndex];
+        var needsAction = q && (q.type || 'single') === 'multiple';
+        confirmButton.hidden = !needsAction;
+        overlay.classList.toggle('has-mobile-action', !!needsAction);
+        if (needsAction) confirmButton.textContent = activeIndex < questions.length - 1 ? 'Concluir seleção' : (config.confirmText || 'Concluir envio');
+      }
+      function showStep(nextIndex, immediate) {
+        if (!isMobile) return;
+        nextIndex = Math.max(0, Math.min(questions.length - 1, nextIndex));
+        var oldNode = currentNode(activeIndex);
+        var newNode = currentNode(nextIndex);
+        if (!newNode || nextIndex === activeIndex) { updateMobileHeight(); updateActionLabel(); return; }
+        function activate() {
+          if (oldNode) oldNode.classList.remove('is-active','is-leaving');
+          activeIndex = nextIndex;
+          newNode.classList.add('is-active');
+          if (progressCurrent) progressCurrent.textContent = String(activeIndex + 1);
+          updateActionLabel();
+          updateMobileHeight();
+          requestAnimationFrame(function () { newNode.classList.add('is-entered'); });
+          setTimeout(function () { newNode.classList.remove('is-entered'); }, 220);
+        }
+        if (immediate || !oldNode) activate();
+        else {
+          oldNode.classList.add('is-leaving');
+          setTimeout(activate, 140);
+        }
+      }
+      function validateIndex(index) {
+        var q = questions[index];
+        var answer = currentAnswer(index);
+        var node = currentNode(index);
+        if (q && !answer) { if (node) node.classList.add('has-error'); return false; }
+        if (node) node.classList.remove('has-error');
+        return true;
+      }
+      function collectAnswers() {
+        var valid = true;
+        var answers = questions.map(function (q, index) {
+          var answer = currentAnswer(index);
+          if (!answer) { valid = false; var node = currentNode(index); if (node) node.classList.add('has-error'); }
+          return { label:q.label, answer:answer };
+        });
+        return { valid:valid, answers:answers };
+      }
+      function cleanup() {
         document.documentElement.classList.remove('formsender-quick-open');
+        if (fitRaf) cancelAnimationFrame(fitRaf);
+        window.removeEventListener('resize', fitMobileCard);
+        window.removeEventListener('orientationchange', fitMobileCard);
+        if (viewportResizeTarget && viewportResizeTarget.removeEventListener) viewportResizeTarget.removeEventListener('resize', fitMobileCard);
+        document.removeEventListener('keydown', blockEscape, true);
         overlay.classList.add('is-closing');
         setTimeout(function () { overlay.remove(); }, 180);
-        resolve(answers || []);
       }
+      function finish(answers) {
+        cleanup();
+        resolve({ cancelled:false, answers:answers || [] });
+      }
+
       overlay.querySelectorAll('.formsenderCSS_quick-option').forEach(function (button) {
         button.addEventListener('click', function () {
           var fieldset = button.closest('[data-quick-question]');
@@ -3986,22 +4090,59 @@
             fieldset.querySelectorAll('.formsenderCSS_quick-option').forEach(function (el) { el.classList.toggle('is-selected', el === button); });
           }
           fieldset.classList.remove('has-error');
+          if (isMobile && (q.type || 'single') !== 'multiple' && index === activeIndex) {
+            if (index < questions.length - 1) {
+              setTimeout(function () { showStep(index + 1, false); }, 110);
+            } else {
+              setTimeout(function () {
+                var result = collectAnswers();
+                if (result.valid) finish(result.answers);
+              }, 110);
+            }
+          }
         });
       });
-      overlay.querySelector('.formsenderCSS_quick-confirm').addEventListener('click', function () {
-        var valid = true;
-        var answers = questions.map(function (q, index) {
-          var raw = selected.get(index); var answer = Array.isArray(raw) ? raw.join(', ') : (raw || '');
-          if (q.required && !answer) { valid = false; var node = overlay.querySelector('[data-quick-question="' + index + '"]'); if (node) node.classList.add('has-error'); }
-          return { label:q.label, answer:answer };
-        });
-        if (valid) finish(answers);
+
+      confirmButton.addEventListener('click', function () {
+        if (isMobile) {
+          var currentQuestion = questions[activeIndex];
+          if (!currentQuestion || (currentQuestion.type || 'single') !== 'multiple') return;
+          if (!validateIndex(activeIndex)) return;
+          if (activeIndex < questions.length - 1) {
+            showStep(activeIndex + 1, false);
+            return;
+          }
+        }
+        var result = collectAnswers();
+        if (result.valid) finish(result.answers);
+        else if (isMobile) {
+          var firstInvalid = questions.findIndex(function (q, index) { return !currentAnswer(index); });
+          if (firstInvalid >= 0) showStep(firstInvalid, true);
+        }
       });
-      function skip() { finish([]); }
-      var skipButton = overlay.querySelector('.formsenderCSS_quick-skip');
-      if (skipButton) skipButton.addEventListener('click', skip);
-      overlay.querySelector('.formsenderCSS_quick-close').addEventListener('click', skip);
-      overlay.addEventListener('click', function (event) { if (event.target === overlay) skip(); });
+      overlay.addEventListener('click', function (event) {
+        if (event.target === overlay) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      });
+      function blockEscape(event) {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }
+      }
+      document.addEventListener('keydown', blockEscape, true);
+
+      if (isMobile) {
+        overlay.classList.add('is-mobile-steps');
+        updateActionLabel();
+        updateMobileHeight();
+        window.addEventListener('resize', fitMobileCard, { passive:true });
+        window.addEventListener('orientationchange', fitMobileCard, { passive:true });
+        if (viewportResizeTarget && viewportResizeTarget.addEventListener) viewportResizeTarget.addEventListener('resize', fitMobileCard, { passive:true });
+        setTimeout(fitMobileCard, 40);
+      }
     });
   }
 
@@ -4033,12 +4174,30 @@
       event && event.preventDefault && event.preventDefault();
       if (!instance.validarCampos()) { instance.mostrarNotificacao('error','Preencha todos os campos obrigatórios.','Atenção!'); return; }
       opening = true;
-      openQuickComplement(instance, config).then(function (answers) {
+      openQuickComplement(instance, config).then(function (result) {
+        if (result && result.cancelled) { opening = false; return; }
+        var answers = result && Array.isArray(result.answers) ? result.answers : (Array.isArray(result) ? result : []);
         appendQuickAnswers(instance, answers);
         opening = false;
         original({ preventDefault:function () {} });
       }).catch(function () { opening = false; });
     };
+  }
+
+  function configureAutocomplete(instance, shouldEnable) {
+    if (!instance || !instance.form) return;
+    var fields = [
+      { name:'nome', token:'name', extra:{ autocapitalize:'words' } },
+      { name:'email', token:'email', extra:{ inputmode:'email', autocapitalize:'none', spellcheck:'false' } },
+      { name:'telefone', token:'tel', extra:{ inputmode:'tel' } }
+    ];
+    fields.forEach(function (item) {
+      var input = instance.form.querySelector('[name="' + item.name + '"]');
+      if (!input) return;
+      input.setAttribute('autocomplete', shouldEnable ? item.token : 'off');
+      Object.keys(item.extra || {}).forEach(function (key) { input.setAttribute(key, item.extra[key]); });
+    });
+    instance.form.setAttribute('autocomplete', shouldEnable ? 'on' : 'off');
   }
 
   function initialize() {
@@ -4070,8 +4229,6 @@
           title: mount.dataset.quickTitle || 'Antes de finalizar, só me confirma rapidinho…',
           copy: mount.dataset.quickCopy || '',
           confirmText: mount.dataset.quickConfirmText || 'Concluir envio',
-          skipText: mount.dataset.quickSkipText || 'Pular e enviar',
-          showSkip: enabled(mount.dataset.quickShowSkip),
           questions: [quickQuestion(mount, 1), quickQuestion(mount, 2), quickQuestion(mount, 3)].filter(function (q) { return q.enabled; })
         };
         var instance = new window.formsenderJS.Plugin('#' + mount.id, {
@@ -4104,6 +4261,7 @@
           }
         });
         mount.formsenderV4 = instance;
+        configureAutocomplete(instance, enabled(mount.dataset.fieldAutocomplete));
         installQuickComplement(instance, quickConfig);
         applyPossibilitySummary(mount);
       } catch (error) {

@@ -1,5 +1,5 @@
 {
-  "version": "5.9.5",
+  "version": "5.10.2",
   "projectId": "the-garden-new-edition-parallax-editorial-signature",
   "projectName": "The Garden New Edition — Parallax Editorial Signature",
   "preset": "personalizado",
@@ -1535,9 +1535,10 @@
         "quickQ3Enabled": true,
         "quickQ3Options": "Valores e condições | Localização | Projeto e diferenciais | Potencial de investimento",
         "quickQ3Required": true,
+        "quickShowSkip": false,
+        "fieldAutocomplete": true,
         "quickQ2Type": "single",
-        "quickQ3Type": "single",
-        "quickShowSkip": true
+        "quickQ3Type": "single"
       },
       "settings": {
         "visible": true,
@@ -1666,8 +1667,8 @@
       }
     }
   ],
-  "selectedSectionId": "menu-the-garden-editorial",
-  "updatedAt": "2026-09-17T16:31:27.877Z",
+  "selectedSectionId": "form-sender-the-garden-editorial",
+  "updatedAt": "2026-09-17T17:49:13.559Z",
   "geo": {
     "enabled": "yes",
     "generateMarkdown": "yes",

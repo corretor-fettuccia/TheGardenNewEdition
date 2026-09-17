@@ -2019,14 +2019,11 @@ html.formsender-quick-open, html.formsender-quick-open body { overflow: hidden; 
     transform: translateY(12px) scale(.985); transition: transform .22s cubic-bezier(.2,.8,.2,1);
 }
 .formsenderCSS_quick-overlay.is-open .formsenderCSS_quick-card { transform: none; }
-.formsenderCSS_quick-close {
-    position: absolute; right: 14px; top: 12px; width: 36px; height: 36px; border: 0; border-radius: 50%;
-    background: #f3f4f6; color: #374151; font: 500 25px/1 system-ui; cursor: pointer;
-}
-.formsenderCSS_quick-head { padding-right: 32px; margin-bottom: 22px; }
+.formsenderCSS_quick-head { margin-bottom: 22px; }
 .formsenderCSS_quick-kicker { display:block; margin-bottom:8px; color:#6b7280; font:700 11px/1.2 system-ui; letter-spacing:.12em; text-transform:uppercase; }
 .formsenderCSS_quick-head h3 { margin:0; font:750 clamp(22px,4vw,31px)/1.08 var(--heading,system-ui); letter-spacing:-.025em; color:var(--heading-color,#111827); }
 .formsenderCSS_quick-head p { margin:10px 0 0; color:var(--body-color,#4b5563); font:400 15px/1.55 var(--body,system-ui); }
+.formsenderCSS_quick-progress { display:none; margin:-6px 0 14px; color:#6b7280; font:700 11px/1.2 var(--body,system-ui); letter-spacing:.04em; }
 .formsenderCSS_quick-questions { display:grid; gap:18px; }
 .formsenderCSS_quick-question { margin:0; padding:0; border:0; }
 .formsenderCSS_quick-question legend { margin-bottom:9px; color:var(--heading-color,#111827); font:700 14px/1.35 var(--body,system-ui); }
@@ -2041,17 +2038,35 @@ html.formsender-quick-open, html.formsender-quick-open body { overflow: hidden; 
 .formsenderCSS_quick-option:hover { border-color:var(--primary,#111827); transform:translateY(-1px); }
 .formsenderCSS_quick-option.is-selected { border-color:var(--primary,#111827); background:var(--primary,#111827); color:var(--primary-contrast,#fff); box-shadow:0 8px 22px rgba(0,0,0,.12); }
 .formsenderCSS_quick-actions { display:flex; align-items:center; justify-content:flex-end; gap:10px; margin-top:26px; }
-.formsenderCSS_quick-skip,.formsenderCSS_quick-confirm { border-radius:12px; padding:12px 17px; cursor:pointer; font:750 13px/1 system-ui; }
-.formsenderCSS_quick-skip { border:0; background:transparent; color:#6b7280; }
+.formsenderCSS_quick-confirm { border-radius:12px; padding:12px 17px; cursor:pointer; font:750 13px/1 system-ui; }
 .formsenderCSS_quick-confirm { border:0; background:var(--action-button-bg,var(--primary,#111827)); color:var(--action-button-text,#fff); box-shadow:0 8px 25px rgba(0,0,0,.15); }
 @media(max-width:640px){
-    .formsenderCSS_quick-overlay { align-items:end; padding:10px; }
-    .formsenderCSS_quick-card { width:100%; max-height:88dvh; border-radius:20px 20px 14px 14px; padding:24px 18px calc(18px + env(safe-area-inset-bottom)); }
-    .formsenderCSS_quick-options { display:grid; grid-template-columns:1fr; }
-    .formsenderCSS_quick-option { width:100%; text-align:left; border-radius:12px; padding:13px 14px; }
-    .formsenderCSS_quick-actions { flex-direction:column-reverse; align-items:stretch; }
-    .formsenderCSS_quick-skip,.formsenderCSS_quick-confirm { width:100%; min-height:46px; }
-}
+    .formsenderCSS_quick-overlay { place-items:center; padding:12px; width:var(--formsender-vv-width,100vw); height:var(--formsender-vv-height,100dvh); box-sizing:border-box; }
+    .formsenderCSS_quick-card {
+        --formsender-mobile-scale:1;
+        width:min(520px, calc(var(--formsender-vv-width,100vw) - 24px)); max-height:none; overflow:hidden;
+        border-radius:20px; padding:18px 16px; transform-origin:center center;
+    }
+    .formsenderCSS_quick-overlay.is-open .formsenderCSS_quick-card { transform:scale(var(--formsender-mobile-scale)); }
+        .formsenderCSS_quick-head { margin-bottom:12px; }
+    .formsenderCSS_quick-kicker { display:none; }
+    .formsenderCSS_quick-head h3 { font-size:clamp(19px,5.5vw,24px); line-height:1.12; padding-right:4px; }
+    .formsenderCSS_quick-head p { display:none; }
+    .formsenderCSS_quick-progress { display:block; }
+    .formsenderCSS_quick-questions { position:relative; display:block; height:auto; min-height:0; overflow:visible; }
+    .formsenderCSS_quick-question { display:none; opacity:0; transform:translateY(8px); }
+    .formsenderCSS_quick-question.is-active { display:block; opacity:1; transform:none; animation:formsenderQuickFadeIn .22s ease both; }
+    .formsenderCSS_quick-question.is-leaving { display:block; animation:formsenderQuickFadeOut .14s ease both; pointer-events:none; }
+    .formsenderCSS_quick-question.is-entered { animation:formsenderQuickFadeIn .22s ease both; }
+    .formsenderCSS_quick-question legend { margin-bottom:10px; font-size:15px; line-height:1.32; }
+    .formsenderCSS_quick-options { display:grid; grid-template-columns:1fr; gap:7px; }
+    .formsenderCSS_quick-option { width:100%; text-align:left; border-radius:11px; padding:11px 13px; min-height:42px; }
+    .formsenderCSS_quick-actions { flex-direction:column-reverse; align-items:stretch; gap:5px; margin-top:12px; }
+    .formsenderCSS_quick-overlay.is-mobile-steps:not(.has-mobile-action) .formsenderCSS_quick-actions { display:none; }
+    .formsenderCSS_quick-confirm { width:100%; min-height:42px; padding:10px 14px; }
+    }
+@keyframes formsenderQuickFadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+@keyframes formsenderQuickFadeOut { from { opacity:1; transform:none; } to { opacity:0; transform:translateY(-6px); } }
 @media (prefers-reduced-motion: reduce) {
     .formsenderCSS_quick-overlay,.formsenderCSS_quick-card,.formsenderCSS_quick-option { transition:none!important; }
 }

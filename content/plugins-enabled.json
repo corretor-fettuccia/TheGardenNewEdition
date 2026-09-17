@@ -165,7 +165,7 @@
     "type": "section",
     "compositionRole": "both",
     "compositionCardinality": "multiple",
-    "version": "4.3.2",
+    "version": "4.4.3",
     "source": "plugins/form-sender-v4/plugin.json",
     "packageType": "bundled"
   },
