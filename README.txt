@@ -1,0 +1,20 @@
+LANDING PAGE COMPILADA — IMOBIFY STUDIO 5.8.1
+
+Projeto: The Garden New Edition — Parallax Editorial Signature
+Gerado em: 16/09/2026, 21:32:48
+
+PUBLICAÇÃO
+Envie todo o conteúdo desta pasta para a raiz do seu serviço de hospedagem, GitHub Pages, Netlify, Vercel ou servidor web. A página é estática e não exige banco de dados.
+
+SEO E INDEXAÇÃO
+O pacote inclui robots.txt e sitemap.xml automáticos quando o sitemap estiver habilitado. O sitemap usa a URL canônica configurada no editor e é referenciado pelo robots.txt.
+
+SEGURANÇA
+O HTML inclui uma CSP compatível com <meta>. O arquivo _headers e security/headers.conf também trazem a política de cabeçalho com frame-ancestors para hospedagens que suportam configuração de headers.
+
+FORMULÁRIOS E CONTATO
+Os formulários e CTAs usam as integrações configuradas no editor. O Form.v4 mantém o endpoint, a validação e as notificações do componente original.
+
+MÍDIA INCLUÍDA
+assets/video/parallax-videosrc-1.mp4
+assets/images/parallax-poster-2.jpg

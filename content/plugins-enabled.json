@@ -5,9 +5,29 @@
     "type": "section",
     "compositionRole": "both",
     "compositionCardinality": "multiple",
-    "version": "2.7.5",
+    "version": "2.8.2",
     "source": "plugins/parallax/plugin.json",
     "packageType": "bundled"
+  },
+  {
+    "id": "only-text-context",
+    "name": "Only TEXT — Context",
+    "type": "section",
+    "compositionRole": "both",
+    "compositionCardinality": "multiple",
+    "version": "1.2.1",
+    "source": "plugins/only-text-context/plugin.json",
+    "packageType": "bundled"
+  },
+  {
+    "id": "lifestyle",
+    "name": "Lifestyle",
+    "type": "section",
+    "compositionRole": "section",
+    "compositionCardinality": "multiple",
+    "version": "1.0.0",
+    "source": "plugins/lifestyle/plugin.json",
+    "packageType": "core"
   },
   {
     "id": "menu-fixo-adaptavel-pro",
@@ -80,16 +100,6 @@
     "packageType": "bundled"
   },
   {
-    "id": "magazine-text-pro",
-    "name": "Magazine Text Pro",
-    "type": "section",
-    "compositionRole": "both",
-    "compositionCardinality": "multiple",
-    "version": "1.1.0",
-    "source": "plugins/magazine-text-pro-v1.1.0/plugin.json",
-    "packageType": "bundled"
-  },
-  {
     "id": "specs",
     "name": "Ficha do imóvel",
     "type": "section",
@@ -97,16 +107,6 @@
     "compositionCardinality": "multiple",
     "version": "1.0.0",
     "source": "plugins/specs/plugin.json",
-    "packageType": "core"
-  },
-  {
-    "id": "lifestyle",
-    "name": "Lifestyle",
-    "type": "section",
-    "compositionRole": "section",
-    "compositionCardinality": "multiple",
-    "version": "1.0.0",
-    "source": "plugins/lifestyle/plugin.json",
     "packageType": "core"
   },
   {

@@ -5,6 +5,6 @@ User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: GPTBot
-Disallow: /
+Allow: /
 
 Sitemap: https://newedition.com.br/sitemap.xml

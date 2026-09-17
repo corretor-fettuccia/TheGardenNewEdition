@@ -168,6 +168,26 @@
   const bool = (value) => String(value).toLowerCase() === "true";
   const number = (value, fallback) => Number.isFinite(Number(value)) ? Number(value) : fallback;
 
+  const PROFILE_PRESETS = {
+    "cinema-smooth": { duration: 0, accel: 420, decel: 520, speed: 1.0, maxRate: 1.45, wheel: 38, cooldown: 150 },
+    "cinema-premium": { duration: 0, accel: 560, decel: 680, speed: 0.92, maxRate: 1.28, wheel: 40, cooldown: 170 },
+    "performance": { duration: 0, accel: 320, decel: 380, speed: 1.0, maxRate: 1.12, wheel: 46, cooldown: 190 },
+    "mobile": { duration: 0, accel: 360, decel: 430, speed: 0.92, maxRate: 1.12, wheel: 34, cooldown: 150 }
+  };
+
+  function applyExperienceProfile(config, isMobile) {
+    if (config.experienceProfile === "custom") return;
+    const key = (isMobile && config.mobileAutoAdapt) ? "mobile" : (PROFILE_PRESETS[config.experienceProfile] ? config.experienceProfile : "cinema-smooth");
+    const preset = PROFILE_PRESETS[key];
+    config.cinematicDurationMs = preset.duration;
+    config.cinematicAccelMs = preset.accel;
+    config.cinematicDecelMs = preset.decel;
+    config.cinematicSpeed = preset.speed;
+    config.cinematicMaxRate = preset.maxRate;
+    config.wheelThreshold = preset.wheel;
+    config.gestureCooldown = preset.cooldown;
+  }
+
   function normalizeMediaSource(value) {
     const source = String(value || "").trim();
     if (!source) return "";
@@ -309,6 +329,16 @@
     article.dataset.animation = animation;
     article.style.setProperty("--svp-width", `${number(point.width, 620)}px`);
     article.style.setProperty("--svp-opacity", String(clamp(number(point.opacity, 1), 0.1, 1)));
+    if (point.fontFamily) article.style.setProperty("--svp-point-font", String(point.fontFamily));
+    if (point.titleFontFamily) article.style.setProperty("--svp-title-font", String(point.titleFontFamily));
+    if (point.textFontFamily) article.style.setProperty("--svp-text-font", String(point.textFontFamily));
+    if (point.eyebrowFontFamily) article.style.setProperty("--svp-eyebrow-font", String(point.eyebrowFontFamily));
+    if (Number.isFinite(Number(point.titleWeight))) article.style.setProperty("--svp-point-title-weight", String(clamp(number(point.titleWeight, 800), 300, 900)));
+    if (Number.isFinite(Number(point.textWeight))) article.style.setProperty("--svp-point-text-weight", String(clamp(number(point.textWeight, 400), 300, 800)));
+    if (Number.isFinite(Number(point.titleLineHeight))) article.style.setProperty("--svp-point-title-line-height", String(clamp(number(point.titleLineHeight, 0.98), 0.8, 1.5)));
+    if (Number.isFinite(Number(point.textLineHeight))) article.style.setProperty("--svp-point-text-line-height", String(clamp(number(point.textLineHeight, 1.55), 1, 2.2)));
+    if (point.titleTransform) article.style.setProperty("--svp-title-transform", String(point.titleTransform));
+    if (point.textTransform) article.style.setProperty("--svp-text-transform", String(point.textTransform));
     article.setAttribute("aria-hidden", "true");
     if (bool(point.hideOnMobile)) article.classList.add("svp-hide-mobile");
 
@@ -343,6 +373,7 @@
     const skipButton = root.querySelector(".svp-skip");
     const restartButton = root.querySelector(".svp-restart");
     const soundButton = root.querySelector(".svp-sound");
+    const toolbar = root.querySelector(".svp-toolbar");
 
     const config = {
       src: root.dataset.videoSrc || "",
@@ -355,6 +386,10 @@
       smoothing: clamp(number(root.dataset.smoothing, 0.12), 0.01, 1),
       epsilon: clamp(number(root.dataset.timeEpsilon, 0.025), 0.005, 1),
       interactionMode: String(root.dataset.interactionMode || "cinematic").toLowerCase() === "continuous" ? "continuous" : "cinematic",
+      experienceProfile: String(root.dataset.experienceProfile || "cinema-smooth").toLowerCase(),
+      preloadMode: String(root.dataset.preloadMode || "complete").toLowerCase(),
+      restartOnReturnStart: root.dataset.restartOnReturnStart == null ? true : bool(root.dataset.restartOnReturnStart),
+      restartOnReturnDelayMs: clamp(number(root.dataset.restartOnReturnDelayMs, 220), 0, 3000),
       autoStart: bool(root.dataset.autoStart),
       autoStartDelay: clamp(number(root.dataset.autoStartDelay, 1), 0, 30),
       cinematicDurationMs: clamp(number(root.dataset.cinematicDurationMs, 2600), 0, 10000),
@@ -379,6 +414,18 @@
       scaleMobile: clamp(number(root.dataset.scaleMobile, 1.08), 1, 3),
       disableOnMobile: bool(root.dataset.disableMobile),
       mobileBreakpoint: clamp(number(root.dataset.mobileBreakpoint, 767), 320, 1200),
+      mobileAutoAdapt: root.dataset.mobileAutoAdapt == null ? true : bool(root.dataset.mobileAutoAdapt),
+      mobileTypographyScale: clamp(number(root.dataset.mobileTypographyScale, 0.82), 0.55, 1),
+      bannerFontFamily: String(root.dataset.bannerFontFamily || "inherit"),
+      bannerEyebrowSize: clamp(number(root.dataset.bannerEyebrowSize, 12), 8, 32),
+      bannerTitleSize: clamp(number(root.dataset.bannerTitleSize, 56), 20, 120),
+      bannerSubtitleSize: clamp(number(root.dataset.bannerSubtitleSize, 20), 12, 64),
+      bannerTextSize: clamp(number(root.dataset.bannerTextSize, 16), 10, 40),
+      bannerButtonSize: clamp(number(root.dataset.bannerButtonSize, 14), 10, 28),
+      bannerTitleWeight: clamp(number(root.dataset.bannerTitleWeight, 800), 300, 900),
+      bannerTextWeight: clamp(number(root.dataset.bannerTextWeight, 400), 300, 800),
+      bannerTitleLineHeight: clamp(number(root.dataset.bannerTitleLineHeight, 0.98), 0.8, 1.5),
+      bannerTextLineHeight: clamp(number(root.dataset.bannerTextLineHeight, 1.55), 1, 2.2),
       overlayColor: root.dataset.overlayColor || "#000000",
       overlayOpacity: clamp(number(root.dataset.overlayOpacity, 30), 0, 100),
       points: safeJSON(root.dataset.heroPoints, []),
@@ -392,6 +439,8 @@
       config.end = Math.max(config.end, config.mediaDuration, pointHint, config.start + 0.1);
     }
     if (config.end <= config.start) config.end = config.start + 1;
+    const initialMobileViewport = window.innerWidth <= config.mobileBreakpoint;
+    applyExperienceProfile(config, initialMobileViewport);
     config.accelLUT = buildVelocityLUT(config.cinematicAccelCurve, false);
     config.decelLUT = buildVelocityLUT(config.cinematicDecelCurve, true);
     root.style.setProperty("--svp-scroll-height", `${config.scrollHeight}px`);
@@ -402,11 +451,22 @@
     root.style.setProperty("--svp-mobile-x", `${config.mobileX}%`);
     root.style.setProperty("--svp-mobile-y", `${config.mobileY}%`);
     root.style.setProperty("--svp-mobile-scale", config.scaleMobile);
+    root.style.setProperty("--svp-banner-font", config.bannerFontFamily);
+    root.style.setProperty("--svp-title-weight", String(config.bannerTitleWeight));
+    root.style.setProperty("--svp-text-weight", String(config.bannerTextWeight));
+    root.style.setProperty("--svp-title-line-height", String(config.bannerTitleLineHeight));
+    root.style.setProperty("--svp-text-line-height", String(config.bannerTextLineHeight));
+    root.style.setProperty("--svp-mobile-typography-scale", String(config.mobileTypographyScale));
     const mobileQuery = window.matchMedia(`(max-width: ${config.mobileBreakpoint}px)`);
     const syncMobileVisibility = () => {
       const isMobile = mobileQuery.matches;
       root.classList.toggle("svp-is-mobile", isMobile);
       root.classList.toggle("svp-mobile-disabled", config.disableOnMobile && isMobile);
+      if (config.experienceProfile !== "custom") {
+        applyExperienceProfile(config, isMobile);
+        config.accelLUT = buildVelocityLUT(config.cinematicAccelCurve, false);
+        config.decelLUT = buildVelocityLUT(config.cinematicDecelCurve, true);
+      }
       if (hintLabel) hintLabel.textContent = isMobile ? "Deslize para cima" : "Rolar para explorar";
     };
     syncMobileVisibility();
@@ -434,6 +494,7 @@
       const raw = Math.max(0, number(value, config.start));
       return config.timelineSnap ? Math.max(0, Math.round(raw * config.timelineFps) / config.timelineFps) : raw;
     };
+    const startBoundaryTolerance = Math.max(0.001, 0.55 / Math.max(1, config.timelineFps));
     const points = (Array.isArray(config.points) ? config.points.filter((p) => p && Number.isFinite(Number(p.startTime))) : [])
       .map((point) => {
         const normalized = { ...point };
@@ -442,6 +503,9 @@
         normalized.endTime = Number.isFinite(Number(point.endTime)) ? Math.max(normalized.startTime, number(point.endTime, fallbackEnd)) : fallbackEnd;
         return normalized;
       })
+      /* IN é limite da timeline, nunca banner. Presets 2.8.0 que tenham criado
+         acidentalmente um banner exatamente no IN são ignorados pelo runtime. */
+      .filter((point) => number(point.startTime, config.start) > config.start + startBoundaryTolerance)
       .sort((a, b) => number(a.startTime, 0) - number(b.startTime, 0) || String(a.id || "").localeCompare(String(b.id || "")));
     const heroElements = points.map((point, index) => {
       const hero = buildHero(point, index);
@@ -454,7 +518,13 @@
       button.className = "svp-chapter";
       button.title = point.title || `Capítulo ${index + 1}`;
       button.setAttribute("aria-label", button.title);
-      button.addEventListener("click", () => scrollToTime(number(point.startTime, config.start)));
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        cancelReturnRestart();
+        cancelAutoStart(true);
+        scrollToTime(number(point.startTime, config.start), { intent:"chapter" });
+      });
       chaptersNav.appendChild(button);
       return button;
     });
@@ -497,7 +567,18 @@
     }
     function fitHero(hero) {
       if (!hero || !sticky) return;
-      const metrics = heroBaseMetrics();
+      const base = heroBaseMetrics();
+      const point = points[number(hero.dataset.pointIndex, 0)] || {};
+      const mobileScale = base.mobile && config.mobileAutoAdapt ? config.mobileTypographyScale : 1;
+      const pointMetric = (value, fallback) => { const parsed = number(value, 0); return parsed > 0 ? parsed : fallback; };
+      const metrics = {
+        ...base,
+        eyebrow: clamp(pointMetric(point.eyebrowSize, config.bannerEyebrowSize) * mobileScale, 7, 48),
+        title: clamp(pointMetric(point.titleSize, config.bannerTitleSize) * mobileScale, 14, 140),
+        subtitle: clamp(pointMetric(point.subtitleSize, config.bannerSubtitleSize) * mobileScale, 10, 72),
+        text: clamp(pointMetric(point.textSize, config.bannerTextSize) * mobileScale, 9, 48),
+        button: clamp(pointMetric(point.buttonSize, config.bannerButtonSize) * mobileScale, 9, 32)
+      };
       let scale = 1;
       applyHeroFit(hero, metrics, scale);
       for (let i = 0; i < 7; i += 1) {
@@ -561,8 +642,16 @@
     let userInteracted = false;
     let touchStartY = null;
     let cinematicHandoffDirection = 0;
+    let cinematicTravelDirection = 0;
+    let cinematicIntent = "idle";
+    let returnRestartTimer = 0;
     let exitBoundaryState = 0;
     let parkedAtTimelineStart = false;
+    let ownsScroll = true;
+    let scrollReleaseLatch = false;
+    let scrollReleaseReason = "";
+    root.dataset.scrollControl = "owned";
+    root.dataset.scrollReleaseReason = "";
 
     function effectiveProgress(rawProgress) {
       if (!config.pauses.length) return rawProgress;
@@ -629,8 +718,63 @@
       gestureArmed = true;
     }
 
+    function captureCurrentFrame() {
+      const current = videoReady && Number.isFinite(Number(video.currentTime)) ? Number(video.currentTime) : displayTime;
+      const t = clamp(number(current, displayTime), config.start, Math.min(config.end, duration || config.end));
+      targetTime = displayTime = t;
+      cinematicTime = null;
+      pendingSeek = null;
+      try { video.pause(); video.playbackRate = 1; } catch (_) {}
+      updatePoints(t);
+      return t;
+    }
+
+    function releaseScrollControl(reason = "external") {
+      cancelReturnRestart();
+      cancelAutoStart(true);
+      const t = videoReady && Number.isFinite(Number(video.currentTime)) ? Number(video.currentTime) : displayTime;
+      cancelCinematicAnimation();
+      targetTime = displayTime = clamp(number(t, displayTime), config.start, Math.min(config.end, duration || config.end));
+      cinematicTime = null;
+      pendingSeek = null;
+      try { video.pause(); video.playbackRate = 1; } catch (_) {}
+      updatePoints(displayTime);
+      ownsScroll = false;
+      scrollReleaseLatch = true;
+      scrollReleaseReason = String(reason || "external");
+      root.dataset.scrollControl = "released";
+      root.dataset.scrollReleaseReason = scrollReleaseReason;
+      resetGestureCapture();
+    }
+
+    function acquireScrollControl(reason = "reentry") {
+      ownsScroll = true;
+      scrollReleaseLatch = false;
+      scrollReleaseReason = "";
+      exitBoundaryState = 0;
+      root.dataset.exitState = "inside";
+      root.dataset.scrollControl = "owned";
+      root.dataset.scrollReleaseReason = "";
+      resetGestureCapture();
+    }
+
+    function updateScrollOwnershipFromPosition() {
+      const active = isSectionActive();
+      if (ownsScroll) return active;
+      if (scrollReleaseLatch) {
+        if (!active) scrollReleaseLatch = false;
+        return false;
+      }
+      if (active) {
+        acquireScrollControl("reentry");
+        return true;
+      }
+      return false;
+    }
+
     function handoffPastStickyBoundary(direction) {
       if (!direction) return;
+      releaseScrollControl(direction > 0 ? "terminal-out" : "terminal-before");
       const rootTop = window.scrollY + root.getBoundingClientRect().top;
       const travel = Math.max(1, root.offsetHeight - window.innerHeight);
       /* O sticky ainda é considerado ativo exatamente em 0%/100%. Avançar 8 px
@@ -657,6 +801,7 @@
       cinematicTime = null;
       pendingSeek = null;
       cinematicHandoffDirection = 0;
+      cinematicIntent = "idle";
       if (cinematicNative) {
         try { video.pause(); } catch (_) {}
       }
@@ -799,14 +944,24 @@
       scrollToProgress(rawProgressForTime(target), "auto");
       updatePoints(target);
       const handoffDirection = cinematicHandoffDirection;
-      if (handoffDirection < 0 && isAtPageBoundary(-1, target)) parkAtTimelineStart(target);
-      else if (!isAtPageBoundary(-1, target)) releaseTimelineStartPark();
+      const arrivalIntent = cinematicIntent;
+      const returnedToStart = cinematicTravelDirection < 0 && Math.abs(target - config.start) <= Math.max(0.04, 0.8 / Math.max(1, config.timelineFps));
       cinematicHandoffDirection = 0;
-      if (handoffDirection && isAtPageBoundary(handoffDirection, target)) {
-        handoffPastStickyBoundary(handoffDirection);
-      } else {
+      cinematicTravelDirection = 0;
+      cinematicIntent = "idle";
+      if (returnedToStart && arrivalIntent === "gesture" && config.restartOnReturnStart && !config.reverse) {
+        releaseTimelineStartPark();
         exitBoundaryState = 0;
         root.dataset.exitState = "inside";
+        scheduleRestartFromTimelineStart();
+      } else {
+        if (!isAtPageBoundary(-1, target)) releaseTimelineStartPark();
+        if (handoffDirection && isAtPageBoundary(handoffDirection, target)) {
+          handoffPastStickyBoundary(handoffDirection);
+        } else {
+          exitBoundaryState = 0;
+          root.dataset.exitState = "inside";
+        }
       }
       window.setTimeout(() => { if (!cinematicAnimating && token === cinematicToken) cinematicTime = null; }, 60);
     }
@@ -984,10 +1139,15 @@
       const target = clamp(number(time, config.start), config.start, Math.min(config.end, duration || config.end));
       const currentVideoTime = videoReady && Number.isFinite(video.currentTime) ? video.currentTime : displayTime;
       const from = clamp(Math.abs(currentVideoTime - displayTime) < 0.35 ? currentVideoTime : displayTime, config.start, Math.min(config.end, duration || config.end));
+      cancelReturnRestart();
       cancelCinematicAnimation();
       cinematicHandoffDirection = Number(options.handoffDirection) || 0;
-      exitBoundaryState = 0;
-      root.dataset.exitState = "inside";
+      cinematicTravelDirection = target > from ? 1 : (target < from ? -1 : 0);
+      cinematicIntent = String(options.intent || "programmatic");
+      if (ownsScroll) {
+        exitBoundaryState = 0;
+        root.dataset.exitState = "inside";
+      }
 
       const distance = Math.abs(target - from);
       const pageStart = boundaryTimeForPageDirection(-1);
@@ -1000,9 +1160,13 @@
         scrollToProgress(rawProgressForTime(target), "auto");
         updatePoints(target);
         const handoffDirection = cinematicHandoffDirection;
+        const arrivalIntent = cinematicIntent;
+        const returnedToStart = cinematicTravelDirection < 0 && Math.abs(target - config.start) <= Math.max(0.04, 0.8 / Math.max(1, config.timelineFps));
         cinematicHandoffDirection = 0;
-        if (handoffDirection < 0 && isAtPageBoundary(-1, target)) parkAtTimelineStart(target);
-        if (handoffDirection && isAtPageBoundary(handoffDirection, target)) handoffPastStickyBoundary(handoffDirection);
+        cinematicTravelDirection = 0;
+        cinematicIntent = "idle";
+        if (returnedToStart && arrivalIntent === "gesture" && config.restartOnReturnStart && !config.reverse) scheduleRestartFromTimelineStart();
+        else if (handoffDirection && isAtPageBoundary(handoffDirection, target)) handoffPastStickyBoundary(handoffDirection);
         return false;
       }
 
@@ -1020,8 +1184,8 @@
       return true;
     }
 
-    function scrollToTime(time) {
-      if (config.interactionMode === "cinematic") return animateToTime(time);
+    function scrollToTime(time, options = {}) {
+      if (config.interactionMode === "cinematic") return animateToTime(time, options);
       const linear = clamp((time - config.start) / (config.end - config.start), 0, 1);
       scrollToProgress(config.reverse ? 1 - linear : linear);
       return true;
@@ -1064,18 +1228,42 @@
       root.dataset.parkedStart = "false";
     }
 
+    function cancelReturnRestart() {
+      if (returnRestartTimer) clearTimeout(returnRestartTimer);
+      returnRestartTimer = 0;
+    }
+
+    function scheduleRestartFromTimelineStart() {
+      if (!ownsScroll || !config.restartOnReturnStart || config.reverse || destroyed) return false;
+      const tolerance = Math.max(0.04, 0.8 / Math.max(1, config.timelineFps));
+      if (Math.abs(displayTime - config.start) > tolerance) return false;
+      const target = nextStopTime(1, config.start);
+      if (target == null || Math.abs(target - config.start) <= 0.035) return false;
+      cancelReturnRestart();
+      parkedAtTimelineStart = false;
+      root.dataset.parkedStart = "false";
+      root.dataset.returnRestart = "pending";
+      returnRestartTimer = window.setTimeout(() => {
+        returnRestartTimer = 0;
+        if (destroyed || cinematicAnimating || Math.abs(displayTime - config.start) > tolerance * 1.5) return;
+        root.dataset.returnRestart = "running";
+        animateToTime(target, { intent:"return-to-first" });
+      }, config.restartOnReturnDelayMs);
+      return true;
+    }
+
     function maybeScheduleAutoStart() {
-      if (config.interactionMode !== "cinematic" || !config.autoStart || autoStartDone || autoStartScheduled || userInteracted || parkedAtTimelineStart || !videoReady || !isSectionActive()) return;
+      if (!ownsScroll || config.interactionMode !== "cinematic" || !config.autoStart || autoStartDone || autoStartScheduled || userInteracted || parkedAtTimelineStart || !videoReady || !isSectionActive()) return;
       autoStartScheduled = true;
       autoStartTimer = window.setTimeout(() => {
         autoStartTimer = 0;
         autoStartScheduled = false;
-        if (destroyed || userInteracted || !isSectionActive()) return;
+        if (destroyed || !ownsScroll || userInteracted || !isSectionActive()) return;
         const target = firstContentStop();
         autoStartDone = true;
         const initial = config.reverse ? config.end : config.start;
         if (target == null || Math.abs(target - initial) <= 0.035) return;
-        animateToTime(target);
+        animateToTime(target, { intent:"auto-start" });
       }, config.autoStartDelay * 1000);
     }
 
@@ -1091,7 +1279,7 @@
         return false;
       }
       const terminal = Math.abs(target - boundaryTimeForPageDirection(direction)) <= Math.max(0.035, 0.8 / Math.max(1, config.timelineFps));
-      return animateToTime(target, { handoffDirection: terminal ? direction : 0 });
+      return animateToTime(target, { handoffDirection: terminal ? direction : 0, intent:"gesture" });
     }
 
     function updatePoints(time) {
@@ -1179,7 +1367,8 @@
       const raw = (config.interactionMode === "cinematic" && cinematicAnimating)
         ? rawProgressForTime(displayTime)
         : getScrollProgress();
-      if (exitBoundaryState && isSectionActive()) {
+      updateScrollOwnershipFromPosition();
+      if (ownsScroll && exitBoundaryState && isSectionActive()) {
         exitBoundaryState = 0;
         root.dataset.exitState = "inside";
       }
@@ -1208,7 +1397,9 @@
          * Limita seeks para não saturar o decoder. O valor mais recente substitui
          * qualquer seek pendente; não existe fila de frames atrasados.
          */
-        const seekInterval = cinematicAnimating ? 42 : 50;
+        const seekInterval = cinematicAnimating
+          ? (config.experienceProfile === "performance" ? 52 : (config.preloadMode === "complete" ? (mobileQuery.matches ? 40 : 34) : 46))
+          : 50;
         pendingSeek = desired;
         if (!video.seeking && now - lastSeekAt >= seekInterval) {
           const nextSeek = pendingSeek;
@@ -1347,30 +1538,87 @@
     video.muted = true;
     video.defaultMuted = true;
     video.playsInline = true;
-    video.preload = config.preload;
+    video.preload = config.preloadMode === "metadata" ? "metadata" : "auto";
     video.poster = config.poster;
     let sourceNode = null;
-    if (config.src) {
-      /* Normaliza links raw/blob do GitHub e informa o MIME pelo sufixo. Isso evita
-         depender do redirect/MIME genérico do host para arquivos MP4/WebM. */
-      const resolvedSource = normalizeMediaSource(config.src);
+    let preloadObjectUrl = "";
+    let preloadController = null;
+
+    video.addEventListener("loadedmetadata", onMetadata, { once: true });
+    video.addEventListener("durationchange", () => { if (!metadataReady && mediaDuration(video) > 0) onMetadata(); });
+    video.addEventListener("loadeddata", onFrameReady, { once: true });
+    video.addEventListener("canplay", onFrameReady, { once: true });
+    video.addEventListener("seeked", flushPendingSeek);
+    video.addEventListener("progress", updateBuffered);
+    video.addEventListener("error", fail, { once: true });
+
+    function mountVideoSource(source, originalSource = source) {
+      if (destroyed) return;
       sourceNode = document.createElement("source");
-      sourceNode.src = resolvedSource;
-      const mime = mediaMime(resolvedSource);
+      sourceNode.src = source;
+      const mime = mediaMime(originalSource);
       if (mime) sourceNode.type = mime;
       sourceNode.addEventListener("error", fail, { once: true });
       video.replaceChildren(sourceNode);
-      video.addEventListener("loadedmetadata", onMetadata, { once: true });
-      video.addEventListener("durationchange", () => { if (!metadataReady && mediaDuration(video) > 0) onMetadata(); });
-      video.addEventListener("loadeddata", onFrameReady, { once: true });
-      video.addEventListener("canplay", onFrameReady, { once: true });
-      video.addEventListener("seeked", flushPendingSeek);
-      video.addEventListener("progress", updateBuffered);
-      video.addEventListener("error", fail, { once: true });
       video.load();
       window.setTimeout(() => {
         if (!videoReady && (video.networkState === HTMLMediaElement.NETWORK_NO_SOURCE || video.error)) fail();
-      }, 6000);
+      }, 8000);
+    }
+
+    async function preloadCompleteVideo(resolvedSource) {
+      if (/^(?:data:|blob:)/i.test(resolvedSource)) {
+        percent.textContent = "100%";
+        return mountVideoSource(resolvedSource, resolvedSource);
+      }
+      loadingLabel.textContent = "Carregando vídeo completo…";
+      percent.textContent = "0%";
+      preloadController = typeof AbortController !== "undefined" ? new AbortController() : null;
+      const response = await fetch(resolvedSource, { cache:"force-cache", signal:preloadController?.signal });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const total = Math.max(0, number(response.headers.get("content-length"), 0));
+      const contentType = response.headers.get("content-type") || mediaMime(resolvedSource) || "video/mp4";
+      let blob;
+      if (response.body?.getReader) {
+        const reader = response.body.getReader();
+        const chunks = [];
+        let received = 0;
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          if (value?.byteLength) {
+            chunks.push(value);
+            received += value.byteLength;
+            if (total > 0) percent.textContent = `${Math.round(clamp(received / total, 0, 1) * 100)}%`;
+            else percent.textContent = `${(received / 1048576).toFixed(1)} MB`;
+          }
+        }
+        blob = new Blob(chunks, { type:contentType });
+      } else {
+        blob = await response.blob();
+      }
+      if (destroyed) return;
+      preloadObjectUrl = URL.createObjectURL(blob);
+      percent.textContent = "100%";
+      loadingLabel.textContent = "Vídeo carregado. Preparando frames…";
+      mountVideoSource(preloadObjectUrl, resolvedSource);
+    }
+
+    if (config.src) {
+      /* No modo completo a experiência só é liberada depois de o arquivo inteiro
+         existir em memória/Blob. Assim o percurso não disputa rede com o decoder. */
+      const resolvedSource = normalizeMediaSource(config.src);
+      if (config.preloadMode === "complete") {
+        preloadCompleteVideo(resolvedSource).catch((error) => {
+          if (destroyed || error?.name === "AbortError") return;
+          console.warn("[Parallax] Preload completo indisponível; usando streaming nativo.", error);
+          loadingLabel.textContent = "Preload completo indisponível. Usando buffer inteligente…";
+          percent.textContent = "…";
+          mountVideoSource(resolvedSource, resolvedSource);
+        });
+      } else {
+        mountVideoSource(resolvedSource, resolvedSource);
+      }
     } else {
       fail();
     }
@@ -1389,6 +1637,7 @@
     }
 
     function onWheel(event) {
+      if (!ownsScroll) { updateScrollOwnershipFromPosition(); if (!ownsScroll) return; }
       if (config.interactionMode !== "cinematic" || (config.disableOnMobile && mobileQuery.matches) || !isSectionActive()) return;
       const delta = normalizedWheelDelta(event);
       if (Math.abs(delta) < 0.01) return;
@@ -1399,7 +1648,6 @@
          alguns pixels para fora do sticky para que trackpads com inércia não fiquem
          oscilando exatamente no limite da seção. */
       if (candidate == null && !cinematicAnimating) {
-        if (direction < 0 && isAtPageBoundary(direction, displayTime)) parkAtTimelineStart(displayTime);
         if (isAtPageBoundary(direction, displayTime)) handoffPastStickyBoundary(direction);
         return;
       }
@@ -1418,12 +1666,14 @@
     }
 
     function onTouchStart(event) {
+      if (!ownsScroll) { updateScrollOwnershipFromPosition(); if (!ownsScroll) return; }
       if (config.interactionMode !== "cinematic" || !isSectionActive() || !event.touches?.length) return;
       touchStartY = event.touches[0].clientY;
       cancelAutoStart(true);
     }
 
     function onTouchMove(event) {
+      if (!ownsScroll) return;
       if (config.interactionMode !== "cinematic" || touchStartY == null || !isSectionActive() || !event.touches?.length) return;
       const delta = touchStartY - event.touches[0].clientY;
       const direction = delta >= 0 ? 1 : -1;
@@ -1431,7 +1681,7 @@
     }
 
     function onTouchEnd(event) {
-      if (config.interactionMode !== "cinematic" || touchStartY == null || !isSectionActive()) { touchStartY = null; return; }
+      if (!ownsScroll || config.interactionMode !== "cinematic" || touchStartY == null || !isSectionActive()) { touchStartY = null; return; }
       const endY = event.changedTouches?.[0]?.clientY;
       if (!Number.isFinite(endY)) { touchStartY = null; return; }
       const delta = touchStartY - endY;
@@ -1439,7 +1689,6 @@
       if (Math.abs(delta) < 34 || cinematicAnimating || !gestureArmed) return;
       const direction = delta > 0 ? 1 : -1;
       if (nextStopTime(timeDirectionForGesture(direction), displayTime) == null) {
-        if (direction < 0 && isAtPageBoundary(direction, displayTime)) parkAtTimelineStart(displayTime);
         if (isAtPageBoundary(direction, displayTime)) handoffPastStickyBoundary(direction);
         return;
       }
@@ -1449,6 +1698,7 @@
     }
 
     function onKeyDown(event) {
+      if (!ownsScroll) { updateScrollOwnershipFromPosition(); if (!ownsScroll) return; }
       if (!root.matches(":hover") && !root.contains(document.activeElement) && !isSectionActive()) return;
       if (config.interactionMode === "cinematic") {
         if (["ArrowDown", "PageDown"].includes(event.key)) {
@@ -1461,8 +1711,8 @@
           else if (isAtPageBoundary(-1, displayTime)) handoffPastStickyBoundary(-1);
           return;
         }
-        if (event.key === "Home") { event.preventDefault(); cancelAutoStart(true); animateToTime(config.start, { handoffDirection: -1 }); return; }
-        if (event.key === "End") { event.preventDefault(); cancelAutoStart(true); animateToTime(config.end); return; }
+        if (event.key === "Home") { event.preventDefault(); cancelAutoStart(true); cancelReturnRestart(); animateToTime(config.start, { handoffDirection: -1, intent:"keyboard-home" }); return; }
+        if (event.key === "End") { event.preventDefault(); cancelAutoStart(true); cancelReturnRestart(); animateToTime(config.end, { intent:"keyboard-end" }); return; }
       }
       if (["ArrowDown", "PageDown"].includes(event.key)) { event.preventDefault(); scrollToProgress(getScrollProgress() + 0.08); }
       if (["ArrowUp", "PageUp"].includes(event.key)) { event.preventDefault(); scrollToProgress(getScrollProgress() - 0.08); }
@@ -1470,29 +1720,87 @@
       if (event.key === "End") { event.preventDefault(); scrollToProgress(1); }
     }
 
-    skipButton.addEventListener("click", () => {
-      cancelAutoStart(true); cancelCinematicAnimation();
-      const t = config.reverse ? config.start : config.end;
-      targetTime = displayTime = t; cinematicTime = null;
-      try { video.pause(); video.currentTime = t; } catch (_) {}
-      scrollToProgress(1, "auto"); updatePoints(t);
+    skipButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      cancelReturnRestart();
+      cancelAutoStart(true);
+      cancelCinematicAnimation();
+      /* PULAR é saída terminal, não uma navegação entre chaves. Vai ao OUT,
+         limpa banners/estados intermediários e libera a próxima seção. */
+      const t = boundaryTimeForPageDirection(1);
+      cinematicIntent = "control-skip";
+      targetTime = displayTime = t;
+      cinematicTime = null;
+      pendingSeek = null;
+      parkedAtTimelineStart = false;
+      root.dataset.parkedStart = "false";
+      root.dataset.returnRestart = "false";
+      try { video.pause(); video.playbackRate = 1; video.currentTime = t; } catch (_) {}
+      updatePoints(t);
+      scrollToProgress(1, "auto");
+      cinematicIntent = "idle";
       handoffPastStickyBoundary(1);
     });
-    restartButton.addEventListener("click", () => {
-      cancelAutoStart(true); cancelCinematicAnimation();
-      const t = config.reverse ? config.end : config.start;
-      targetTime = displayTime = t; cinematicTime = null;
-      try { video.pause(); video.currentTime = t; } catch (_) {}
-      scrollToProgress(0); updatePoints(t);
-      parkAtTimelineStart(t);
+    restartButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      cancelReturnRestart();
+      cancelAutoStart(true);
+      cancelCinematicAnimation();
+      const t = boundaryTimeForPageDirection(-1);
+      cinematicIntent = "control-restart";
+      targetTime = displayTime = t;
+      cinematicTime = null;
+      pendingSeek = null;
+      try { video.pause(); video.playbackRate = 1; video.currentTime = t; } catch (_) {}
+      scrollToProgress(0, "auto");
+      updatePoints(t);
+      cinematicIntent = "idle";
+      /* Reiniciar é o único controle que deliberadamente relança a primeira etapa. */
+      if (!config.reverse && config.restartOnReturnStart) scheduleRestartFromTimelineStart();
     });
-    soundButton.addEventListener("click", async () => {
+    soundButton.addEventListener("click", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
       video.muted = !video.muted;
       soundButton.textContent = video.muted ? "Som" : "Mudo";
       soundButton.setAttribute("aria-label", video.muted ? "Ativar som" : "Desativar som");
       if (!video.muted) { try { await video.play(); video.pause(); } catch (_) { video.muted = true; } }
     });
 
+    if (toolbar) {
+      ["pointerdown","pointerup","touchstart","touchend"].forEach((type) => {
+        toolbar.addEventListener(type, (event) => event.stopPropagation(), { passive:true });
+      });
+    }
+
+    function anchorTargetsThisComponent(anchor) {
+      if (!anchor) return false;
+      const rawHref = String(anchor.getAttribute("href") || "").trim();
+      if (!rawHref || rawHref === "#") return false;
+      let url;
+      try { url = new URL(rawHref, document.baseURI); } catch (_) { return false; }
+      if (url.origin !== location.origin || url.pathname !== location.pathname || !url.hash) return false;
+      let target = null;
+      try { target = document.getElementById(decodeURIComponent(url.hash.slice(1))); } catch (_) {}
+      if (!target) return false;
+      const section = root.closest("[data-section-id], section[id], [id]");
+      return target === root || root.contains(target) || target === section || !!section?.contains(target);
+    }
+
+    function onDocumentAnchorClick(event) {
+      if (!ownsScroll || event.defaultPrevented && !isSectionActive()) return;
+      const anchor = event.target?.closest?.("a[href]");
+      if (!anchor || anchorTargetsThisComponent(anchor)) return;
+      if (!isSectionActive() && !cinematicAnimating) return;
+      /* A liberação acontece no capture, antes do menu/roteador executar o scroll
+         da âncora. Assim nenhum RAF, wheel preventDefault ou retorno automático do
+         Parallax disputa a navegação solicitada pelo usuário. */
+      releaseScrollControl("external-anchor");
+    }
+
+    document.addEventListener("click", onDocumentAnchorClick, true);
     window.addEventListener("wheel", onWheel, { passive: false });
     root.addEventListener("touchstart", onTouchStart, { passive: true });
     root.addEventListener("touchmove", onTouchMove, { passive: false });
@@ -1513,6 +1821,8 @@
     if ("IntersectionObserver" in window) {
       visibilityObserver = new IntersectionObserver((entries) => {
         sectionVisible = entries.some((entry) => entry.isIntersecting);
+        if (!sectionVisible && !ownsScroll && scrollReleaseLatch) scrollReleaseLatch = false;
+        if (sectionVisible) updateScrollOwnershipFromPosition();
         if (sectionVisible && !document.hidden && !destroyed && !rafId) rafId = requestAnimationFrame(frame);
       }, { rootMargin: "240px 0px" });
       visibilityObserver.observe(root);
@@ -1553,8 +1863,10 @@
       cancelAnimationFrame(rafId);
       cancelCinematicAnimation();
       cancelAutoStart(false);
+      cancelReturnRestart();
       if (wheelQuietTimer) clearTimeout(wheelQuietTimer);
       window.removeEventListener("wheel", onWheel);
+      document.removeEventListener("click", onDocumentAnchorClick, true);
       window.removeEventListener("message", onHostPreviewMessage);
       root.removeEventListener("touchstart", onTouchStart);
       root.removeEventListener("touchmove", onTouchMove);
@@ -1569,10 +1881,12 @@
         mobileQuery.removeEventListener("change", syncMobileVisibility);
         mobileQuery.removeEventListener("change", scheduleHeroFit);
       }
+      try { preloadController?.abort?.(); } catch (_) {}
       video.pause();
       video.removeAttribute("src");
       if (sourceNode) sourceNode.remove();
       video.load();
+      if (preloadObjectUrl) { try { URL.revokeObjectURL(preloadObjectUrl); } catch (_) {} preloadObjectUrl = ""; }
       delete root._svpAPI;
     };
   }
@@ -1582,6 +1896,30 @@
   /* A prévia do framework é recriada como documento completo. Um MutationObserver
      global aqui era desnecessário e podia ser acionado pelo próprio HUD a cada frame. */
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true }); else boot();
+})();
+
+
+(function(){
+  "use strict";
+  function init(scope=document){
+    scope.querySelectorAll('[data-plugin="only-text-context"] .otc-root').forEach((root)=>{
+      if(root.dataset.otcReady==='true')return;
+      root.dataset.otcReady='true';
+      const motion=(root.dataset.motion||'none').trim();
+      if(motion==='none'||window.matchMedia('(prefers-reduced-motion: reduce)').matches){root.classList.add('is-visible');return;}
+      root.classList.add('otc-motion-ready');
+      if(!('IntersectionObserver' in window)){root.classList.add('is-visible');return;}
+      const io=new IntersectionObserver((entries)=>{entries.forEach((entry)=>{if(entry.isIntersecting){root.classList.add('is-visible');io.disconnect();}});},{threshold:.18,rootMargin:'0px 0px -8% 0px'});
+      io.observe(root);
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>init(),{once:true});else init();
+})();
+
+
+(function(){
+  "use strict";
+  // 1.2.1: composição balanceada é resolvida por CSS; não há ajuste iterativo de tracking.
 })();
 
 
@@ -2270,30 +2608,6 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
 })();
-
-
-(function(){
-  "use strict";
-  const SELECTOR='[data-plugin="magazine-text-pro"] .mtp-root';
-  function init(scope=document){
-    scope.querySelectorAll(SELECTOR).forEach((root)=>{
-      if(root.dataset.mtpReady==='true') return;
-      root.dataset.mtpReady='true';
-      const img=root.querySelector('.mtp-image');
-      if(img){
-        const sync=()=>root.classList.toggle('mtp-image-unavailable',!img.currentSrc&&!img.getAttribute('src'));
-        img.addEventListener('error',()=>root.classList.add('mtp-image-error'),{once:true});
-        img.addEventListener('load',()=>root.classList.remove('mtp-image-error'));
-        sync();
-      }
-    });
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>init(),{once:true});
-  else init();
-})();
-
-
-(function(){})();
 
 
 (function(){})();
