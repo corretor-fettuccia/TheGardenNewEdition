@@ -1,5 +1,5 @@
 {
-  "version": "5.8.1",
+  "version": "5.8.2",
   "projectId": "the-garden-new-edition-parallax-editorial-signature",
   "projectName": "The Garden New Edition — Parallax Editorial Signature",
   "preset": "personalizado",
@@ -1636,7 +1636,7 @@
     }
   ],
   "selectedSectionId": "menu-the-garden-editorial",
-  "updatedAt": "2026-09-17T00:32:27.476Z",
+  "updatedAt": "2026-09-17T01:28:04.604Z",
   "geo": {
     "enabled": "yes",
     "generateMarkdown": "yes",
