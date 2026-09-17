@@ -289,7 +289,11 @@
     root.style.setProperty("--svp-mobile-x", `${config.mobileX}%`);
     root.style.setProperty("--svp-mobile-y", `${config.mobileY}%`);
     root.style.setProperty("--svp-mobile-scale", config.scaleMobile);
-    root.style.setProperty("--svp-banner-font", config.bannerFontFamily);
+    if (config.bannerFontFamily && !["inherit","preset","initial","unset","revert"].includes(String(config.bannerFontFamily).trim().toLowerCase())) {
+      root.style.setProperty("--svp-banner-font", config.bannerFontFamily);
+    } else {
+      root.style.removeProperty("--svp-banner-font");
+    }
     root.style.setProperty("--svp-title-weight", String(config.bannerTitleWeight));
     root.style.setProperty("--svp-text-weight", String(config.bannerTextWeight));
     root.style.setProperty("--svp-title-line-height", String(config.bannerTitleLineHeight));

@@ -182,13 +182,15 @@
         "cinematicMaxRate": 2.2,
         "videoDuration": 48.7,
         "endTimeAuto": false,
-        "bannerTextSize": 17,
-        "bannerTitleSize": 20,
-        "bannerSubtitleSize": 13,
-        "bannerEyebrowSize": 12,
+        "bannerTextSize": 18,
+        "bannerTitleSize": 46,
+        "bannerSubtitleSize": 24,
+        "bannerEyebrowSize": 18,
         "mobileTypographyScale": 0.74,
         "bannerTitleLineHeight": 1.39,
-        "bannerTextLineHeight": 2.05
+        "bannerTextLineHeight": 2.05,
+        "bannerTextWeight": "400",
+        "bannerButtonSize": 20
       },
       "settings": {
         "visible": true,
@@ -1635,8 +1637,8 @@
       }
     }
   ],
-  "selectedSectionId": "menu-the-garden-editorial",
-  "updatedAt": "2026-09-17T01:28:04.604Z",
+  "selectedSectionId": "parallax-1789394430774-831ug",
+  "updatedAt": "2026-09-17T01:36:20.880Z",
   "geo": {
     "enabled": "yes",
     "generateMarkdown": "yes",

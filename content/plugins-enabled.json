@@ -5,7 +5,7 @@
     "type": "section",
     "compositionRole": "both",
     "compositionCardinality": "multiple",
-    "version": "2.8.2",
+    "version": "2.8.3",
     "source": "plugins/parallax/plugin.json",
     "packageType": "bundled"
   },
